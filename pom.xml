@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.soak</groupId>
+  <artifactId>epl-edw-web</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+
+  <parent>
+    <groupId>com.soak</groupId>
+    <artifactId>epl-parent-pom</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath>../epl-parent-pom</relativePath>
+  </parent>
+
+
+  <build>
+    <finalName>edw</finalName>
+
+    <plugins>
+
+      <!-- Tomcat 插件 -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>tomcat-maven-plugin</artifactId>
+        <version>1.1</version>
+        <configuration>
+          <url>http://localhost:8080/manager/html</url>
+          <server>tomcat</server>
+          <username>admin</username>
+          <password>admin</password>
+          <path>/edw</path>
+          <update>true</update>
+        </configuration>
+      </plugin>
+
+      <!-- JBoss 插件 -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jboss-maven-plugin</artifactId>
+        <version>1.5.0</version>
+        <configuration>
+          <jbossHome>D:\Program Files\Middleware\jboss-5.0.0.GA</jbossHome>
+          <serverName>default</serverName>
+          <hostName>localhost</hostName>
+          <port>8080</port>
+          <fileName>${project.build.directory}/${project.build.finalName}.war</fileName>
+        </configuration>
+      </plugin>
+
+
+      <plugin>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-maven2-plugin</artifactId>
+        <version>1.4.5</version>
+        <configuration>
+          <container>
+            <containerId>jboss51x</containerId>
+            <type>remote</type>
+          </container>
+          <configuration>
+            <type>runtime</type>
+            <properties>
+              <cargo.remote.username>admin</cargo.remote.username>
+              <cargo.remote.password>admin</cargo.remote.password>
+              <cargo.hostname>localhost</cargo.hostname>
+              <cargo.rmi.port>1099</cargo.rmi.port>
+            </properties>
+          </configuration>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.jboss.integration</groupId>
+            <artifactId>jboss-profileservice-spi</artifactId>
+            <version>5.1.0.GA</version>
+          </dependency>
+          <dependency>
+            <groupId>org.jboss.jbossas</groupId>
+            <artifactId>jboss-as-client</artifactId>
+            <version>5.1.0.GA</version>
+            <type>pom</type>
+          </dependency>
+        </dependencies>
+      </plugin>
+
+    </plugins>
+  </build>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.5</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jsp-api</artifactId>
+      <version>2.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.soak.framework</groupId>
+      <artifactId>epl-platform-framework</artifactId>
+    </dependency>
+
+    <!--  Spring  -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+    </dependency>
+
+
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjrt</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjweaver</artifactId>
+    </dependency>
+
+
+    <!--  Struts2  -->
+    <dependency>
+      <groupId>org.apache.struts</groupId>
+      <artifactId>struts2-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>net.sf.ehcache</groupId>
+      <artifactId>ehcache</artifactId>
+      <version>1.2</version>
+    </dependency>
+
+
+
+  </dependencies>
+
+
+
+</project>
