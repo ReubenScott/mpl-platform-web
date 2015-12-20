@@ -8,6 +8,7 @@
 		各模块xml配置在此添加...
 	 ============================================ -->
 	<import resource="modules/framework-bean.xml" />
+    <import resource="modules/report-bean.xml" />
 	
 
 	<!-- =======================================

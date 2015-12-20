@@ -3,15 +3,14 @@
   xmlns:p="http://www.springframework.org/schema/p"
   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
   
-
-  <bean id="springContextUtil" class="com.soak.framework.util.SpringContextUtil" lazy-init="false" />
+  <bean id="springContextUtil" class="com.soak.framework.util.SpringContextUtil" />
   
-  <bean id="ehCache" class="com.soak.framework.cache.EhCacheImpl" lazy-init="true" />
-  
-  <bean id="baseDao" class="org.soak.framework.daoImp.BaseDaoImp" lazy-init="true" />
+  <bean id="basicDao" class="com.soak.framework.dao.imp.BasicDaoImp" lazy-init="true" />
 
-  <bean id="baseService" class="org.soak.framework.serviceImp.BaseServiceImp" lazy-init="true">
-    <property name="baseDao" ref="baseDao" />
+  <bean id="baseService" class="com.soak.framework.service.Imp.BasicServiceImp" lazy-init="true">
+    <property name="basicDao" ref="basicDao" />
   </bean>
 
+  <bean id="ehCache" class="com.soak.framework.cache.EhCacheImpl" lazy-init="true" />
+  
 </beans>
