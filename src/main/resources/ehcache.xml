@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache>
+	<diskStore path="java.io.tmpdir" />
+
+	<defaultCache maxElementsInMemory="5000" eternal="false" timeToLiveSeconds="120"
+	    overflowToDisk="true" diskPersistent="false" diskExpiryThreadIntervalSeconds="120" />
+
+	<!-- 图片缓存 -->
+	<cache name="imageCache" maxElementsInMemory="10000" eternal="false"  timeToLiveSeconds="3600"
+		overflowToDisk="false" diskPersistent="false" diskExpiryThreadIntervalSeconds="120" memoryStoreEvictionPolicy="LFU" />
+		
+	<!-- 内容缓存 -->
+	<cache name="contentCache" maxElementsInMemory="10000" eternal="false"  timeToLiveSeconds="3600"
+		overflowToDisk="false" diskPersistent="false" diskExpiryThreadIntervalSeconds="120" memoryStoreEvictionPolicy="LFU" />
+
+</ehcache>
