@@ -40,8 +40,8 @@
     </interceptors>
     <default-interceptor-ref name="soakDefaultStack" />
     <global-results>
-      <result name="exception">/exception.jsp</result>
-      <result name="index">/Login/index.html</result>
+      <!--<result name="exception">/exception.jsp</result>
+      --><result name="index">/Login/index.html</result>
       <result name="invalid.token">/exception.jsp</result>
     </global-results>
     <global-exception-mappings>
