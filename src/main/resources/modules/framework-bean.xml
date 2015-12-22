@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:p="http://www.springframework.org/schema/p"
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
-  
-  <bean id="springContextUtil" class="com.soak.framework.util.SpringContextUtil" />
-  
-  <bean id="basicDao" class="com.soak.framework.dao.imp.BasicDaoImp" lazy-init="true" />
+
+  <description>该spring 配置文件，主要维护系统框架的bean信息</description>
+
+  <bean id="jdbcOperator" class="com.soak.framework.jdbc.DB2Operator" />
+
+  <bean id="basicDao" class="com.soak.framework.dao.imp.BasicDaoImp" lazy-init="true">
+    <property name="jdbcOperator" ref="jdbcOperator" />
+  </bean>
 
   <bean id="baseService" class="com.soak.framework.service.Imp.BasicServiceImp" lazy-init="true">
     <property name="basicDao" ref="basicDao" />
   </bean>
 
   <bean id="ehCache" class="com.soak.framework.cache.EhCacheImpl" lazy-init="true" />
-  
+
 </beans>

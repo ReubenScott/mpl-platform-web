@@ -89,6 +89,7 @@
 
   <dependencies>
 
+    <!--  -->
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
@@ -102,9 +103,14 @@
       <scope>provided</scope>
     </dependency>
 
+    <!-- 依赖工程 -->
     <dependency>
       <groupId>com.soak.framework</groupId>
       <artifactId>epl-platform-framework</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.soak.common</groupId>
+      <artifactId>epl-platform-common</artifactId>
     </dependency>
 
     <!--  Spring  -->
@@ -138,6 +144,13 @@
       <artifactId>struts2-spring-plugin</artifactId>
     </dependency>
 
+
+
+    <dependency>
+      <groupId>jfreechart</groupId>
+      <artifactId>jfreechart</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>net.sf.ehcache</groupId>
       <artifactId>ehcache</artifactId>
@@ -145,7 +158,10 @@
     </dependency>
 
 
-
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
   </dependencies>
 
 
