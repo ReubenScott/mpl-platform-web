@@ -4,10 +4,10 @@
 
   <description>该spring 配置文件，主要维护系统框架的bean信息</description>
 
-  <bean id="jdbcOperator" class="com.soak.framework.jdbc.DB2Operator" />
+  <bean id="jdbcTemplate" class="com.soak.framework.jdbc.JdbcTemplate" init-method="getInstance"/>
 
   <bean id="basicDao" class="com.soak.framework.dao.imp.BasicDaoImp" lazy-init="true">
-    <property name="jdbcOperator" ref="jdbcOperator" />
+    <property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
 
   <bean id="baseService" class="com.soak.framework.service.Imp.BasicServiceImp" lazy-init="true">
