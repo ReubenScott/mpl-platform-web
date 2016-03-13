@@ -10,7 +10,7 @@
     <property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
 
-  <bean id="baseService" class="com.soak.framework.service.Imp.BasicServiceImp" lazy-init="true">
+  <bean id="basicService" class="com.soak.framework.service.Imp.BasicServiceImp" lazy-init="true">
     <property name="basicDao" ref="basicDao" />
   </bean>
 

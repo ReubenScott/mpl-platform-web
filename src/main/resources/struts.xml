@@ -74,7 +74,8 @@
    -->
 
 
-  <include file="struts-report.xml"></include>
+  <include file="modules/struts-report.xml"></include>
+  <include file="modules/struts-self-service.xml"></include>
   
   
 </struts>
