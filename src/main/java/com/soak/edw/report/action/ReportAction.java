@@ -3,9 +3,6 @@ package com.soak.edw.report.action;
 import java.util.List;
 
 
-import net.sf.json.JsonConfig;
-import net.sf.json.processors.JsonValueProcessor;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,24 +70,6 @@ public class ReportAction extends BaseAction {
     logger.debug("ReportAction : list !", list);
 
     return "list";
-  }
-
-  public void Ajax_Func2(int n) {
-
-    JsonConfig jsonConfig = new JsonConfig();
-    jsonConfig.registerJsonValueProcessor(this.getClass(), new JsonValueProcessor() {
-
-      public Object processArrayValue(Object paramObject, JsonConfig paramJsonConfig) {
-        // TODO Auto-generated method stub
-        return null;
-      }
-
-      public Object processObjectValue(String paramString, Object paramObject, JsonConfig paramJsonConfig) {
-        // TODO Auto-generated method stub
-        return null;
-      }
-    });
-
   }
 
   public void downloadExcel() {

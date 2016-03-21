@@ -32,11 +32,6 @@ public class BasicServiceImp implements IBasicService {
     this.basicDao = basicDao;
   }
 
-  public List findByXmlSqlMapper(String xml) {
-
-    return null;
-  }
-
 
   /**
    * Excel 2007 下载
@@ -66,7 +61,7 @@ public class BasicServiceImp implements IBasicService {
       response.setCharacterEncoding("UTF-8");
       response.setContentType("application/vnd.ms-excel");
       response.setHeader("Content-Disposition", "attachment; filename=" + fileName +".xlsx");
-      Workbook workbook = basicDao.createExcelBySQl(sql);
+      Workbook workbook = basicDao.createExcelBySQl(sql,params);
       os = response.getOutputStream();
       workbook.write(os);
     } catch (FileNotFoundException e) {
@@ -81,9 +76,19 @@ public class BasicServiceImp implements IBasicService {
         } catch (IOException e) {
           e.printStackTrace();
         }
-      }
+   }
     }
   }
+  
+
+  /**
+   * 获取用户菜单
+   */
+  public List findMenuByUser(String xml) {
+    
+    return basicDao.findUserMenus("");
+  }
+
   
   
 }

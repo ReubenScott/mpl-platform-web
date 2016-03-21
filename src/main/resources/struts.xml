@@ -24,7 +24,7 @@
   <constant name="struts.i18n.encoding" value="UTF-8" />
   <constant name="struts.ui.theme" value="simple" />
   <constant name="struts.multipart.maxSize" value="1048576100" />
-  <constant name="struts.action.extension" value="do,action,htm" />
+  <constant name="struts.action.extension" value="htm" />
   <constant name="struts.objectFactory" value="spring" />
   <!-- product  end   -->
 

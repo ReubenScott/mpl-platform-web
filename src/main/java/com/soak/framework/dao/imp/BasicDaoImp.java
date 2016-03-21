@@ -21,38 +21,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.soak.framework.dao.IBasicDao;
-import com.soak.framework.jdbc.JdbcTemplate;
-import com.soak.framework.xml.XmlSqlMapper;
 
 /**
  * 
  */
-public class BasicDaoImp implements IBasicDao {
+public class BasicDaoImp extends BaseDaoImp implements IBasicDao {
 
   protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-  private JdbcTemplate jdbcTemplate;
+//  private JdbcTemplate jdbcTemplate;
 
-  public JdbcTemplate getJdbcTemplate() {
-    return jdbcTemplate;
-  }
-
-  public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-    this.jdbcTemplate = jdbcTemplate;
-  }
-
-  public <T> List<T> getBean(String name) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  public List findByXmlSqlMapper(String sqlName, String value) {
-
-    String sql = XmlSqlMapper.getInstance().getPreparedSQL(sqlName);
-    sql = sql.replaceAll("@date", value);
-    logger.debug(sql);
-    return jdbcTemplate.queryForList(sql);
-  }
 
   /**
    * 查询到处数据为Excel 2007文件
@@ -158,6 +136,15 @@ public class BasicDaoImp implements IBasicDao {
       }
     }
     return workbook;
+  }
+  
+  /**
+   * 查询用户菜单
+   */
+  public List findUserMenus(String uid){
+    String sql = "SELECT * FROM sys_menu ";
+    
+    return jdbcTemplate.queryForList(sql);
   }
 
   /**

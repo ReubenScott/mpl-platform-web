@@ -144,7 +144,10 @@
       <artifactId>struts2-spring-plugin</artifactId>
     </dependency>
 
-
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>jfreechart</groupId>

@@ -24,7 +24,7 @@ import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import com.soak.framework.cache.ICacheSupport;
 
-public abstract class BaseAction extends ActionSupport implements ICacheSupport, ModelDriven, Preparable {
+public abstract class BaseAction extends ActionSupport { // implements ICacheSupport, ModelDriven, Preparable 
 
   private static final long serialVersionUID = 4082024518803969313L;
 
@@ -69,20 +69,18 @@ public abstract class BaseAction extends ActionSupport implements ICacheSupport,
     return (T) applicationContext.getBean(beanName);
   }
 
-  protected void ajaxResponse(String outStr) {
+  
+  /**
+   * ajax 响应
+   * @param contents
+   */
+  protected void ajaxResponse(String contents) {
     try {
       HttpServletResponse response = ServletActionContext.getResponse();
       response.setHeader("Cache-Control", "no-cache");
       response.setHeader("Content-Type", "text/json;charset=UTF-8");
       response.setContentType("text/json;charset=UTF-8");
-
-      /*
-       * JsonConfig jsonConfig = new JsonConfig(); jsonConfig.registerJsonValueProcessor(Stock.class, new JsonValueProcessor() { public Object processArrayValue(Object value,
-       * JsonConfig jsonConfig) { if (value == null) { // return new Date(); } return value; }
-       * 
-       * public Object processObjectValue(String key, Object value, JsonConfig jsonConfig) { return value + "##修改过的日期"; } });
-       */
-      response.getOutputStream().write(outStr.getBytes("UTF-8"));
+      response.getOutputStream().write(contents.getBytes("UTF-8"));
     } catch (UnsupportedEncodingException e) {
       e.printStackTrace();
     } catch (IOException e) {
@@ -90,7 +88,7 @@ public abstract class BaseAction extends ActionSupport implements ICacheSupport,
     }
 
   }
-
+  
   /**
    * 以html文本形式 返回响应
    * 
