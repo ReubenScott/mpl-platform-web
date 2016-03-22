@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.poi.ss.usermodel.Workbook;
 
+
 public interface IBasicService {
 
   // 查询用户菜单
@@ -11,6 +12,6 @@ public interface IBasicService {
   
   
   // Excel 下载
-  public void downloadExcelBySQL(String fileName , String sql, Object... params);
+  public Workbook createExcelBySQL(String sql, Object... params);
   
 }

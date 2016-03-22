@@ -11,6 +11,5 @@ public interface IBasicDao extends IBaseDao {
   
   public List findUserMenus(String uid);
 
-  public Workbook createExcelBySQl(String sql, Object... params);
 
 }

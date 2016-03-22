@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS f_attendance_record (
     deptname            VARCHAR(10)                     ,
     recordTime          DATETIME                     ,
     location            VARCHAR(10)            ,
-    STATUS              int(1)      COMMENT '0:通过,1:不通过;'   ,
+    STATUS              TINYINT(1)      COMMENT '0:通过,1:不通过;'   ,
     remark              VARCHAR(20)                     ,
     SRC_DT              VARCHAR(10)                     ,
     ETL_DT              VARCHAR(10)                     ,
