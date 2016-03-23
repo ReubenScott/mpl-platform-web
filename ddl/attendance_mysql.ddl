@@ -58,3 +58,19 @@ DELIMITER ;
 /*  ----------------------  end   ----------------------------- */
 
 
+-- 上班 迟到 
+SELECT EMPNAME 
+      , LEFT(recordTime,10)   AS 日期
+      , MIN(SUBSTR(recordTime,12))  AS 上班时间
+      , MAX(SUBSTR(recordTime,12))  AS 下班时间
+      , TIMESTAMPDIFF(MINUTE  , MIN(recordTime) , MAX(recordTime))/60  AS 小时数
+      , COUNT(1) AS 打卡次数
+    FROM attendance_record 
+  WHERE LEFT(recordTime,10) BETWEEN '2016-02-01' AND '2016-02-29'   
+  GROUP BY EMPNAME , LEFT(recordTime,10)
+    HAVING MIN(SUBSTR(recordTime,12)) BETWEEN  '07:31:00' AND '12:00:00'
+    -- or Max(SUBSTR(recordTime,12)) < '17:00:00'
+   ORDER BY 1 ASC ;
+   
+   
+   

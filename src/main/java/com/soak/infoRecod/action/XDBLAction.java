@@ -30,24 +30,27 @@ public class XDBLAction extends BaseAction {
   
 
   public void xdbl() {
+    basicService.createExcelBySQL("SELECT COUNT(1) FROM edw.ykjd_ln_duebill ");
+    
 
-    XDBLJob job = new XDBLJob();
+   /* XDBLJob job = new XDBLJob();
     Thread t = new Thread(job);
     t.setName("XDBL");
     ThreadManager threadManager = ThreadManager.getInstance();
     threadManager.push(t);
-    t.start();
+    t.start();*/
 
     // 创建JSONObject对象
     JSONObject json = new JSONObject();
     // 向json中添加数据
     json.put("status", "start");
-    json.put("thread_id", t.getId());
+//    json.put("thread_id", t.getId());
 
     super.ajaxResponse(json.toString());
   }
 
   public void xdbl2() {
+    
 
     Thread t = new Thread() {
       

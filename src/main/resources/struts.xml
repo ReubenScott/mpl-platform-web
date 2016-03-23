@@ -31,8 +31,8 @@
 
   <package name="soak-default" extends="struts-default">
     <result-types>
-      <result-type name="captcha" class="org.soak.commons.result.CaptchaResult" />
-      <result-type name="jfreechart" class="org.soak.commons.result.ChartResult"></result-type>
+      <result-type name="captcha" class="com.soak.framework.result.CaptchaResult" />
+      <result-type name="jfreechart" class="com.soak.framework.result.ChartResult"></result-type>
     </result-types>
     <interceptors>
       <interceptor-stack name="soakDefaultStack">

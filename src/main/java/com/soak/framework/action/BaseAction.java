@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
@@ -23,9 +24,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.ModelDriven;
-import com.opensymphony.xwork2.Preparable;
-import com.soak.framework.cache.ICacheSupport;
 import com.soak.framework.util.BrowseTool;
 
 public abstract class BaseAction extends ActionSupport { // implements ICacheSupport, ModelDriven, Preparable
@@ -267,6 +265,47 @@ public abstract class BaseAction extends ActionSupport { // implements ICacheSup
           e.printStackTrace();
         }
       }
+    }
+  }
+
+  public void sendRedirect(HttpServletResponse response, String url) {
+    try {
+      response.sendRedirect(url);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void renderText(HttpServletResponse response, String encoding, String content) {
+    renderContent(response, "text/plain", encoding, content);
+  }
+
+  public void renderHtml(HttpServletResponse response, String encoding, String content) {
+    renderContent(response, "text/html", encoding, content);
+  }
+
+  public void renderXML(HttpServletResponse response, String encoding, String content) {
+    renderContent(response, "text/xml", encoding, content);
+  }
+
+  public void renderJson(HttpServletResponse response, String encoding, String content) {
+    renderContent(response, "application/json", encoding, content);
+  }
+
+  public void renderContent(HttpServletResponse response, String contentType, String encoding, String content) {
+    PrintWriter out = null;
+    try {
+      response.setContentType(contentType);
+      response.setCharacterEncoding(encoding);
+      out = response.getWriter();
+      out.print(content);
+      out.flush();
+    } catch (IOException e) {
+      logger.error(e.getMessage());
+      throw new RuntimeException();
+    } finally {
+      if (out != null)
+        out.close();
     }
   }
 
