@@ -14,9 +14,9 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.soak.common.ftp.FtpZilla;
 import com.soak.common.io.FileUtil;
-import com.soak.framework.jdbc.JdbcTemplate;
+import com.soak.common.terminal.FtpZilla;
+import com.soak.framework.jdbc.JdbcHandler;
 
 /**
  * <p>
@@ -37,7 +37,7 @@ public class XDBLJob implements Runnable {
     // 2. zip 解压
     // FileUtil.unZip("D:/home/" + today + ".zip", "D:\\home\\");
     // 3. 文件入库
-    JdbcTemplate jdbc = JdbcTemplate.getInstance();
+    JdbcHandler jdbc = JdbcHandler.getInstance();
     File dir = new File("D:/home/" + today);
 
     //    for (File delfile : dir.listFiles()) {

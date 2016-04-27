@@ -3,6 +3,48 @@
 <sql>
 
   <sql-info>
+    <sql-name>考勤</sql-name>
+    <sql-value><![CDATA[
+        SELECT  STATDATE AS 日期 
+                ,T1.deptname AS 部门
+                ,T1.empno  AS 工号
+                ,T1.empname AS 姓名
+                ,CASE WHEN ATNDSTATUS = '00' THEN '正常'
+                     WHEN ATNDSTATUS = '01' THEN '出差'
+                     WHEN ATNDSTATUS = '10' THEN '平时加班'
+                     WHEN ATNDSTATUS = '11' THEN '周末加班'
+                     WHEN ATNDSTATUS = '12' THEN '法定加班'
+                     WHEN ATNDSTATUS = '21' THEN '迟到'
+                     WHEN ATNDSTATUS = '22' THEN '漏打卡'
+                     WHEN ATNDSTATUS = '20' THEN '请假'
+                     WHEN ATNDSTATUS = '30' THEN '旷工'
+                  END         AS 类型
+                ,SUBSTR(T2.firstPunchtime,12) as  上班打卡时间
+                ,SUBSTR(T2.lastPunchtime,12 ) as  下班打卡时间
+                ,T2.cishu AS 打卡次数
+                ,BUSINESS_TRIPHOURS AS  出差
+                ,ORDINARY_OVERTIME AS  平时加班
+                ,HOLIDAY_OVERTIME AS 法定加班
+                ,WEEKEND_OVERTIME AS 周末加班
+                ,ABSENCE_HOURS AS 请假时数
+                ,CASE WHEN T2.cishu > 0 THEN 
+                   ORDINARY_OVERTIME + HOLIDAY_OVERTIME + WEEKEND_OVERTIME + 8 - ABSENCE_HOURS 
+                  ELSE  0  
+                 END         AS 标准出勤
+        FROM S_ATND_SUMMARY_SHEET T1  
+          LEFT JOIN ( 
+            SELECT LEFT(recordTime,10) AS dt  , empno 
+                 , MIN(recordTime) AS firstPunchtime
+                 , MAX(recordTime) AS lastPunchtime
+                 , COUNT(1) AS cishu 
+              FROM f_atnd_punch_record GROUP BY  LEFT(recordTime,10) , empno 
+          ) T2 ON T1.empno = T2.empno  AND T1.STATDATE = T2.dt  
+       --   WHERE T1.EMPNO = '@empno'
+     ]]>
+    </sql-value>
+  </sql-info>
+
+  <sql-info>
     <sql-name>每旬理财</sql-name>
     <sql-value><![CDATA[
       SELECT CUSTTP  as 客户类型
@@ -150,14 +192,6 @@
                   END) >0 
        ORDER BY 3 asc        
         ]]>
-    </sql-value>
-  </sql-info>
-
-  <sql-info>
-    <sql-name>出货</sql-name>
-    <sql-value><![CDATA[
-
-     ]]>
     </sql-value>
   </sql-info>
 

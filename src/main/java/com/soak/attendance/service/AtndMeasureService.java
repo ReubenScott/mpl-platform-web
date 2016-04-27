@@ -1,0 +1,1 @@
+package com.soak.attendance.service;import java.util.List;import com.soak.attendance.model.ScheduleType;public interface AtndMeasureService {  }

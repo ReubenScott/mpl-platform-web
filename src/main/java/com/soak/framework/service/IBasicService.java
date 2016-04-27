@@ -12,6 +12,6 @@ public interface IBasicService {
   
   
   // Excel 下载
-  public Workbook createExcelBySQL(String sql, Object... params);
+  public Workbook createExcelBySQL(String title ,String sql, Object... params);
   
 }

@@ -28,9 +28,6 @@ import com.soak.framework.dao.IBasicDao;
 public class BasicDaoImp extends BaseDaoImp implements IBasicDao {
 
   protected final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-//  private JdbcTemplate jdbcTemplate;
-
   
   /**
    * 查询用户菜单
@@ -38,7 +35,7 @@ public class BasicDaoImp extends BaseDaoImp implements IBasicDao {
   public List findUserMenus(String uid){
     String sql = "SELECT * FROM sys_menu ";
     
-    return jdbcTemplate.queryForList(sql);
+    return jdbcHandler.queryForList(sql);
   }
 
   /**
@@ -56,7 +53,7 @@ public class BasicDaoImp extends BaseDaoImp implements IBasicDao {
     sqlList.add(module_id);
     sqlList.add(staff_id);
     sqlList.add(role_id);
-    // HashMap data = jdbcTemplate.qryOneData(sql, sqlList);
+    // HashMap data = jdbcHandler.qryOneData(sql, sqlList);
     // int cnt = Integer.parseInt(data.get("cnt").toString());
     return false;
   }

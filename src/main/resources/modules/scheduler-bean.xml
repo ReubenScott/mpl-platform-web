@@ -4,13 +4,17 @@
 <beans>
 
   <!-- 工作的bean -->
-  <bean id="testService" class="com.soak.framework.util.WebUtils" />
+  <bean id="cronJob" class="com.soak.framework.jobs.CronJob" >
+    <property name="jdbcHandler">
+      <ref bean="jdbcHandler" />
+    </property>
+   </bean> 
 
   <!-- job的配置开始 -->
   <bean id="jd" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
     <!-- 要执行的bean名称 -->  
     <property name="targetObject">
-      <ref bean="testService" />
+      <ref bean="cronJob" />
     </property>
     <!-- 要执行的方法名称 -->  
     <property name="targetMethod">
@@ -22,16 +26,16 @@
   </bean>
   <!-- job的配置结束 -->
 
-  <!-- 调度的配置开始 -->
+  <!-- 触发器   开始 -->
   <bean id="mytrig" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail">
       <ref bean="jd" />
     </property>
     <property name="cronExpression">
-      <value>*/10 * * * * ?</value>
+      <value>0 0/1 * * * ?</value> 
     </property>
   </bean>
-  <!-- 调度的配置结束 -->
+  <!-- 触发器  结束 -->
 
 
   <!-- 启动触发器的配置开始 -->

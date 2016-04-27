@@ -8,6 +8,7 @@ import com.soak.framework.action.BaseAction;
 import com.soak.framework.service.IBasicService;
 import com.soak.framework.thread.ThreadManager;
 import com.soak.infoRecod.job.XDBLJob;
+import com.soak.infoRecod.service.InfoRecordService;
 
 public class XDBLAction extends BaseAction {
 
@@ -28,39 +29,47 @@ public class XDBLAction extends BaseAction {
     this.basicService = basicService;
   }
   
+  
+  public void xdbl(){
 
-  public void xdbl() {
-    basicService.createExcelBySQL("SELECT COUNT(1) FROM edw.ykjd_ln_duebill ");
+    InfoRecordService infoService = this.getBean("infoService");
+    infoService.hello();
+  }
+
+  public void xdbl2() {
+    basicService.createExcelBySQL("1","SELECT COUNT(1) FROM edw.ykjd_ln_duebill ");
+
     
 
-   /* XDBLJob job = new XDBLJob();
+//    XDBLJob job = new XDBLJob();
+    // 通过ProxyFactoryBean获取IComputer接口实现类的实例
+    XDBLJob job = this.getBean("job");
     Thread t = new Thread(job);
     t.setName("XDBL");
     ThreadManager threadManager = ThreadManager.getInstance();
     threadManager.push(t);
-    t.start();*/
+    t.start();
 
     // 创建JSONObject对象
     JSONObject json = new JSONObject();
     // 向json中添加数据
     json.put("status", "start");
-//    json.put("thread_id", t.getId());
+    // json.put("thread_id", t.getId());
 
     super.ajaxResponse(json.toString());
   }
 
-  public void xdbl2() {
-    
+  public void xdbl23() {
 
     Thread t = new Thread() {
-      
+
       public void run() {
         while (!this.isInterrupted()) {
-            System.out.println( " thread : " +  Thread.currentThread().getId() + "    " + Thread.currentThread().getName() + " " + this.isInterrupted()  );
+          System.out.println(" thread : " + Thread.currentThread().getId() + "    " + Thread.currentThread().getName() + " " + this.isInterrupted());
         }
       }
     };
-    
+
     t.setName("XDBL");
     ThreadManager threadManager = ThreadManager.getInstance();
     threadManager.push(t);

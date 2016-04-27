@@ -4,11 +4,11 @@
 <beans>
   <description>该spring 配置文件，主要维护系统框架的bean信息</description>
 
-  <bean id="jdbcTemplate" class="com.soak.framework.jdbc.JdbcTemplate" init-method="getInstance" />
+  <bean id="jdbcHandler" class="com.soak.framework.jdbc.JdbcHandler" init-method="getInstance" />
 
   <bean id="basicDao" class="com.soak.framework.dao.imp.BasicDaoImp" lazy-init="true">
-    <property name="jdbcTemplate">
-      <ref bean="jdbcTemplate" />
+    <property name="jdbcHandler">
+      <ref bean="jdbcHandler" />
     </property>
   </bean>
 

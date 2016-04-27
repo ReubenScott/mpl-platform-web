@@ -30,8 +30,8 @@ public class BasicServiceImp implements IBasicService {
    * @param sql
    * @param params
    */
-  public Workbook createExcelBySQL(String sql, Object... params) {
-    return  basicDao.exportExcel(sql, params);
+  public Workbook createExcelBySQL(String title , String sql, Object... params) {
+    return  basicDao.exportExcel(title ,sql, params);
   }
 
   /**

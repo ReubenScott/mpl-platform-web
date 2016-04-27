@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+
+  <bean id="beforeAdvice" class="AOP.AopAdvice"></bean>
+  <!--切面类 -->
+  <bean id="busiTarget" class="AOP.BusiImpl"></bean>
+  <!--业务实现 -->
+
+  <bean id="busiAop" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <!--代理类.调用的时候则是调用这个代理类 -->
+    <property name="proxyInterfaces">
+      <!--代理接口（业务类接口）-->
+      <value>AOP.BusiInterface</value>
+    </property>
+    <property name="interceptorNames">
+      <!--  通知   -->
+      <list>
+        <value>beforeAdvisor</value>
+      </list>
+    </property>
+    <property name="target">
+      <!--业务实现类 -->
+      <ref bean="busiTarget" />
+    </property>
+  </bean>
+
+  <bean id="pointCut" class="org.springframework.aop.support.JdkRegexpMethodPointcut">
+    <!--切点-->
+    <property name="pattern" >
+        <value>.*doBusiTo</value>
+    </property>
+    
+    
+    <!--需要对那些方法进行拦截-->
+  </bean>
+
+  <bean id="beforeAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
+    <!--通知-->
+    <property name="advice">
+      <ref bean="beforeAdvice" />
+    </property>
+     <property name="pointcut">
+      <ref bean="pointCut" />
+    </property>
+    
+  </bean>
+
+</beans>

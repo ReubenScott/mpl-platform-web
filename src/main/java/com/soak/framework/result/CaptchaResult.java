@@ -3,6 +3,8 @@ package com.soak.framework.result;
 import java.util.Random;
 import java.awt.image.BufferedImage;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.io.OutputStream;
 import javax.imageio.ImageIO;
@@ -12,9 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts2.dispatcher.StrutsResultSupport;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
+//import com.sun.image.codec.jpeg.JPEGCodec;
+//import com.sun.image.codec.jpeg.JPEGEncodeParam;
+//import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 /**
  * 图片验证码
@@ -121,21 +123,21 @@ public class CaptchaResult extends StrutsResultSupport {
     // response.addCookie(newCookie);
 
     BufferedImage bimg = this.getCaptchaImage(randomWord, imageWidth, imageHeight);
-
-    // 输入图片方式一 encode:
-    OutputStream os = response.getOutputStream();
-    JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(os);
-    JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(bimg);
-    param.setQuality(1.0f, false);
-    encoder.setJPEGEncodeParam(param);
-    encoder.encode(bimg);
-
-    bimg.flush();
-    os.flush();
-    os.close();
-
     // 输入图片方式二
-    // ImageIO.write(bimg, "jpeg", response.getOutputStream());
+     ImageIO.write(bimg, "jpeg", response.getOutputStream());
+    
+
+//    // 输入图片方式一 encode:
+//    OutputStream os = response.getOutputStream();
+//    JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(os);
+//    JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(bimg);
+//    param.setQuality(1.0f, false);
+//    encoder.setJPEGEncodeParam(param);
+//    encoder.encode(bimg);
+
+//    bimg.flush();
+//    os.flush();
+//    os.close();
 
   }
 

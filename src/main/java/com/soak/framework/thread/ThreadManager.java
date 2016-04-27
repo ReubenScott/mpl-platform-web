@@ -7,7 +7,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.soak.framework.jdbc.CommonDataSource;
 
 /**
  * <p>
@@ -35,7 +34,7 @@ public class ThreadManager {
 
   public static ThreadManager getInstance() {
     if (instance == null) {
-      synchronized (CommonDataSource.class) {
+      synchronized (ThreadManager.class) {
         if (instance == null) {
           instance = new ThreadManager();
         }

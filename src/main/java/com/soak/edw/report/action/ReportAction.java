@@ -78,7 +78,7 @@ public class ReportAction extends BaseAction {
     sql = sql.replaceAll("@startDate", "2015-11-21");
     sql = sql.replaceAll("@endDate", "2015-11-30");
     
-    this.downloadExcel(fileName, reportService.createExcelBySQL(sql));
+    this.downloadExcel(fileName, reportService.createExcelBySQL("1", sql));
     
   }
 

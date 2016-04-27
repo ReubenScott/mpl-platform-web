@@ -5,4 +5,7 @@
   <bean id="reportService" class="com.soak.edw.report.service.imp.ReportServiceImp" parent="basicService"  lazy-init="true" />
   
   
+  <bean id="infoService" class="com.soak.infoRecod.service.imp.InfoServiceImp" lazy-init="true" />
+  
+  
 </beans>

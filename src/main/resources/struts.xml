@@ -25,8 +25,11 @@
   <constant name="struts.ui.theme" value="simple" />
   <constant name="struts.multipart.maxSize" value="1048576100" />
   <constant name="struts.action.extension" value="htm" />
-  <constant name="struts.objectFactory" value="spring" />
   <!-- product  end   -->
+
+  <!--
+  <constant name="struts.objectFactory" value="spring" />
+  -->
 
 
   <package name="soak-default" extends="struts-default">
@@ -51,31 +54,18 @@
     </global-exception-mappings>
   </package>
 
-  <!-- 
-  <package name="myself" namespace="/" extends="struts-default">
-    <interceptors>
-      <interceptor name="loginCheck" class="com.temobi.base.interceptor.LoginCheckItcp"></interceptor>
-      <interceptor name="accessCheck" class="com.temobi.user.interceptor.ModuleAccessItcp"></interceptor>
-      <interceptor name="cacheCheck" class="com.temobi.base.interceptor.AutoCacheItcp"></interceptor>
-      <interceptor-stack name="myDefault">
-        <interceptor-ref name="loginCheck"></interceptor-ref>
-        <interceptor-ref name="accessCheck"></interceptor-ref>
-        <interceptor-ref name="defaultStack"></interceptor-ref>
-        <interceptor-ref name="cacheCheck"></interceptor-ref>
-      </interceptor-stack>
-    </interceptors>
-    <default-interceptor-ref name="myDefault"></default-interceptor-ref>
-    <global-results>
-      <result name="notlogin" type="redirect">/index.jsp</result>
-      <result name="error" type="dispatcher">/404.html</result>
-      <result name="notpermit" type="dispatcher">/403.html</result>
-    </global-results>
-  </package>
-   -->
+  <!--
+    <package name="myself" namespace="/" extends="struts-default"> <interceptors> <interceptor name="loginCheck" class="com.temobi.base.interceptor.LoginCheckItcp"></interceptor>
+    <interceptor name="accessCheck" class="com.temobi.user.interceptor.ModuleAccessItcp"></interceptor> <interceptor name="cacheCheck"
+    class="com.temobi.base.interceptor.AutoCacheItcp"></interceptor> <interceptor-stack name="myDefault"> <interceptor-ref name="loginCheck"></interceptor-ref> <interceptor-ref
+    name="accessCheck"></interceptor-ref> <interceptor-ref name="defaultStack"></interceptor-ref> <interceptor-ref name="cacheCheck"></interceptor-ref> </interceptor-stack>
+    </interceptors> <default-interceptor-ref name="myDefault"></default-interceptor-ref> <global-results> <result name="notlogin" type="redirect">/index.jsp</result> <result
+    name="error" type="dispatcher">/404.html</result> <result name="notpermit" type="dispatcher">/403.html</result> </global-results> </package>
+  -->
 
 
   <include file="modules/struts-report.xml"></include>
   <include file="modules/struts-self-service.xml"></include>
-  
-  
+
+
 </struts>
