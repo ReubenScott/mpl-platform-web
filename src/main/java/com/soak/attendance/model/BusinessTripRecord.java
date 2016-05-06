@@ -22,13 +22,11 @@ public class BusinessTripRecord {
   @Column(name = "empname")
   private String empname;// '员工姓名',
 
-  @Column(name = "deptno")
   private String deptno; // 部门编号
 
   @Column(name = "deptname")
   private String deptname; // 所属部门,
 
-  @Column(name = "scheduleType")
   private String scheduleType; // 排班类型
 
   @Column(name = "starttime")
@@ -38,7 +36,7 @@ public class BusinessTripRecord {
   private Date endTime; // COMMENT '结束时间' ,
 
   @Column(name = "total_hours")
-  private float totalHours; // COMMENT '小时数' ,
+  private Float totalHours; // COMMENT '小时数' ,
 
   private String remark;
 
@@ -111,11 +109,11 @@ public class BusinessTripRecord {
     this.endTime = endTime;
   }
 
-  public float getTotalHours() {
+  public Float getTotalHours() {
     return totalHours;
   }
 
-  public void setTotalHours(float totalHours) {
+  public void setTotalHours(Float totalHours) {
     this.totalHours = totalHours;
   }
 

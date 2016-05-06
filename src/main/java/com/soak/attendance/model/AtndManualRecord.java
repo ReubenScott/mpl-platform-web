@@ -8,16 +8,23 @@ import com.soak.framework.orm.Table;
 
 /***
  * 
- * 加班申请单
+ * 加班、外出、请假 手工记录 表
+ * 
+ * 1:加班,2:出差,3:请假;
  * 
  * @author reuben
  * 
  */
-@Table(name = "atnd_overtime_record", pk = "uid")
-public class OvertimeWorkRecord {
-  
+@Table(name = "atnd_manual_record", pk = "uid")
+public class AtndManualRecord {
+
   @Column(name = "uid")
   private String uid;
+
+  private String deptno; // 部门编号
+
+  @Column(name = "deptname")
+  private String deptname; // 所属部门,
 
   @Column(name = "empno")
   private String empno; // 员工号
@@ -25,10 +32,8 @@ public class OvertimeWorkRecord {
   @Column(name = "empname")
   private String empname;// '员工姓名',
 
-  private String deptno; // 部门编号
-
-  @Column(name = "deptname")
-  private String deptname; // 所属部门,
+  @Column(name = "booktype")
+  private Integer bookType; // '1:加班,2:出差,3:请假;' ,
 
   @Column(name = "scheduleType")
   private String scheduleType; // 排班类型
@@ -39,11 +44,11 @@ public class OvertimeWorkRecord {
   @Column(name = "endtime")
   private Date endTime; // COMMENT '结束时间' ,
 
-  @Column(name = "total_hours")
+  @Column(name = "totalhours")
   private Float totalHours; // COMMENT '小时数' ,
-  
-  @Column(name = "isexempt") 
-  private Boolean isExempt;  // 是不是 免检
+
+  @Column(name = "isexempt")
+  private Boolean isExempt; // 是不是 免检
 
   private String remark;
 
@@ -51,13 +56,12 @@ public class OvertimeWorkRecord {
   private Date srcDt;
 
   private Date etl_dt;
-  
-  
 
   /***
-   *  通过加班单 获取 某天 排班类型
-   *  
-   *  @param  overtimeRecords   某一员工的加班单
+   * 通过加班单 获取 某天 排班类型
+   * 
+   * @param overtimeRecords
+   *          某一员工的加班单
    */
   public ScheduleTypeDict getCurrentScheduleType() {
     for (ScheduleTypeDict schedule : ScheduleTypeDict.values()) {
@@ -67,7 +71,6 @@ public class OvertimeWorkRecord {
     }
     return null;
   }
-  
 
   public String getUid() {
     return uid;
@@ -93,14 +96,6 @@ public class OvertimeWorkRecord {
     this.empname = empname;
   }
 
-  public String getDeptno() {
-    return deptno;
-  }
-
-  public void setDeptno(String deptno) {
-    this.deptno = deptno;
-  }
-
   public String getDeptname() {
     return deptname;
   }
@@ -109,12 +104,12 @@ public class OvertimeWorkRecord {
     this.deptname = deptname;
   }
 
-  public String getScheduleType() {
-    return scheduleType;
+  public Integer getBookType() {
+    return bookType;
   }
 
-  public void setScheduleType(String scheduleType) {
-    this.scheduleType = scheduleType;
+  public void setBookType(Integer bookType) {
+    this.bookType = bookType;
   }
 
   public Date getStartTime() {
@@ -135,19 +130,6 @@ public class OvertimeWorkRecord {
 
   public Float getTotalHours() {
     return totalHours;
-  }
-
-  public void setTotalHours(Float totalHours) {
-    this.totalHours = totalHours;
-  }
-  
-
-  public Boolean getIsExempt() {
-    return isExempt;
-  }
-
-  public void setIsExempt(Boolean isExempt) {
-    this.isExempt = isExempt;
   }
 
   public String getRemark() {
@@ -172,6 +154,34 @@ public class OvertimeWorkRecord {
 
   public void setEtl_dt(Date etlDt) {
     etl_dt = etlDt;
+  }
+
+  public String getDeptno() {
+    return deptno;
+  }
+
+  public void setDeptno(String deptno) {
+    this.deptno = deptno;
+  }
+
+  public String getScheduleType() {
+    return scheduleType;
+  }
+
+  public void setScheduleType(String scheduleType) {
+    this.scheduleType = scheduleType;
+  }
+
+  public void setTotalHours(Float totalHours) {
+    this.totalHours = totalHours;
+  }
+
+  public Boolean getIsExempt() {
+    return isExempt;
+  }
+
+  public void setIsExempt(Boolean isExempt) {
+    this.isExempt = isExempt;
   }
 
 }

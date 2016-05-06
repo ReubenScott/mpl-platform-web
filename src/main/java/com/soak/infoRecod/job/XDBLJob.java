@@ -29,7 +29,7 @@ public class XDBLJob implements Runnable {
 
   public void run() {
     // 1. get 文件
-    FtpZilla fa = new FtpZilla("32.137.32.41", 21, "sjxf", "sjxf");
+//    FtpZilla fa = new FtpZilla("32.137.32.41", 21, "sjxf", "sjxf");
     String today = new SimpleDateFormat("yyyyMMdd").format(new Date()); // new Date()为获取当前系统时间
     String remoteFilePath = "/home/sjxf/data/data_ykdt/" + today + ".zip";
     // fa.downFile("D:/home", filePath);

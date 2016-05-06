@@ -40,9 +40,11 @@ public class AtndSummarySheet {
 
   @Column(name = "holiday_overtime")
   private Float holidayOvertime; // float(4,2)法定加班
+  
+  private Boolean isLate ; // 是否迟到 
 
   @Column(name = "meal_subsidy")
-  private boolean mealSubsidy; // 有无餐补
+  private Boolean mealSubsidy; // 有无餐补
 
   @Column(name = "absence_hours")
   private Float absence; // float(4,2)请假时数
@@ -170,13 +172,6 @@ public class AtndSummarySheet {
     this.holidayOvertime = holidayOvertime;
   }
 
-  public boolean getMealSubsidy() {
-    return mealSubsidy;
-  }
-
-  public void setMealSubsidy(boolean mealSubsidy) {
-    this.mealSubsidy = mealSubsidy;
-  }
 
   public Float getAbsence() {
     return absence;
@@ -226,6 +221,23 @@ public class AtndSummarySheet {
     this.manualOvertime = manualOvertime;
   }
 
+  public Boolean getIsLate() {
+    return isLate;
+  }
+
+  public void setIsLate(Boolean isLate) {
+    this.isLate = isLate;
+  }
+
+  public Boolean getMealSubsidy() {
+    return mealSubsidy;
+  }
+
+  public void setMealSubsidy(Boolean mealSubsidy) {
+    this.mealSubsidy = mealSubsidy;
+  }
+
+  
   // get set **
 
 }

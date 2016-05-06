@@ -66,6 +66,30 @@
        ]]>
     </sql-value>
   </sql-info>
+  
+  <sql-info>
+    <sql-name>卡存款月积数</sql-name>
+    <sql-value><![CDATA[
+        SELECT T1.STATDATE     as  STATDATE
+             ,T1.CLTNBR       as  CLTNBR
+             ,min(T1.CLTNM)      as  CLTNM
+             ,max(T2.SA_CERT_ID)   as  SA_CERT_ID
+             ,sum(T1.MTHAUB)  as  MTHAUB
+             ,max(T1.BRNNBR)  as  BRNNBR
+      FROM EDW.S_DEP_SA_ACCOUNT_D           T1
+        INNER JOIN EDW.F_DEP_SAACNACN          T2
+            ON T1.ACCTNBR = T2.SA_ACCT_NO
+             AND T2.SA_CERT_ID <>''
+      WHERE T1.STATDATE = '@statdate'
+         AND T1.CCYNBR='CNY'
+         and left(T1.CLTNBR,1) = '1'
+         AND T1.CARDNBR <> ''     
+         AND left(T1.ITEMCODE,4) = '2005' 
+      group by T1.STATDATE,T1.CLTNBR
+         having count(distinct T1.CLTNM||T2.SA_CERT_ID) <= 5 
+       ]]>
+    </sql-value>
+  </sql-info>
 
   <sql-info>
     <sql-name>高管账户余额</sql-name>

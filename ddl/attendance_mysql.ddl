@@ -84,9 +84,33 @@ CREATE TABLE IF NOT EXISTS F_ATND_PUNCH_record (
     ETL_DT              VARCHAR(10)                     ,
     PRIMARY KEY (uid) 
  ) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT '考勤打卡记录' ;    
-                                                
+       
+ 
 /*
-   加班单
+   加班 、外出、请假   手工记录表
+*/
+DROP table if Exists atnd_manual_record ;
+create table atnd_manual_record (
+    uid              VARCHAR(36)            ,   
+    DEPTNAME         VARCHAR(20)  COMMENT '所属部门'   ,    
+    EMPNO            VARCHAR(20)  COMMENT '员工号'     ,
+    EMPNAME          VARCHAR(20)  COMMENT '员工姓名'   ,
+    bookType         SMALLINT(1)  COMMENT '1:加班,2:出差,3:请假;' ,
+    ScheduleType     VARCHAR(6)   COMMENT '排班类型 '  ,    
+    vacationType     VARCHAR(6)   COMMENT '休假类型 '  ,  
+    totalhours       FLOAT(4,2)   COMMENT '小时数'    ,
+    STARTTIME        DATETIME     COMMENT '开始时间'  ,
+    ENDTIME          DATETIME     COMMENT '结束时间'  ,
+    isExempt         TINYINT(1)   COMMENT '是否  免检'  ,
+    remark           VARCHAR(100)                     ,
+    SRC_DT           DATE         COMMENT '统计日期'  ,
+    ETL_DT           DATE         COMMENT '系统处理日期'  ,
+    PRIMARY KEY (uid) 
+ ) ENGINE=INNODB  DEFAULT CHARSET=UTF8 COMMENT '加班 、外出、请假申请单'  ;    
+    
+ 
+/*
+   加班单 
 */
 create table atnd_overtime_record (
     uid              VARCHAR(36)            ,   
@@ -101,8 +125,8 @@ create table atnd_overtime_record (
     SRC_DT           DATE                     ,
     ETL_DT           DATE                    ,
     PRIMARY KEY (uid) 
- ) ENGINE=INNODB  DEFAULT CHARSET=UTF8 COMMENT '加班单'  ;    
-
+ ) ENGINE=INNODB  DEFAULT CHARSET=UTF8 COMMENT '加班单'  ;   
+ 
 
 /*
     请假单  
