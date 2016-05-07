@@ -214,8 +214,9 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
    */
   private float calculateWorkdayOvertimeHours(ScheduleTypeDict scheduleType , Date startPunchtime, Date endPunchtime) {
     float totalHoursWorked = 0;
-    Date scheduleStart = DateUtil.setTime(startPunchtime, scheduleType.getStartTime());
-    Date scheduleEnd = DateUtil.setTime(endPunchtime, scheduleType.getEndTime());
+    Date scheduleStart = scheduleType.getStartTime(startPunchtime);
+    Date scheduleEnd = scheduleType.getEndTime(scheduleStart);
+    
     
     if (startPunchtime.getTime() <= scheduleStart.getTime()) {
       if (endPunchtime.getTime() <= scheduleStart.getTime()) {  // 例如:  4：00  ~ 7:30 
@@ -254,14 +255,22 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
       Date eachDate = overtime.getSrcDt() ;
       String empno = overtime.getEmpno();
       
+      Date scheduleEndTime = scheduleType.getEndTime(eachDate);
+
       // 取加班单 开始时间 附近的 打卡时间 
       Date startPunchtime =  DateUtil.getApproximatelyTime(startTime, punchtimes);
+      
+      // 
+      if(DateUtil.isSameDateTime(startTime, scheduleEndTime)){
+        startPunchtime = startTime ;
+      }
+      
       // 取加班单 结束时间 附近的 打卡时间 
       Date endPunchtime =  DateUtil.getApproximatelyTime(endTime, punchtimes);
 
-      if(DateUtil.timeDiff(startPunchtime, endPunchtime) == 0){
-        startPunchtime = startTime ;
-      }
+//      if(DateUtil.timeDiff(startPunchtime, endPunchtime) == 0){
+//        startPunchtime = startTime ;
+//      }
       
       if(endPunchtime == null){
         endPunchtime = endTime ;
@@ -845,6 +854,8 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
     String empno = sheet.getEmpno() ;
     Date eachDate = sheet.getStatdate();
     
+    System.out.println(eachDate);
+    
     // 单日排班
     ScheduleTypeDict scheduleType = getOneDayScheduleType(eachDate, atndManualRecords);
     
@@ -877,6 +888,9 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
       Date manualEndTime = manualRecord.getEndTime() ;
       
       if (DateUtil.isSameDay(manualRecord.getSrcDt(), eachDate)) {
+        // 检查 工作日 休假日
+        DateTypeDict eachDayType = checkOneDayTypeByEmpId(eachDate, empno) ;
+
         // 申请单 类型
         switch (manualRecord.getBookType()) {
           case 1:  //  加班单
@@ -887,7 +901,7 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
               }
             }
             // 检查 工作日 休假日
-            switch (checkOneDayTypeByEmpId(eachDate, empno)) {
+            switch (eachDayType) {
               case ORDINARY: // 平时工作日
                 Boolean isExempt = manualRecord.getIsExempt() ;   // 中午加班  isExempt 设置为 TRUE
                 if(isExempt == null || isExempt.booleanValue() == false ){
@@ -915,7 +929,7 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
                 overTimeHours = this.calculateOvertimeHours(scheduleType,manualRecord, punchtimes);
                 overTimeHours = Math.min(manualRecord.getTotalHours(), overTimeHours);
                 overtimeHours += overTimeHours;
-                // 设置 周末加班
+                // 设置 休假日加班
                 sheet.setHolidayOvertime(overtimeHours);
                 break;
               default:
@@ -925,50 +939,70 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
             break ;
           case 2:  // 出差 
           case 3:  // 请假   
-              if(manualStartTime != null){
-                if(manualStartTime.after(scheduleStartTime)){  // 开始时间 在上班时间后
-                  //  是否迟到
-                  if(islate == null ){
-                    islate = isLate(startPunchtime , scheduleStartTime);
-                  }
-                } else if (DateUtil.isSameDateTime(manualStartTime, scheduleStartTime) && manualRecord.getTotalHours() < 8) {  // 开始时间 == 上班时间
-                   Date endTime = manualEndTime;
-                   if(scheduleType == ScheduleTypeDict.DAYSHIFT){
-                     Date restPeriodStart = scheduleType.getRestPeriodStart(eachDate);
-                     Date restPeriodEnd = scheduleType.getRestPeriodEnd(eachDate);
-                     if( DateUtil.isSameDateTime(endTime,restPeriodStart)){
-                       endTime = restPeriodEnd ;
+            // 检查 工作日 休假日
+            switch (eachDayType) {
+              case ORDINARY: // 平时工作日
+                if(manualStartTime != null){
+                  if(manualStartTime.after(scheduleStartTime)){  // 开始时间 在上班时间后
+                    //  是否迟到
+                    if(islate == null ){
+                      islate = isLate(startPunchtime , scheduleStartTime);
+                    }
+                  } else if (DateUtil.isSameDateTime(manualStartTime, scheduleStartTime) && manualRecord.getTotalHours() < 8) {  // 开始时间 == 上班时间
+                     Date endTime = manualEndTime;
+                     if(scheduleType == ScheduleTypeDict.DAYSHIFT){
+                       Date restPeriodStart = scheduleType.getRestPeriodStart(eachDate);
+                       Date restPeriodEnd = scheduleType.getRestPeriodEnd(eachDate);
+                       if( DateUtil.isSameDateTime(endTime,restPeriodStart)){
+                         endTime = restPeriodEnd ;
+                       }
                      }
-                   }
-                   //  是否迟到
-                   if(islate == null ){
-                     startPunchtime = DateUtil.getApproximatelyTime(endTime, punchtimes) ;
-                     islate = isLate(startPunchtime , endTime);
-                   }
+                     //  是否迟到
+                     if(islate == null ){
+                       startPunchtime = DateUtil.getApproximatelyTime(endTime, punchtimes) ;
+                       islate = isLate(startPunchtime , endTime);
+                     }
+                  }
                 }
-              }
 
-              
-              if(manualRecord.getBookType() == 2  ){  // 出差 
-                businessTripHours += manualRecord.getTotalHours() ;
-                sheet.setBusinessTrip(businessTripHours);
-              } else if( manualRecord.getBookType() == 3 ){ // 请假
-                offWorkHours += manualRecord.getTotalHours() ;
-                sheet.setAbsence(offWorkHours);
-              }
+                
+                if(manualRecord.getBookType() == 2  ){  // 出差 
+                  businessTripHours += manualRecord.getTotalHours() ;
+                  sheet.setBusinessTrip(businessTripHours);
+                } else if( manualRecord.getBookType() == 3 ){ // 请假
+                  offWorkHours += manualRecord.getTotalHours() ;
+                  sheet.setAbsence(offWorkHours);
+                }
 
-              // 全天出差
-              if(businessTripHours == 8 ){
-                sheet.setPunchInTime(null);
-                sheet.setPunchOutTime(null);
-                sheet.setAtndStatus(AtndStatusType.BusinessTrip.getValue());
-              }
-              //  全天请假
-              if(offWorkHours == 8 ){
-                sheet.setPunchInTime(null);
-                sheet.setPunchOutTime(null);
-                sheet.setAtndStatus(AtndStatusType.Absence.getValue());
-              }
+                // 全天出差
+                if(businessTripHours == 8 ){
+                  sheet.setPunchInTime(null);
+                  sheet.setPunchOutTime(null);
+                  sheet.setAtndStatus(AtndStatusType.BusinessTrip.getValue());
+                }
+                //  全天请假
+                if(offWorkHours == 8 ){
+                  sheet.setPunchInTime(null);
+                  sheet.setPunchOutTime(null);
+                  sheet.setAtndStatus(AtndStatusType.Absence.getValue());
+                }
+                break;
+              case WEEKEND:  // 周末出差 算加班
+                if(manualRecord.getBookType() == 2  ){  // 出差 
+                  overtimeHours += manualRecord.getTotalHours() ;
+                  // 设置 周末加班
+                  sheet.setWeekendOvertime(overtimeHours);
+                }
+                break;
+              case HOLIDAY: // 休假日出差 算加班
+                if(manualRecord.getBookType() == 2  ){  // 出差 
+                  overtimeHours += manualRecord.getTotalHours() ;
+                  // 设置 休假日加班
+                  sheet.setHolidayOvertime(overtimeHours);
+                }
+                break;
+            }
+            
             break ;
         }
         
