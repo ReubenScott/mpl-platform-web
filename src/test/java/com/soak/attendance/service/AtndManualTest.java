@@ -41,10 +41,10 @@ public class AtndManualTest {
     }
   }
 
-  @Test
+//  @Test
   public void testloadAtndManualApplicationForm() {
     String filePath = "E:/考勤/201604/4月份请假单，出差单，加班单（新）.xlsx";
-    measureService.loadOvertimeWorkApplicationForm(filePath);
+//    measureService.loadOvertimeWorkApplicationForm(filePath);
 //    bean.loadBusinessTripApplicationForm(filePath);
 //    measureService.loadOffWorkApplicationForm(filePath);
     
@@ -52,9 +52,11 @@ public class AtndManualTest {
   
   
 
-//  @Test
+  @Test
   public void testAtndmeasureTest() {
-    // 加班 请假 出差
+    measureService.atndmeasureTest( "201604");
+    
+  /*  // 加班 请假 出差
     String sql = "SELECT emp.empNO , emp.empNAME ,dept.DEPTNAME FROM f_emp_info emp LEFT JOIN f_dept_info dept ON emp.deptid = dept.uid ";
 
     sql += " where emp.empNO = 'BI00149'" ;
@@ -67,7 +69,7 @@ public class AtndManualTest {
       // 构造 XSSFWorkbook 对象，strPath 传入文件路径
 
       // break;
-    }
+    }*/
     
   }
   

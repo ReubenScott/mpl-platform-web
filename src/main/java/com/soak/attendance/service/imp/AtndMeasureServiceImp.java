@@ -147,7 +147,10 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
    * 功能： 是否迟到  允许 2分钟 误差
    * 
    */
-  public boolean isLate(Date punchtime , Date leateTime ) {
+  public Boolean isLate(Date punchtime , Date leateTime ) {
+    if(punchtime == null){
+      return null ;
+    }
     float interval = DateUtil.timeDiff(DateUtil.addMinutes(leateTime, LATELIMITRANGE), punchtime);
     if (interval > 0) {
       // 迟到
@@ -167,18 +170,19 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
    * @return
    */
   private float calculateVacationWorkedHours(ScheduleTypeDict scheduleType , Date startPunchtime, Date endPunchtime) {
-    float totalHoursWorked = 0;
+    if(startPunchtime == null || endPunchtime == null ){
+      return 0 ;
+    }
     
+    float totalHoursWorked = 0;
     if(scheduleType.getRestPeriodStart()== null || scheduleType.getRestPeriodEnd() == null ){
       totalHoursWorked = DateUtil.timeDiff(startPunchtime, endPunchtime)/ 3600 ;
       
       return totalHoursWorked ;
     }
-    Date restEnd = DateUtil.setTime(startPunchtime, scheduleType.getRestPeriodStart());
-    Date restStart = DateUtil.setTime(endPunchtime, scheduleType.getRestPeriodEnd());
     
-//    Date scheduleStart = DateUtil.setTime(startPunchtime, scheduleType.getStartTime());
-//    Date scheduleEnd = DateUtil.setTime(endPunchtime, scheduleType.getEndTime());
+    Date restEnd = scheduleType.getRestPeriodStart(startPunchtime);
+    Date restStart = scheduleType.getRestPeriodEnd(startPunchtime);
     
     if (startPunchtime.getTime() <= restEnd.getTime()) {
       if (endPunchtime.getTime() <= restEnd.getTime()) {   // 例如:  4：00  ~ 11:30 
@@ -210,6 +214,10 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
    * @return
    */
   private float calculateWorkdayOvertimeHours(ScheduleTypeDict scheduleType , Date startPunchtime, Date endPunchtime) {
+    if(startPunchtime == null || endPunchtime == null ){
+      return 0 ;
+    }
+    
     float totalHoursWorked = 0;
     Date scheduleStart = scheduleType.getStartTime(startPunchtime);
     Date scheduleEnd = scheduleType.getEndTime(scheduleStart);
@@ -234,65 +242,7 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
       totalHoursWorked = 0 ;
     }
 
-    return totalHoursWorked / 3600 ;
-  }
-  
-  /**
-   *  根据 开始时间  结束时间  计算打卡时间
-   * @param startTime
-   * @param endTime
-   * @param punchtimes
-   * @return
-   */
-  private float calculateOvertimeHours(ScheduleTypeDict scheduleType, AtndManualRecord overtime , List<Date> punchtimes ) {
-    Boolean isExempt = overtime.getIsExempt() ;
-    if(isExempt == null || isExempt.booleanValue() == false ){
-      Date startTime = overtime.getStartTime() ; 
-      Date endTime = overtime.getEndTime() ; 
-      Date eachDate = overtime.getSrcDate() ;
-      String empno = overtime.getEmpno();
-      
-      Date scheduleEndTime = scheduleType.getEndTime(eachDate);
-
-      // 取加班单 开始时间 附近的 打卡时间 
-      Date startPunchtime =  DateUtil.getApproximatelyTime(startTime, punchtimes);
-      
-      //  检测 加班单填写的开始时间是不是  排班结束时间   
-      if(DateUtil.isSameDateTime(startTime, scheduleEndTime)){
-        startPunchtime = startTime ;
-      }
-      
-      // 取加班单 结束时间 附近的 打卡时间 
-      Date endPunchtime =  DateUtil.getApproximatelyTime(endTime, punchtimes);
-
-      if(endPunchtime == null){
-        endPunchtime = endTime ;
-      }
-      
-      float overTimeHours = 0 ;
-      DateTypeDict  dateType = checkOneDayTypeByEmpId(eachDate, empno) ;
-      switch (dateType) {
-        case ORDINARY: // 工作日
-          overTimeHours = calculateWorkdayOvertimeHours(scheduleType ,startPunchtime, endPunchtime);
-          break;
-        case WEEKEND: // 周末
-          overTimeHours = calculateVacationWorkedHours(scheduleType ,startPunchtime, endPunchtime);
-          break;
-        case HOLIDAY: // 节假日
-          overTimeHours = calculateVacationWorkedHours(scheduleType ,startPunchtime, endPunchtime);
-          break;
-        default:
-          System.out.println("defaultdefaultdefaultdefaultdefault");
-          break;
-      }
-
-      // 允许误差范围
-      return (float) approximateUnit(overTimeHours);
-      // 设置 平时 加班时间
-    } else { // 中午加班
-      return overtime.getTotalHours();
-    }
-    
+    return totalHoursWorked/3600 ;
   }
   
 
@@ -418,6 +368,10 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
         jdbc.callProcedure("sp_f_atnd_punch_record", new Object[] { 1 });
       }
     }
+    
+    // 更新打卡记录  没有员工号的部分数据
+    jdbc.execute("UPDATE f_atnd_punch_record AS t1 LEFT JOIN f_emp_info T2 ON t1.empname = T2.empname SET t1.empno = T2.empno WHERE t1.empno IS  NULL");
+    
   }
   
   
@@ -557,7 +511,7 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
     long start = System.currentTimeMillis();
     try {
       Workbook wb = WorkbookFactory.create(new FileInputStream(filePath));
-      Sheet sheet = wb.getSheetAt(4);
+      Sheet sheet = wb.getSheetAt(1);
       System.out.println(wb.getNumberOfSheets());
       System.out.println(sheet.getSheetName());
 
@@ -627,15 +581,27 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
               } else {
                 offWorkRecord.setEndTime(DateUtil.parseDateString(cellvalue, DateStyle.DATEFORMAT));
               }
+            } else if (index == 7) { // 备注
+              offWorkRecord.setRemark(cellvalue);
             }
           }
-          BeanUtil.debugBean(offWorkRecord);
+          
+          if("上午".equals(offWorkRecord.getRemark())){
+            offWorkRecord.setStartTime(ScheduleTypeDict.DAYSHIFT.getStartTime(offWorkRecord.getSrcDate()));
+            offWorkRecord.setEndTime(ScheduleTypeDict.DAYSHIFT.getRestPeriodStart(offWorkRecord.getSrcDate()));
+          }
+          
+          if("下午".equals(offWorkRecord.getRemark())){
+            offWorkRecord.setStartTime(ScheduleTypeDict.DAYSHIFT.getRestPeriodEnd(offWorkRecord.getSrcDate()));
+            offWorkRecord.setEndTime(ScheduleTypeDict.DAYSHIFT.getEndTime(offWorkRecord.getSrcDate()));
+          }
+          
           // 保存
           jdbc.saveAnnotatedBean(offWorkRecord);
         }
       }
 
-      jdbc.execute("UPDATE atnd_offwork_record AS t1 INNER JOIN f_emp_info T2 ON t1.empname = T2.empname SET t1.empno = T2.empno");
+      jdbc.execute("UPDATE atnd_manual_record AS t1 INNER JOIN f_emp_info T2 ON t1.empname = T2.empname SET t1.empno = T2.empno");
 
       long end = System.currentTimeMillis();
       logger.debug("共 ：" + (rowCount - 1) + "条记录， 运行时间： " + (float) (end - start) / 1000 + "秒 。平均： " + 1000 * (rowCount - 1) / (end - start) + "条/秒");
@@ -751,12 +717,28 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
   /***
    * 考勤
    */
-  public void atndmeasureTest(EmpInfo emp, String yyyyMM) {
-
+  public void atndmeasureTest(String yyyyMM) {
     String year = yyyyMM.substring(0, 4);
     String mm = yyyyMM.substring(4);
     Date startDate = DateUtil.parseShortDate(year + "-" + mm + "-" + "01"); // 月初
     Date endDate = DateUtil.getLastDayOfMonth(startDate); // 月末
+    
+    List<AtndSummarySheet>  sheets = new ArrayList<AtndSummarySheet>();  // 考勤统计记录
+    
+    // 加班 请假 出差
+    String sql = "SELECT emp.empNO , emp.empNAME ,dept.DEPTNAME FROM f_emp_info emp LEFT JOIN f_dept_info dept ON emp.deptid = dept.uid ";
+
+    sql += " where emp.empNO = 'BI00279'" ;
+    List<EmpInfo> emps = jdbc.querySampleList(EmpInfo.class, sql);
+
+    // 打卡记录
+    String punchSql = "SELECT recordTime FROM f_atnd_punch_record WHERE empno = ? and recordTime > ? ";
+    
+    for (EmpInfo emp : emps) {
+      // 考勤统计   EmpInfo emp, String yyyyMM
+//      measureService.atndmeasureTest(emp, "201604");
+//      sql = sql.replaceAll("@empno", emp.getEmpNO());
+      // 构造 XSSFWorkbook 对象，strPath 传入文件路径
 
     String empno = emp.getEmpNO();
     String empname = emp.getEmpName();
@@ -773,8 +755,7 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
     List<AtndManualRecord> atndManualRecords = jdbc.findByAnnotatedSample(overtimeWorkRecord, condition);
 
     // 打卡记录
-    String sql = "SELECT recordTime FROM f_atnd_punch_record WHERE empno = ? and recordTime > ? ";
-    List<List> punchRecords = jdbc.queryForList(sql, empno, startDate);
+    List<List> punchRecords = jdbc.queryForList(punchSql, empno, startDate);
     List<Date> punchtimes = new ArrayList<Date>();
     for (List<Date> punchRecord : punchRecords) {
       punchtimes.add(punchRecord.get(0));
@@ -800,11 +781,17 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
 
       // 数据稽核
 //      atndDataAuditing(sheet);
-
+      sheets.add(sheet);
       // 入库
-      saveAtndSummarySheet(sheet);
+//      saveAtndSummarySheet(sheet);
     }
 
+    // break;
+    }
+    
+
+    // 入库
+    jdbc.saveAnnotatedBean(sheets);
   }
 
 
@@ -827,8 +814,6 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
     String empno = sheet.getEmpno() ;
     Date eachDate = sheet.getStatdate();
     
-    System.out.println(eachDate);
-    
     // 单日排班
     ScheduleTypeDict scheduleType = getOneDayScheduleType(eachDate, atndManualRecords);
     sheet.setScheduleType(scheduleType.getValue());
@@ -840,16 +825,21 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
     
     // 上班时间 附近的 打卡时间 
     Date startPunchtime =  DateUtil.getApproximatelyTime(scheduleStartTime, punchtimes);
+    // 下班时间  附近的 打卡时间 
+    Date endPunchtime =  DateUtil.getApproximatelyTime(scheduleEndTime, punchtimes);
     
     if(startPunchtime==null){
       //TODO  无打卡记录 可能情况：        新员工、 未打卡 、   已离职  
       System.out.println("empno： " + empno + "无打卡记录 可能情况：        新员工、 未打卡 、   已离职  。");
       return ;
+    } else if(startPunchtime.after(scheduleEndTime)){ //  未打卡   旷工
+      startPunchtime = null ;
+      endPunchtime = null ;
+      sheet.setAtndStatus(AtndStatusType.Absenteeism.getValue());
     }
-    
-    // 下班时间  附近的 打卡时间 
-    Date endPunchtime =  DateUtil.getApproximatelyTime(scheduleEndTime, punchtimes);
-    
+
+    sheet.setPunchInTime(startPunchtime);
+    sheet.setPunchOutTime(endPunchtime);
     
     float overtimeHours = 0 ;  // 加班时间  
     float businessTripHours  = 0 ;
@@ -862,47 +852,66 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
       Date manualEndTime = manualRecord.getEndTime() ;
       
       if (DateUtil.isSameDay(manualRecord.getSrcDate(), eachDate)) {
+        // 加班开始时间
+        Date overtimeStartTime = startPunchtime ;
+        Date overtimeEndTime = endPunchtime ;
+        
+        // 加班单 结束时间附近打卡记录
+        if(manualEndTime!=null){ 
+          overtimeStartTime = DateUtil.getApproximatelyTime(manualStartTime, punchtimes) ;
+          overtimeEndTime = DateUtil.getApproximatelyTime(manualEndTime, punchtimes) ;
+        }
+        
+        //  检测 加班单填写的开始时间是不是  排班结束时间   
+        if(DateUtil.isSameDateTime(manualStartTime, scheduleEndTime)){
+          overtimeStartTime =  scheduleEndTime ;
+        }
+
+        //  检测 加班单填写的结束时间是不是  排班开始时间   
+        if(DateUtil.isSameDateTime(manualEndTime, scheduleStartTime)){
+          overtimeEndTime =  scheduleStartTime ;
+        }
+        
         // 检查 工作日 休假日
         DateTypeDict eachDayType = checkOneDayTypeByEmpId(eachDate, empno) ;
 
         // 申请单 类型
         switch (manualRecord.getBookType()) {
           case 1:  //  加班单
-            if(manualEndTime!=null){ 
-              Date eachPunchtime = DateUtil.getApproximatelyTime(manualEndTime, punchtimes) ;
-              if(endPunchtime.before(eachPunchtime)){
-                endPunchtime = eachPunchtime ;
-              }
-            }
             // 检查 工作日 休假日
             switch (eachDayType) {
               case ORDINARY: // 平时工作日
                 Boolean isExempt = manualRecord.getIsExempt() ;   // 中午加班  isExempt 设置为 TRUE
                 if(isExempt == null || isExempt.booleanValue() == false ){
-                  float overTimeHours = this.calculateOvertimeHours(scheduleType, manualRecord , punchtimes);
-                  overTimeHours = Math.min(manualRecord.getTotalHours(), overTimeHours);
+                  float eachOverTimeHours = calculateWorkdayOvertimeHours(scheduleType, overtimeStartTime , overtimeEndTime);
+                  // 允许误差范围
+                  eachOverTimeHours = (float) approximateUnit(eachOverTimeHours) ;
+                  eachOverTimeHours = Math.min(manualRecord.getTotalHours(), eachOverTimeHours);
 
                   // 设置 平时 加班时间
-                  overtimeHours += overTimeHours ;
+                  overtimeHours += eachOverTimeHours ;
                   sheet.setOrdinaryOvertime(overtimeHours);
                 } else { // 中午加班
-                  //TODO
                   // 设置 平时 加班时间
                   overtimeHours += manualRecord.getTotalHours();
                   sheet.setOrdinaryOvertime(overtimeHours);
                 }
                 break;
               case WEEKEND: // 周日 加班
-                float overTimeHours = this.calculateOvertimeHours(scheduleType,manualRecord , punchtimes);
-                overTimeHours = Math.min(manualRecord.getTotalHours(), overTimeHours);
-                overtimeHours += overTimeHours;
+                float eachOverTimeHours = calculateVacationWorkedHours(scheduleType,overtimeStartTime , overtimeEndTime);
+                // 允许误差范围
+                eachOverTimeHours = (float) approximateUnit(eachOverTimeHours) ;
+                eachOverTimeHours = Math.min(manualRecord.getTotalHours(), eachOverTimeHours);
+                overtimeHours += eachOverTimeHours;
                 // 设置 周末加班
                 sheet.setWeekendOvertime(overtimeHours);
                 break;
               case HOLIDAY: // 休假日
-                overTimeHours = this.calculateOvertimeHours(scheduleType,manualRecord, punchtimes);
-                overTimeHours = Math.min(manualRecord.getTotalHours(), overTimeHours);
-                overtimeHours += overTimeHours;
+                eachOverTimeHours = calculateVacationWorkedHours(scheduleType,overtimeStartTime, overtimeEndTime);
+                // 允许误差范围
+                eachOverTimeHours = (float) approximateUnit(eachOverTimeHours) ;
+                eachOverTimeHours = Math.min(manualRecord.getTotalHours(), eachOverTimeHours);
+                overtimeHours += eachOverTimeHours;
                 // 设置 休假日加班
                 sheet.setHolidayOvertime(overtimeHours);
                 break;
@@ -996,8 +1005,6 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
       islate = isLate(startPunchtime , scheduleStartTime);
     }
     sheet.setIsLate(islate);
-    sheet.setPunchInTime(startPunchtime);
-    sheet.setPunchOutTime(endPunchtime);
     
     BeanUtil.debugBean(sheet);
     
