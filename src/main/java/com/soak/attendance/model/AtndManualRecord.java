@@ -17,6 +17,10 @@ import com.soak.framework.orm.Table;
  */
 @Table(name = "atnd_manual_record", pk = "uid")
 public class AtndManualRecord {
+  
+  public static final int OVERTIME = 1;
+  public static final int BUSINESSTRIP = 2;
+  public static final int OFFWORK = 3;
 
   @Column(name = "uid")
   private String uid;
@@ -37,6 +41,9 @@ public class AtndManualRecord {
 
   @Column(name = "scheduleType")
   private String scheduleType; // 排班类型
+  
+  @Column(name = "vacationType")
+  private String vacationType; // 休假类型
 
   @Column(name = "starttime")
   private Date startTime; // DATETIME COMMENT '开始时间' ,
@@ -52,10 +59,11 @@ public class AtndManualRecord {
 
   private String remark;
 
-  @Column(name = "SRC_DT")
-  private Date srcDt;
+  @Column(name = "src_dt")
+  private Date srcDate;
 
-  private Date etl_dt;
+  @Column(name = "etl_dt")
+  private Date etlDate;
 
   /***
    * 通过加班单 获取 某天 排班类型
@@ -140,20 +148,20 @@ public class AtndManualRecord {
     this.remark = remark;
   }
 
-  public Date getSrcDt() {
-    return srcDt;
+  public Date getSrcDate() {
+    return srcDate;
   }
 
-  public void setSrcDt(Date srcDt) {
-    this.srcDt = srcDt;
+  public void setSrcDate(Date srcDate) {
+    this.srcDate = srcDate;
   }
 
-  public Date getEtl_dt() {
-    return etl_dt;
+  public Date getEtlDate() {
+    return etlDate;
   }
 
-  public void setEtl_dt(Date etlDt) {
-    etl_dt = etlDt;
+  public void setEtlDate(Date etlDate) {
+    this.etlDate = etlDate;
   }
 
   public String getDeptno() {
@@ -183,5 +191,14 @@ public class AtndManualRecord {
   public void setIsExempt(Boolean isExempt) {
     this.isExempt = isExempt;
   }
+
+  public String getVacationType() {
+    return vacationType;
+  }
+
+  public void setVacationType(String vacationType) {
+    this.vacationType = vacationType;
+  }
+  
 
 }

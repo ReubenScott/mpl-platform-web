@@ -41,23 +41,23 @@ public class AtndManualTest {
     }
   }
 
-//  @Test
-  public void testloadOvertimeWorkApplicationForm() {
-    String filePath = "E:/考勤/201604/2016年4月份请假单，出差单，加班单.xlsx";
+  @Test
+  public void testloadAtndManualApplicationForm() {
+    String filePath = "E:/考勤/201604/4月份请假单，出差单，加班单（新）.xlsx";
     measureService.loadOvertimeWorkApplicationForm(filePath);
 //    bean.loadBusinessTripApplicationForm(filePath);
-//    bean.loadOffWorkApplicationForm(filePath);
+//    measureService.loadOffWorkApplicationForm(filePath);
     
   }
   
   
 
-  @Test
+//  @Test
   public void testAtndmeasureTest() {
     // 加班 请假 出差
     String sql = "SELECT emp.empNO , emp.empNAME ,dept.DEPTNAME FROM f_emp_info emp LEFT JOIN f_dept_info dept ON emp.deptid = dept.uid ";
 
-    sql += " where emp.empNO = 'BI00095'" ;
+    sql += " where emp.empNO = 'BI00149'" ;
     List<EmpInfo> emps = jdbc.querySampleList(EmpInfo.class, sql);
 
     for (EmpInfo emp : emps) {

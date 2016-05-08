@@ -20,6 +20,7 @@ public enum ScheduleTypeDict {
       return "13:00";
     }
   },  //默认白班
+  NIGHTSHIFT3   ( "夜班3", "N3", "17:00", "01:00"  ),
   NIGHTSHIFT1   ( "夜班1", "N1", "19:00", "03:00"  ), 
   NIGHTSHIFT2   ( "夜班2", "N2", "19:30", "03:30"  ),
   MORNINGSHIFT1 ( "早班1", "M1", "7:00" , "15:00"  ), 
@@ -83,7 +84,7 @@ public enum ScheduleTypeDict {
     Date start = getStartTime(dateStr);
     Date end = DateUtil.setTime(dateStr, endTime);
     if(start.after(end)){
-      end = DateUtil.addDay(end, 1);
+      end = DateUtil.addDays(end, 1);
     }
     return end;
   }
@@ -92,7 +93,7 @@ public enum ScheduleTypeDict {
     Date start = getStartTime(dateStr);
     Date end = DateUtil.setTime(dateStr, endTime);
     if(start.after(end)){
-      end = DateUtil.addDay(end, 1);
+      end = DateUtil.addDays(end, 1);
     }
     return end;
   }

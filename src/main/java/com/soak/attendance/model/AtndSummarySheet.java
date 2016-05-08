@@ -19,6 +19,9 @@ public class AtndSummarySheet {
 
   @Column(name = "deptname")
   private String deptname; // 所属部门
+  
+  @Column(name = "scheduleType")
+  private String scheduleType; // 排班类型
 
   @Column(name = "atndstatus")
   private String atndStatus; // 考勤状态 1 正常 ； 2 迟到 ； 3 漏打卡
@@ -40,7 +43,8 @@ public class AtndSummarySheet {
 
   @Column(name = "holiday_overtime")
   private Float holidayOvertime; // float(4,2)法定加班
-  
+
+  @Column(name = "isLate")
   private Boolean isLate ; // 是否迟到 
 
   @Column(name = "meal_subsidy")
@@ -237,7 +241,14 @@ public class AtndSummarySheet {
     this.mealSubsidy = mealSubsidy;
   }
 
-  
+  public String getScheduleType() {
+    return scheduleType;
+  }
+
+  public void setScheduleType(String scheduleType) {
+    this.scheduleType = scheduleType;
+  }
+
   // get set **
 
 }

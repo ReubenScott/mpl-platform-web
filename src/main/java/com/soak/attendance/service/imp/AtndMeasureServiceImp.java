@@ -30,10 +30,7 @@ import com.soak.attendance.constant.DateTypeDict;
 import com.soak.attendance.constant.ScheduleTypeDict;
 import com.soak.attendance.model.AtndManualRecord;
 import com.soak.attendance.model.AtndSummarySheet;
-import com.soak.attendance.model.BusinessTripRecord;
 import com.soak.attendance.model.EmpInfo;
-import com.soak.attendance.model.OffWorkRecord;
-import com.soak.attendance.model.OvertimeWorkRecord;
 import com.soak.attendance.model.ScheduleType;
 import com.soak.attendance.service.AtndMeasureService;
 import com.soak.common.metic.UUIDGenerator;
@@ -63,7 +60,7 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
     List<ScheduleTypeDict> allPossible = new ArrayList<ScheduleTypeDict>();
     
     for (AtndManualRecord manualRecord : atndManualRecords) {
-      if (DateUtil.isSameDay(manualRecord.getSrcDt(), eachDate)) {  // 取当天的
+      if (DateUtil.isSameDay(manualRecord.getSrcDate(), eachDate)) {  // 取当天的
         Date startTime = manualRecord.getStartTime() ; 
         Date endTime = manualRecord.getEndTime() ; 
         Date  dayshiftEndtime =  DateUtil.setTime(eachDate, ScheduleTypeDict.DAYSHIFT.getEndTime());
@@ -151,7 +148,7 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
    * 
    */
   public boolean isLate(Date punchtime , Date leateTime ) {
-    float interval = DateUtil.timeDiff(DateUtil.addMinute(leateTime, LATELIMITRANGE), punchtime);
+    float interval = DateUtil.timeDiff(DateUtil.addMinutes(leateTime, LATELIMITRANGE), punchtime);
     if (interval > 0) {
       // 迟到
       return true;
@@ -252,7 +249,7 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
     if(isExempt == null || isExempt.booleanValue() == false ){
       Date startTime = overtime.getStartTime() ; 
       Date endTime = overtime.getEndTime() ; 
-      Date eachDate = overtime.getSrcDt() ;
+      Date eachDate = overtime.getSrcDate() ;
       String empno = overtime.getEmpno();
       
       Date scheduleEndTime = scheduleType.getEndTime(eachDate);
@@ -260,7 +257,7 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
       // 取加班单 开始时间 附近的 打卡时间 
       Date startPunchtime =  DateUtil.getApproximatelyTime(startTime, punchtimes);
       
-      // 
+      //  检测 加班单填写的开始时间是不是  排班结束时间   
       if(DateUtil.isSameDateTime(startTime, scheduleEndTime)){
         startPunchtime = startTime ;
       }
@@ -268,10 +265,6 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
       // 取加班单 结束时间 附近的 打卡时间 
       Date endPunchtime =  DateUtil.getApproximatelyTime(endTime, punchtimes);
 
-//      if(DateUtil.timeDiff(startPunchtime, endPunchtime) == 0){
-//        startPunchtime = startTime ;
-//      }
-      
       if(endPunchtime == null){
         endPunchtime = endTime ;
       }
@@ -442,11 +435,10 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
       for (int i = 0; i < wb.getNumberOfSheets(); i++) {
 
       }
-      Sheet sheet = wb.getSheetAt(0);
+      Sheet sheet = wb.getSheetAt(3);
       int rowCount = 0;
       // 循环输出表格中的内容
       for (int i = sheet.getFirstRowNum(); i <= sheet.getLastRowNum(); i++) {
-        System.out.println(i);
         Row row = sheet.getRow(i);
         if (row == null) {
           continue;
@@ -475,9 +467,12 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
         }
 
         if (rowCount > 1) { // 跳过首行 标题
-          OvertimeWorkRecord record = new OvertimeWorkRecord();
-          record.setUid(UUIDGenerator.generate());
+          AtndManualRecord overtimeRecord = new AtndManualRecord();
+          overtimeRecord.setBookType(AtndManualRecord.OVERTIME);
+          overtimeRecord.setUid(UUIDGenerator.generate());
+          overtimeRecord.setEtlDate(DateUtil.getCurrentDate());
 
+          ScheduleTypeDict scheduleType = null ;  // 排班
           for (int index = 0; index < cells.size(); index++) {
             String cellvalue = cells.get(index);
             if (cellvalue == null) {
@@ -485,88 +480,61 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
             }
 
             if (index == 0) { // 部门班组
-              record.setDeptname(cellvalue);
+              overtimeRecord.setDeptname(cellvalue);
             } else if (index == 1) { // 姓名
-              record.setEmpname(cellvalue);
+              overtimeRecord.setEmpname(cellvalue);
             } else if (index == 2) { // 加班日期
-              record.setSrcDt(DateUtil.parseShortDate(cellvalue));
+              overtimeRecord.setSrcDate(DateUtil.parseShortDate(cellvalue));
             } else if (index == 3) { // 加班时数
-              record.setTotalHours(Float.valueOf(cellvalue));
-            } else if (index == 4) {
+              overtimeRecord.setTotalHours(Float.valueOf(cellvalue));
+            } else if (index == 4) { // 排班类型 
+              //TODO 加班单    新增排班类型 
               if ("白".equals(cellvalue)) {
-                record.setScheduleType(ScheduleTypeDict.DAYSHIFT.getValue());
+                scheduleType = ScheduleTypeDict.DAYSHIFT ;
               } else if ("午".equals(cellvalue)) {
-                record.setScheduleType(ScheduleTypeDict.DAYSHIFT.getValue());
-                record.setIsExempt(true);
+                scheduleType = ScheduleTypeDict.DAYSHIFT ;
+                overtimeRecord.setIsExempt(true);
               } else if ("夜1".equals(cellvalue)) {
-                record.setScheduleType(ScheduleTypeDict.NIGHTSHIFT1.getValue());
+                scheduleType = ScheduleTypeDict.NIGHTSHIFT1 ;
               } else if ("夜2".equals(cellvalue)) {
-                record.setScheduleType(ScheduleTypeDict.NIGHTSHIFT2.getValue());
+                scheduleType = ScheduleTypeDict.NIGHTSHIFT2 ;
               } else if ("晚2".equals(cellvalue)) {
-                record.setScheduleType(ScheduleTypeDict.EVENINGSHIFT2.getValue());
+                scheduleType = ScheduleTypeDict.EVENINGSHIFT2 ;
               }else if ("特".equals(cellvalue)) {
                 // 
               }
             } else if (index == 5) { // 开始时间
-              if (cellvalue.length() == 8) {
-                record.setStartTime(DateUtil.setTime(record.getSrcDt(), cellvalue));
-              } else {
-                record.setStartTime(DateUtil.parseDateString(cellvalue, DateStyle.DATEFORMAT));
+              if (cellvalue.length() == 8) { // 时间格式
+                overtimeRecord.setStartTime(DateUtil.setTime(overtimeRecord.getSrcDate(), cellvalue));
+              } else {  // 日期+时间 格式 
+                overtimeRecord.setStartTime(DateUtil.parseDateString(cellvalue, DateStyle.DATEFORMAT));
               }
             } else if (index == 6) { // 结束时间
-              if (cellvalue.length() == 8) {
-                record.setEndTime(DateUtil.setTime(record.getSrcDt(), cellvalue));
-              } else {
-                record.setEndTime(DateUtil.parseDateString(cellvalue, DateStyle.DATEFORMAT));
-              }
-            }
-          }
-          
-          if(record.getStartTime()==null){
-            for (ScheduleTypeDict schedule : ScheduleTypeDict.values()) {
-              if (schedule.getValue().equals(record.getScheduleType())) {
-                Boolean  isExempt  = record.getIsExempt() ;
-                if( (isExempt==null || !isExempt) && record.getStartTime()==null){
-                  Date startTime = null ;
-                  switch (schedule) {
-                    case DAYSHIFT: // 白班
-                     //  schedule.getEndTime(record.getSrcDt());
-                      startTime = DateUtil.setTime(record.getSrcDt(), "17:00");
-                      break;
-                    case NIGHTSHIFT1: // 夜班1 19:00
-                      startTime = DateUtil.setTime(DateUtil.addDay(record.getSrcDt(), 1), "03:00");
-                      break;
-                    case NIGHTSHIFT2: // 夜班2 19:30
-                      startTime = DateUtil.setTime(DateUtil.addDay(record.getSrcDt(), 1), "03:30");
-                      break;
-                    case SWINGSHIFT1: 
-                      startTime = DateUtil.setTime(record.getSrcDt(), "23:00");
-                      break;
-                    case SWINGSHIFT2: 
-                      startTime = DateUtil.setTime(record.getSrcDt(), "23:30");
-                      break;
-                    case EVENINGSHIFT1: 
-                      startTime = DateUtil.setTime(DateUtil.addDay(record.getSrcDt(), 1), "07:00");
-                      break;
-                    case EVENINGSHIFT2: 
-                      startTime = DateUtil.setTime(DateUtil.addDay(record.getSrcDt(), 1), "07:30");
-                      break;
-                    default:
-                      System.out.println("defaultdefaultdefaultdefaultdefault");
-                      break;
-                  }
-                  record.setStartTime(startTime);
-                  record.setEndTime(DateUtil.addTime(startTime, Math.round(record.getTotalHours()*60*60)));
-                }
+              if (cellvalue.length() == 8) {  // 时间格式
+                overtimeRecord.setEndTime(DateUtil.setTime(overtimeRecord.getSrcDate(), cellvalue));
+              } else {  // 日期+时间 格式
+                overtimeRecord.setEndTime(DateUtil.parseDateString(cellvalue, DateStyle.DATEFORMAT));
               }
             }
           }
 
-          jdbc.saveAnnotatedBean(record);
+          // 设置排班 
+          if(scheduleType!= null){
+            overtimeRecord.setScheduleType(scheduleType.getValue());
+            Boolean  isExempt  = overtimeRecord.getIsExempt() ; 
+            if( (isExempt==null || !isExempt) && overtimeRecord.getStartTime()== null){
+              //  “开始时间”，“结束时间”不填默认为： 加班开始时间 为 排班结束时间 
+              Date startTime = scheduleType.getEndTime(overtimeRecord.getSrcDate());
+              overtimeRecord.setStartTime(startTime);
+              overtimeRecord.setEndTime(DateUtil.addTime(startTime, Math.round(overtimeRecord.getTotalHours()*60*60)));
+            }
+          }
+
+          jdbc.saveAnnotatedBean(overtimeRecord);
         }
       }
 
-      jdbc.execute("UPDATE atnd_overtime_record AS t1 INNER JOIN f_emp_info T2 ON t1.empname = T2.empname SET t1.empno = T2.empno");
+      jdbc.execute("UPDATE atnd_manual_record AS t1 INNER JOIN f_emp_info T2 ON t1.empname = T2.empname SET t1.empno = T2.empno");
 
       long end = System.currentTimeMillis();
       logger.debug("共 ：" + (rowCount - 1) + "条记录， 运行时间： " + (float) (end - start) / 1000 + "秒 。平均： " + 1000 * (rowCount - 1) / (end - start) + "条/秒");
@@ -589,7 +557,7 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
     long start = System.currentTimeMillis();
     try {
       Workbook wb = WorkbookFactory.create(new FileInputStream(filePath));
-      Sheet sheet = wb.getSheetAt(0);
+      Sheet sheet = wb.getSheetAt(4);
       System.out.println(wb.getNumberOfSheets());
       System.out.println(sheet.getSheetName());
 
@@ -626,8 +594,10 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
         }
 
         if (rowCount > 1) { // 忽略表头
-          OffWorkRecord record = new OffWorkRecord();
-          record.setUid(UUIDGenerator.generate());
+          AtndManualRecord offWorkRecord = new AtndManualRecord();
+          offWorkRecord.setBookType(AtndManualRecord.OFFWORK);
+          offWorkRecord.setUid(UUIDGenerator.generate());
+          offWorkRecord.setEtlDate(DateUtil.getCurrentDate());
 
           for (int index = 0; index < cells.size(); index++) {
             String cellvalue = cells.get(index);
@@ -636,31 +606,32 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
             }
 
             if (index == 0) { // 部门班组
-              record.setDeptname(cellvalue);
+              offWorkRecord.setDeptname(cellvalue);
             } else if (index == 1) {// 姓名
-              record.setEmpname(cellvalue);
+              offWorkRecord.setEmpname(cellvalue);
             } else if (index == 2) {// 请假日期
-              record.setSrcDt(DateUtil.parseShortDate(cellvalue));
+              offWorkRecord.setSrcDate(DateUtil.parseShortDate(cellvalue));
             } else if (index == 3) { // 小时数
-              record.setTotalHours(Float.valueOf(cellvalue));
+              offWorkRecord.setTotalHours(Float.valueOf(cellvalue));
             } else if (index == 4) { // 类型
-              record.setVacationType(cellvalue);
+              offWorkRecord.setVacationType(cellvalue);
             } else if (index == 5) { // 开始时间
               if (cellvalue.length() == 8) {
-                record.setStartTime(DateUtil.setTime(record.getSrcDt(), cellvalue));
+                offWorkRecord.setStartTime(DateUtil.setTime(offWorkRecord.getSrcDate(), cellvalue));
               } else {
-                record.setStartTime(DateUtil.parseDateString(cellvalue, DateStyle.DATEFORMAT));
+                offWorkRecord.setStartTime(DateUtil.parseDateString(cellvalue, DateStyle.DATEFORMAT));
               }
             } else if (index == 6) { // 结束时间
               if (cellvalue.length() == 8) {
-                record.setEndTime(DateUtil.setTime(record.getSrcDt(), cellvalue));
+                offWorkRecord.setEndTime(DateUtil.setTime(offWorkRecord.getSrcDate(), cellvalue));
               } else {
-                record.setEndTime(DateUtil.parseDateString(cellvalue, DateStyle.DATEFORMAT));
+                offWorkRecord.setEndTime(DateUtil.parseDateString(cellvalue, DateStyle.DATEFORMAT));
               }
             }
           }
+          BeanUtil.debugBean(offWorkRecord);
           // 保存
-          jdbc.saveAnnotatedBean(record);
+          jdbc.saveAnnotatedBean(offWorkRecord);
         }
       }
 
@@ -722,8 +693,10 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
         }
         // 忽略表头
         if (rowCount > 1) {// 跳过首行 标题
-          BusinessTripRecord record = new BusinessTripRecord();
-          record.setUid(UUIDGenerator.generate());
+          AtndManualRecord businessTripRecord = new AtndManualRecord();
+          businessTripRecord.setBookType(AtndManualRecord.BUSINESSTRIP);
+          businessTripRecord.setUid(UUIDGenerator.generate());
+          businessTripRecord.setEtlDate(DateUtil.getCurrentDate());
 
           for (int index = 0; index < cells.size(); index++) {
             String cellvalue = cells.get(index);
@@ -732,29 +705,29 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
             }
 
             if (index == 0) { // 部门班组
-              record.setDeptname(cellvalue);
+              businessTripRecord.setDeptname(cellvalue);
             } else if (index == 1) {// 姓名
-              record.setEmpname(cellvalue);
+              businessTripRecord.setEmpname(cellvalue);
             } else if (index == 2) {// 外出日期
-              record.setSrcDt(DateUtil.parseShortDate(cellvalue));
+              businessTripRecord.setSrcDate(DateUtil.parseShortDate(cellvalue));
             } else if (index == 3) {
               if ("全".equals(cellvalue)) {
-                record.setStartTime(DateUtil.setTime(record.getSrcDt(), "7:30:00"));
-                record.setEndTime(DateUtil.setTime(record.getSrcDt(), "17:00:00"));
-                record.setTotalHours(8f);
+                businessTripRecord.setStartTime(DateUtil.setTime(businessTripRecord.getSrcDate(), "7:30:00"));
+                businessTripRecord.setEndTime(DateUtil.setTime(businessTripRecord.getSrcDate(), "17:00:00"));
+                businessTripRecord.setTotalHours(8f);
               } else if ("上".equals(cellvalue)) {
-                record.setStartTime(DateUtil.setTime(record.getSrcDt(), "7:30:00"));
-                record.setEndTime(DateUtil.setTime(record.getSrcDt(), "11:30:00"));
-                record.setTotalHours(4f);
+                businessTripRecord.setStartTime(DateUtil.setTime(businessTripRecord.getSrcDate(), "7:30:00"));
+                businessTripRecord.setEndTime(DateUtil.setTime(businessTripRecord.getSrcDate(), "11:30:00"));
+                businessTripRecord.setTotalHours(4f);
               } else if ("下".equals(cellvalue)) {
-                record.setStartTime(DateUtil.setTime(record.getSrcDt(), "13:30:00"));
-                record.setEndTime(DateUtil.setTime(record.getSrcDt(), "17:00:00"));
-                record.setTotalHours(4f);
+                businessTripRecord.setStartTime(DateUtil.setTime(businessTripRecord.getSrcDate(), "13:30:00"));
+                businessTripRecord.setEndTime(DateUtil.setTime(businessTripRecord.getSrcDate(), "17:00:00"));
+                businessTripRecord.setTotalHours(4f);
               }
             }
           }
           // 保存
-          jdbc.saveAnnotatedBean(record);
+          jdbc.saveAnnotatedBean(businessTripRecord);
         }
       }
 
@@ -858,6 +831,7 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
     
     // 单日排班
     ScheduleTypeDict scheduleType = getOneDayScheduleType(eachDate, atndManualRecords);
+    sheet.setScheduleType(scheduleType.getValue());
     
     // 上班基准时间
     Date  scheduleStartTime = scheduleType.getStartTime(eachDate);
@@ -887,7 +861,7 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
       Date manualStartTime = manualRecord.getStartTime();
       Date manualEndTime = manualRecord.getEndTime() ;
       
-      if (DateUtil.isSameDay(manualRecord.getSrcDt(), eachDate)) {
+      if (DateUtil.isSameDay(manualRecord.getSrcDate(), eachDate)) {
         // 检查 工作日 休假日
         DateTypeDict eachDayType = checkOneDayTypeByEmpId(eachDate, empno) ;
 
@@ -1027,53 +1001,6 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
     
     BeanUtil.debugBean(sheet);
     
-    
-    
-  }
-  
-  
-  
-  /***
-   *  出差单 
-   * @param sheet
-   * @param businessTripRecords
-   * @param punchtimes
-   */
-  public void checkOneDayBusinessTripRecord(AtndSummarySheet sheet , List<BusinessTripRecord> businessTripRecords ,List<Date> punchtimes) {
-    Date eachDate = sheet.getStatdate();
-    // 出差时间
-    float tripHour = sheet.getBusinessTrip()== null ? 0 : sheet.getBusinessTrip() ;
-    System.out.println(tripHour);
-    for (BusinessTripRecord businessTripRecord : businessTripRecords) {
-      if (DateUtil.isSameDay(businessTripRecord.getSrcDt(), eachDate)) {
-        // 设置 出差时间
-        tripHour += businessTripRecord.getTotalHours();
-        sheet.setBusinessTrip(tripHour);
-        
-      }
-    }
-  }
-
-  /***
-   *  请假单
-   * 
-   * @param sheet
-   * @param offWorkRecords
-   * @param punchtimes
-   */
-  public void checkOneDayOffWorkRecordRecord(AtndSummarySheet sheet , List<OffWorkRecord> offWorkRecords ,List<Date> punchtimes) {
-    Date eachDate = sheet.getStatdate();
-    // 出差时间
-    float absenceHour = sheet.getAbsence() == null ? 0 : sheet.getAbsence() ;
-    System.out.println(absenceHour);
-    for (OffWorkRecord offWorkRecord : offWorkRecords) {
-      if (DateUtil.isSameDay(offWorkRecord.getSrcDt(), eachDate)) {
-        // 设置 出差时间
-        absenceHour += offWorkRecord.getTotalHours();
-        sheet.setAbsence(absenceHour);
-        
-      }
-    }
   }
   
 
@@ -1103,7 +1030,10 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
     params[15] = sheet.getCurrentMthAccumVacation();
 
     JdbcHandler jdbc = JdbcHandler.getInstance();
-    jdbc.execute(sql.toString(), params);
+//    jdbc.execute(sql.toString(), params);
+    
+    jdbc.saveAnnotatedBean(sheet);
+    
   }
 
   
