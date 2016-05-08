@@ -174,6 +174,12 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
       return 0 ;
     }
     
+    // 上班时间之前  不计入 加班时数
+    if(startPunchtime.before(scheduleType.getStartTime(startPunchtime))){
+      startPunchtime = scheduleType.getStartTime(startPunchtime) ;
+    }
+    
+    
     float totalHoursWorked = 0;
     if(scheduleType.getRestPeriodStart()== null || scheduleType.getRestPeriodEnd() == null ){
       totalHoursWorked = DateUtil.timeDiff(startPunchtime, endPunchtime)/ 3600 ;
