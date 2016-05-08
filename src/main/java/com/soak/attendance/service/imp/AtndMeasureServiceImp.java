@@ -734,7 +734,7 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
     // 加班 请假 出差
     String sql = "SELECT emp.empNO , emp.empNAME ,dept.DEPTNAME FROM f_emp_info emp LEFT JOIN f_dept_info dept ON emp.deptid = dept.uid ";
 
-    sql += " where emp.empNO = 'BI00279'" ;
+//    sql += " where emp.empNO = 'BI00181'" ;
     List<EmpInfo> emps = jdbc.querySampleList(EmpInfo.class, sql);
 
     // 打卡记录
@@ -995,13 +995,7 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
             break ;
         }
         
-        
-        
-
-        System.out.println(atndManualRecords.size());
         recordIter.remove();   // 删除
-        System.out.println(atndManualRecords.size());
-
       }
     }
     
@@ -1011,8 +1005,6 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
       islate = isLate(startPunchtime , scheduleStartTime);
     }
     sheet.setIsLate(islate);
-    
-    BeanUtil.debugBean(sheet);
     
   }
   
