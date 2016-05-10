@@ -602,6 +602,7 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
             offWorkRecord.setEndTime(ScheduleTypeDict.DAYSHIFT.getEndTime(offWorkRecord.getSrcDate()));
           }
           
+          
           // 保存
           jdbc.saveAnnotatedBean(offWorkRecord);
         }
@@ -718,12 +719,11 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
   }
   
   
-  
 
   /***
-   * 考勤
+   * 考勤入口   atndDataAuditing
    */
-  public void atndmeasureTest(String yyyyMM) {
+  public void atndmeasureTest(String yyyyMM , String...  empnos) {
     String year = yyyyMM.substring(0, 4);
     String mm = yyyyMM.substring(4);
     Date startDate = DateUtil.parseShortDate(year + "-" + mm + "-" + "01"); // 月初
@@ -732,69 +732,77 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
     List<AtndSummarySheet>  sheets = new ArrayList<AtndSummarySheet>();  // 考勤统计记录
     
     // 加班 请假 出差
-    String sql = "SELECT emp.empNO , emp.empNAME ,dept.DEPTNAME FROM f_emp_info emp LEFT JOIN f_dept_info dept ON emp.deptid = dept.uid ";
-
-//    sql += " where emp.empNO = 'BI00181'" ;
-    List<EmpInfo> emps = jdbc.querySampleList(EmpInfo.class, sql);
+    StringBuffer sql =  new StringBuffer("SELECT emp.empNO , emp.empNAME ,dept.DEPTNAME FROM f_emp_info emp LEFT JOIN f_dept_info dept ON emp.deptid = dept.uid ");
+    int length = empnos.length;
+    if(length > 0 ){
+      sql.append(" where emp.empNO in ( ") ;
+    }
+    
+    for (int i = 0; i < length; i++) {
+      if(i < length-1){
+        sql.append("'");
+        sql.append(empnos[i]);
+        sql.append("'");
+        sql.append(",");
+      }
+      if (i == length - 1) {
+        sql.append("'");
+        sql.append(empnos[i]);
+        sql.append("'");
+        sql.append(" ) ");
+      }
+    }
+    
+    List<EmpInfo> emps = jdbc.querySampleList(EmpInfo.class, sql.toString());
 
     // 打卡记录
     String punchSql = "SELECT recordTime FROM f_atnd_punch_record WHERE empno = ? and recordTime > ? ";
     
     for (EmpInfo emp : emps) {
-      // 考勤统计   EmpInfo emp, String yyyyMM
-//      measureService.atndmeasureTest(emp, "201604");
-//      sql = sql.replaceAll("@empno", emp.getEmpNO());
-      // 构造 XSSFWorkbook 对象，strPath 传入文件路径
-
-    String empno = emp.getEmpNO();
-    String empname = emp.getEmpName();
-    String deptName = emp.getDeptName();
-
-    // 设置查询时间
-    // Condition condition = Condition.Between.setParam("src_dt", new
-    // Object[]{startDate ,endDate});
-    Condition condition = Condition.Between.setParam("src_dt", startDate, endDate);
-
-    // 加班单 出差单  假单
-    AtndManualRecord overtimeWorkRecord = new AtndManualRecord();
-    overtimeWorkRecord.setEmpno(empno);
-    List<AtndManualRecord> atndManualRecords = jdbc.findByAnnotatedSample(overtimeWorkRecord, condition);
-
-    // 打卡记录
-    List<List> punchRecords = jdbc.queryForList(punchSql, empno, startDate);
-    List<Date> punchtimes = new ArrayList<Date>();
-    for (List<Date> punchRecord : punchRecords) {
-      punchtimes.add(punchRecord.get(0));
+      String empno = emp.getEmpNO();
+      String empname = emp.getEmpName();
+      String deptName = emp.getDeptName();
+  
+      // 设置查询时间
+      // Condition condition = Condition.Between.setParam("src_dt", new
+      // Object[]{startDate ,endDate});
+      Condition condition = Condition.Between.setParam("src_dt", startDate, endDate);
+  
+      // 加班单 出差单  假单
+      AtndManualRecord overtimeWorkRecord = new AtndManualRecord();
+      overtimeWorkRecord.setEmpno(empno);
+      List<AtndManualRecord> atndManualRecords = jdbc.findByAnnotatedSample(overtimeWorkRecord, condition);
+  
+      // 打卡记录
+      List<List> punchRecords = jdbc.queryForList(punchSql, empno, startDate);
+      List<Date> punchtimes = new ArrayList<Date>();
+      for (List<Date> punchRecord : punchRecords) {
+        punchtimes.add(punchRecord.get(0));
+      }
+  
+      // 对两个日期之间所有日期的遍历
+      Long startTime = startDate.getTime();
+      Long endTime = endDate.getTime();
+      Long oneDay = 1000 * 60 * 60 * 24l;
+      while (startTime <= endTime) {
+        Date eachDate = new Date(startTime);
+        startTime += oneDay;
+        AtndSummarySheet sheet = new AtndSummarySheet();
+        sheet.setStatdate(eachDate);
+        sheet.setEmpno(empno);
+        sheet.setEmpname(empname);
+        sheet.setDeptname(deptName);
+        
+        // 检查 当天  外出、请假 、加班  单  
+        checkOneDayManualRecord(sheet , atndManualRecords , punchtimes);
+  
+        // 数据稽核
+  //      atndDataAuditing(sheet);
+        sheets.add(sheet);
+      }
+  
+      // break;
     }
-
-    // 对两个日期之间所有日期的遍历
-    Long startTime = startDate.getTime();
-    Long endTime = endDate.getTime();
-    Long oneDay = 1000 * 60 * 60 * 24l;
-    while (startTime <= endTime) {
-      Date eachDate = new Date(startTime);
-      startTime += oneDay;
-      AtndSummarySheet sheet = new AtndSummarySheet();
-      sheet.setStatdate(eachDate);
-      sheet.setEmpno(empno);
-      sheet.setEmpname(empname);
-      sheet.setDeptname(deptName);
-      
-
-      // 检查 当天  外出、请假 、加班  单  
-      checkOneDayManualRecord(sheet , atndManualRecords , punchtimes);
-      
-
-      // 数据稽核
-//      atndDataAuditing(sheet);
-      sheets.add(sheet);
-      // 入库
-//      saveAtndSummarySheet(sheet);
-    }
-
-    // break;
-    }
-    
 
     // 入库
     jdbc.saveAnnotatedBean(sheets);
@@ -853,16 +861,22 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
     Boolean islate = null ; //  是否迟到
     Iterator<AtndManualRecord> recordIter = atndManualRecords.iterator();  
     while (recordIter.hasNext()) {  
-      AtndManualRecord manualRecord = recordIter.next();  
-      Date manualStartTime = manualRecord.getStartTime();
-      Date manualEndTime = manualRecord.getEndTime() ;
+      AtndManualRecord manualRecord = recordIter.next();   // 加班、出差、请假单 
       
       if (DateUtil.isSameDay(manualRecord.getSrcDate(), eachDate)) {
-        // 加班开始时间
+        float manualHours = manualRecord.getTotalHours();
+        Date manualStartTime = manualRecord.getStartTime();
+        Date manualEndTime = manualRecord.getEndTime();
+        
+        if(manualStartTime!=null){ 
+          manualEndTime = DateUtil.addTime(manualStartTime, Math.round(manualHours*3600));
+        }
+
+        // 加班  开始时间
         Date overtimeStartTime = startPunchtime ;
         Date overtimeEndTime = endPunchtime ;
         
-        // 加班单 结束时间附近打卡记录
+        // 加班、出差、请假单  结束时间附近打卡记录
         if(manualEndTime!=null){ 
           overtimeStartTime = DateUtil.getApproximatelyTime(manualStartTime, punchtimes) ;
           overtimeEndTime = DateUtil.getApproximatelyTime(manualEndTime, punchtimes) ;

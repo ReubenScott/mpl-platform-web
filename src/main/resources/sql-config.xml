@@ -5,41 +5,34 @@
   <sql-info>
     <sql-name>考勤</sql-name>
     <sql-value><![CDATA[
-        SELECT  STATDATE AS 日期 
-                ,T1.deptname AS 部门
-                ,T1.empno  AS 工号
-                ,T1.empname AS 姓名
-                ,CASE WHEN ATNDSTATUS = '00' THEN '正常'
-                     WHEN ATNDSTATUS = '01' THEN '出差'
-                     WHEN ATNDSTATUS = '10' THEN '平时加班'
-                     WHEN ATNDSTATUS = '11' THEN '周末加班'
-                     WHEN ATNDSTATUS = '12' THEN '法定加班'
-                     WHEN ATNDSTATUS = '21' THEN '迟到'
-                     WHEN ATNDSTATUS = '22' THEN '漏打卡'
-                     WHEN ATNDSTATUS = '20' THEN '请假'
-                     WHEN ATNDSTATUS = '30' THEN '旷工'
-                  END         AS 类型
-                ,SUBSTR(T2.firstPunchtime,12) as  上班打卡时间
-                ,SUBSTR(T2.lastPunchtime,12 ) as  下班打卡时间
-                ,T2.cishu AS 打卡次数
-                ,BUSINESS_TRIPHOURS AS  出差
-                ,ORDINARY_OVERTIME AS  平时加班
-                ,HOLIDAY_OVERTIME AS 法定加班
-                ,WEEKEND_OVERTIME AS 周末加班
-                ,ABSENCE_HOURS AS 请假时数
-                ,CASE WHEN T2.cishu > 0 THEN 
-                   ORDINARY_OVERTIME + HOLIDAY_OVERTIME + WEEKEND_OVERTIME + 8 - ABSENCE_HOURS 
-                  ELSE  0  
-                 END         AS 标准出勤
+          SELECT  STATDATE AS 日期 
+            ,T1.deptname AS 部门
+            ,T1.empno  AS 工号
+            ,T1.empname AS 姓名
+            ,T1.scheduleType AS 排班
+            ,CASE WHEN ATNDSTATUS = '00' THEN '正常'
+                 WHEN ATNDSTATUS = '01' THEN '出差'
+                 WHEN ATNDSTATUS = '10' THEN '平时加班'
+                 WHEN ATNDSTATUS = '11' THEN '周末加班'
+                 WHEN ATNDSTATUS = '12' THEN '法定加班'
+                 WHEN ATNDSTATUS = '21' THEN '迟到'
+                 WHEN ATNDSTATUS = '22' THEN '漏打卡'
+                 WHEN ATNDSTATUS = '20' THEN '请假'
+                 WHEN ATNDSTATUS = '30' THEN '旷工'
+              END         AS 类型
+            ,CASE WHEN islate  = 1 THEN '是'
+                  WHEN islate = 0 THEN '否'
+              END              AS 是否迟到
+            ,T1.PUNCH_IN_TIME AS  上班打卡时间
+            ,T1.PUNCH_OUT_TIME AS  下班打卡时间
+            ,BUSINESS_TRIPHOURS AS  出差
+            ,ORDINARY_OVERTIME AS  平时加班
+            ,HOLIDAY_OVERTIME AS 法定加班
+            ,WEEKEND_OVERTIME AS 周末加班
+            ,ABSENCE_HOURS AS 请假时数
         FROM S_ATND_SUMMARY_SHEET T1  
-          LEFT JOIN ( 
-            SELECT LEFT(recordTime,10) AS dt  , empno 
-                 , MIN(recordTime) AS firstPunchtime
-                 , MAX(recordTime) AS lastPunchtime
-                 , COUNT(1) AS cishu 
-              FROM f_atnd_punch_record GROUP BY  LEFT(recordTime,10) , empno 
-          ) T2 ON T1.empno = T2.empno  AND T1.STATDATE = T2.dt  
-       --   WHERE T1.EMPNO = '@empno'
+          WHERE T1.STATDATE BETWEEN '2016-04-01' AND '2016-04-30'
+            AND T1.EMPNO = '@empno' 
      ]]>
     </sql-value>
   </sql-info>
@@ -55,8 +48,8 @@
       FROM (
             SELECT CUSTTP,IDNO,SUM(cast(char(APPLAMT) as bigint))/100  AS APPLAMT
               FROM EDW.F_FIN_SALEINFO
-             WHERE PRODSDATE <= '@date'
-               AND PRODEDATE > '@date'
+             WHERE PRODSDATE <= '@statdate'
+               AND PRODEDATE > '@statdate'
                AND REMVFLAG = '0'
                AND BACKFLAG = '0'
                AND CUSTSTATE = '1'
