@@ -170,9 +170,11 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
    * @return
    */
   private float calculateVacationWorkedHours(ScheduleTypeDict scheduleType , Date startPunchtime, Date endPunchtime) {
-    if(startPunchtime == null || endPunchtime == null ){
+    if(startPunchtime == null || endPunchtime == null || DateUtil.isSameDateTime(startPunchtime, endPunchtime) ){
       return 0 ;
     }
+    
+   
     
     // 上班时间之前  不计入 加班时数
     if(startPunchtime.before(scheduleType.getStartTime(startPunchtime))){
@@ -220,7 +222,7 @@ public class AtndMeasureServiceImp implements AtndMeasureService{
    * @return
    */
   private float calculateWorkdayOvertimeHours(ScheduleTypeDict scheduleType , Date startPunchtime, Date endPunchtime) {
-    if(startPunchtime == null || endPunchtime == null ){
+    if(startPunchtime == null || endPunchtime == null  || DateUtil.isSameDateTime(startPunchtime, endPunchtime) ){
       return 0 ;
     }
     
