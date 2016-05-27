@@ -71,7 +71,7 @@ public class CronJob {
     
     String tempFilePath = "D:/20160110.del"; 
 //    writeFile(tempFilePath, "D:/20160110.del");
-    jdbcHandler.exportCSV(tempFilePath, (char)44, sql);
+    jdbcHandler.exportCSV(tempFilePath, "GBK", (char)44, sql);
     
     
 //    try {
@@ -92,19 +92,17 @@ public class CronJob {
    }
   
 
-  public void exportData() {
+  public void exportDataForIntegralMall() {
     try {
       // UserAuthInfo userAuthinfo = new UserAuthInfo("32.137.32.41", 21,"sjxf", "sjxf");
 
-//      String sql = XmlSqlMapper.getInstance().getPreparedSQL("卡存款月积数");
 //      String sql = XmlSqlMapper.getInstance().getPreparedSQL("每旬理财");
       
 //      sql = sql.replaceAll("@statdate", DateUtil.getLastDayOfMonth("2016-04-01"));
-//      sql = sql.replaceAll("@statdate", "2016-04-30");
 //      Workbook workbook = jdbcHandler.exportExcel(sql);
 //      String tempFilePath = "D:/考勤2016-01-10.xlsx";
       
-//      sql = "SELECT T1.STATDATE     as  STATDATE " 
+//      String sql = "SELECT T1.STATDATE     as  STATDATE " 
 //        + ",T1.CLTNBR       as  CLTNBR "
 //        + ",T1.CLTNM      as  CLTNM "
 //        + ",'3206231987762x'   as  SA_CERT_ID "
@@ -112,13 +110,12 @@ public class CronJob {
 //        + ",T1.BRNNBR  as  BRNNBR "
 //        + " FROM EDW.S_DEP_SA_ACCOUNT_D           T1 "
 //        + " fetch first 10 rows only "  ;
-      
-      String sql = XmlSqlMapper.getInstance().getPreparedSQL("考勤");
-      sql = sql.replaceAll("@empno", "BI00194");
+      String sql = XmlSqlMapper.getInstance().getPreparedSQL("卡存款月积数");
+      sql = sql.replaceAll("@statdate", "2016-04-30");
       
       String tempFilePath = "D:/20160110.del"; 
 //      writeFile(tempFilePath, "D:/20160110.del");
-      jdbcHandler.exportCSV(tempFilePath, (char)44, sql);
+      jdbcHandler.exportCSV(tempFilePath , "GBK" , (char)44, sql);
       
       
 //      try {

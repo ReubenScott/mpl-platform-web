@@ -3,17 +3,18 @@
 
 <beans>
 
+  <!--通知-->
+  <bean id="beforeAdvice" class="com.soak.infoInquiry.AopAdvice"></bean>
 
-  <bean id="beforeAdvice" class="AOP.AopAdvice"></bean>
   <!--切面类 -->
-  <bean id="busiTarget" class="AOP.BusiImpl"></bean>
-  <!--业务实现 -->
+  <bean id="busiTarget" class="com.soak.infoInquiry.service.imp.SelfServiceImp"></bean>
 
+  <!--业务实现 -->
   <bean id="busiAop" class="org.springframework.aop.framework.ProxyFactoryBean">
     <!--代理类.调用的时候则是调用这个代理类 -->
     <property name="proxyInterfaces">
       <!--代理接口（业务类接口）-->
-      <value>AOP.BusiInterface</value>
+      <value>com.soak.infoInquiry.service.SelfService</value>
     </property>
     <property name="interceptorNames">
       <!--  通知   -->
@@ -27,14 +28,12 @@
     </property>
   </bean>
 
+  <!--切点-->
   <bean id="pointCut" class="org.springframework.aop.support.JdkRegexpMethodPointcut">
-    <!--切点-->
-    <property name="pattern" >
-        <value>.*doBusiTo</value>
-    </property>
-    
-    
     <!--需要对那些方法进行拦截-->
+    <property name="pattern">
+      <value>.*doBusiTo</value>
+    </property>
   </bean>
 
   <bean id="beforeAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
@@ -42,10 +41,10 @@
     <property name="advice">
       <ref bean="beforeAdvice" />
     </property>
-     <property name="pointcut">
+    <property name="pointcut">
       <ref bean="pointCut" />
     </property>
-    
+
   </bean>
 
 </beans>

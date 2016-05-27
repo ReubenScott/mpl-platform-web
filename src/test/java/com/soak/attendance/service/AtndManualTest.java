@@ -54,7 +54,10 @@ public class AtndManualTest {
 
   @Test
   public void testAtndmeasureTest() {
-    measureService.atndmeasureTest( "201604", "BI00371" , "BI00181");
+    measureService.atndmeasureTest( "201604", "BI00352" );
+//    measureService.atndmeasureTest( "201604", "BI00371" , "BI00181");
+    
+    
 //    BI00181
   /*  // 加班 请假 出差
     String sql = "SELECT emp.empNO , emp.empNAME ,dept.DEPTNAME FROM f_emp_info emp LEFT JOIN f_dept_info dept ON emp.deptid = dept.uid ";
