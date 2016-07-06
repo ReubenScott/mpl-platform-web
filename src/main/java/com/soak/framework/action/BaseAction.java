@@ -21,9 +21,9 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.soak.framework.listener.ApplicationListener;
 import com.soak.framework.util.BrowseTool;
 
 public abstract class BaseAction extends ActionSupport { // implements ICacheSupport, ModelDriven, Preparable
@@ -33,8 +33,6 @@ public abstract class BaseAction extends ActionSupport { // implements ICacheSup
   protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
   public static final String NOPERMISSION = "NoPermission";
-
-  public static ApplicationContext applicationContext;
 
   // protected IBasicService baseService;
 
@@ -68,7 +66,7 @@ public abstract class BaseAction extends ActionSupport { // implements ICacheSup
    */
   @SuppressWarnings("unchecked")
   public <T> T getBean(String beanName) {
-    return (T) applicationContext.getBean(beanName);
+    return (T) ApplicationListener.getBean(beanName);
   }
 
   /**

@@ -8,10 +8,11 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.struts2.ServletActionContext;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -146,9 +147,9 @@ public class SelfServiceAction extends BaseAction {
     
     // 创建JSONArray数组，并将json添加到数组
     JSONArray array = new JSONArray();
-    array.put(json);
-    array.put(json);
-    array.put(json);
+//    array.put(json);
+//    array.put(json);
+//    array.put(json);
     
     super.ajaxResponse(array.toString());
   }

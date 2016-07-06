@@ -2,6 +2,7 @@ package com.soak.attendance.model;
 
 import java.util.Date;
 
+import com.soak.framework.date.DateUtil;
 import com.soak.framework.orm.Column;
 import com.soak.framework.orm.Table;
 
@@ -250,5 +251,28 @@ public class AtndSummarySheet {
   }
 
   // get set **
+  
+
+  public Float getOverTime() {
+    Float overTime ;
+    switch(DateUtil.getWeek(statdate)){
+      case MONDAY    :
+      case TUESDAY   :
+      case WEDNESDAY :
+      case THURSDAY  :
+      case FRIDAY    :
+        overTime = getOrdinaryOvertime();
+        break ;
+      case SATURDAY  :
+      case SUNDAY    :
+        overTime = getWeekendOvertime();
+        break ;
+      default :
+        overTime = null ;
+    }
+    
+    return overTime ;
+  }
+
 
 }

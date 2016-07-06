@@ -20,9 +20,9 @@ public enum ScheduleTypeDict {
       return "13:00";
     }
   },  //默认白班
-  NIGHTSHIFT3   ( "夜班3", "N3", "17:00", "01:00"  ),
   NIGHTSHIFT1   ( "夜班1", "N1", "19:00", "03:00"  ), 
   NIGHTSHIFT2   ( "夜班2", "N2", "19:30", "03:30"  ),
+  NIGHTSHIFT3   ( "夜班3", "N3", "17:00", "01:00"  ),
   MORNINGSHIFT1 ( "早班1", "M1", "7:00" , "15:00"  ), 
   MORNINGSHIFT2 ( "早班2", "M2", "7:30" , "15:30"  ), 
   SWINGSHIFT1   ( "中班1", "S1", "15:00", "23:00"  ), 

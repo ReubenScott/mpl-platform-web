@@ -20,6 +20,15 @@ public class EmpInfo {
   private String deptId; // 部门编号
 
   private String deptName; // 部门编号
+  
+  
+  public EmpInfo(){
+    
+  }
+
+  public EmpInfo(String empNO){
+    this.empNO = empNO ;
+  }
 
   public String getEmpNO() {
     return empNO;

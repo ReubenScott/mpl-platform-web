@@ -12,7 +12,7 @@ public class ReportServiceImp extends BasicServiceImp implements IReportService 
     
     logger.debug("ReportServiceImp" , basicDao==null);
     
-    return this.basicDao.findByXmlSqlMapper(sqlName, value);
+    return this.basicDao.findByXmlSqlMapper(null,sqlName, value);
   }
   
   

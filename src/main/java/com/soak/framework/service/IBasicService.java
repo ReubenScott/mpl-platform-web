@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.apache.poi.ss.usermodel.Workbook;
 
+import com.soak.system.model.Menu;
+
 
 public interface IBasicService {
 
   // 查询用户菜单
-  public List findMenuByUser(String uid);
+  public List<Menu> findMenuByUser(String uid);
   
   
   // Excel 下载

@@ -7,29 +7,48 @@ import java.util.TimerTask;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import com.soak.framework.action.BaseAction;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import com.soak.etl.job.EtlJobImpl;
+import com.soak.framework.scheduler.SchedulerManager;
+
 
 public class ApplicationListener implements ServletContextListener {
 
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+  private static ApplicationContext applicationContext ;
+  
   private Timer timer;
 
   /**
    * web 应用 初始化操作
    */
   public void contextInitialized(ServletContextEvent event) {
-    logger.debug("ApplicationListener  :  contextInitialized   ....................");
-
+    
+//    String pwd = KeyedDigestMD5.getKeyedDigest(employeePass, "").toUpperCase();
     // Spring 上下文 初始化
     ServletContext context = event.getServletContext();
-    BaseAction.applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(context);
+    applicationContext = WebApplicationContextUtils.getWebApplicationContext(context);
 
-    this.schedule();
+    // 上下文初始化执行
+    logger.debug("================>[ServletContextListener]自动加载启动开始.");
+    // 读取Spring容器中的Bean[此时Bean已加载,可以使用]
+    logger.debug("================>[ServletContextListener]自动加载启动结束.");
+
+    SchedulerManager scheduler =  SchedulerManager.getInstance() ;
+    scheduler.putSchedule( new Thread() {
+      public void run() {
+        EtlJobImpl etljob  = new EtlJobImpl();
+        etljob.work();
+        logger.debug(" etljob work  ");
+      }
+     });
+
 
   }
 
@@ -70,11 +89,19 @@ public class ApplicationListener implements ServletContextListener {
    * web 应用 关闭
    */
   public void contextDestroyed(ServletContextEvent sce) {
-    BaseAction.applicationContext = null;
-
     logger.debug("ApplicationListener  :  contextDestroyed   ....................");
     if (timer != null) {
       timer.cancel();
     }
   }
+
+  public ApplicationContext getApplicationContext() {
+    return applicationContext;
+  }
+
+  public static <T> T getBean(String beanName) {
+    return (T) applicationContext.getBean(beanName);
+  }
+  
+  
 }

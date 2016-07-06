@@ -7,13 +7,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.soak.framework.dao.IBasicDao;
+import com.soak.framework.dao.imp.BasicDaoImp;
 import com.soak.framework.service.IBasicService;
+import com.soak.system.model.Menu;
 
 public class BasicServiceImp implements IBasicService {
 
   protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-  protected IBasicDao basicDao;
+  protected IBasicDao basicDao = new BasicDaoImp();
 
   public IBasicDao getBasicDao() {
     return basicDao;
@@ -31,15 +33,15 @@ public class BasicServiceImp implements IBasicService {
    * @param params
    */
   public Workbook createExcelBySQL(String title , String sql, Object... params) {
-    return  basicDao.exportExcel(title ,sql, params);
+    return  basicDao.exportExcel(null,title ,sql, params);
   }
 
   /**
    * 获取用户菜单
    */
-  public List findMenuByUser(String xml) {
-
-    return basicDao.findUserMenus("");
+  public List<Menu> findMenuByUser(String xml) {
+    Menu menu = new Menu();
+    return basicDao.findByAnnotatedSample(menu);
   }
 
 }
