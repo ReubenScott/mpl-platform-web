@@ -4,11 +4,11 @@ Ext.define("epl.view.MainLayout",{
     layout:'border',
 	defaults:{
 		split:true,
-		bodyStyle:'padding:1px'
+        autoScroll:true, 
 	},
     requires : [ 
         'epl.view.Header', 
-        'epl.view.MenuTree', 
+        'epl.system.view.MenuTree', 
         'epl.view.TabPanel', 
         'epl.view.South' 
     ], 

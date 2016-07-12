@@ -7,7 +7,7 @@
 		各模块xml配置在此添加...
 	 ============================================ -->
   <import resource="modules/framework-bean.xml" />
-  <import resource="modules/report-bean.xml" />
+  <import resource="modules/module-bean.xml" />
 
 
   <!-- 定时调度任务   -->
@@ -30,4 +30,6 @@
 	 ======================================= -->
 
 
+
+    
 </beans>

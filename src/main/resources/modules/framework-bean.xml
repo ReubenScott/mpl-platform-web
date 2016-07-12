@@ -4,9 +4,9 @@
 <beans>
   <description>该spring 配置文件，主要维护系统框架的bean信息</description>
 
-  <bean id="jdbcHandler" class="com.soak.framework.jdbc.JdbcHandler" init-method="getInstance" />
+  <bean id="jdbcHandler" class="com.soak.framework.jdbc.JdbcHandler" init-method="getInstance" lazy-init="false"/>
 
-  <bean id="basicDao" class="com.soak.framework.dao.imp.BasicDaoImp" lazy-init="true">
+  <bean id="basicDao" class="com.soak.framework.dao.imp.BasicDaoImp" lazy-init="false">
     <property name="jdbcHandler">
       <ref bean="jdbcHandler" />
     </property>

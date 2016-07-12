@@ -1,0 +1,1 @@
+Ext.define('epl.attnd.model.PunchRecord', {	extend: 'Ext.data.Model',     fields: [               {name: 'uid', type: 'string'},              {name: 'seqno', type: 'string', mapping: 'seqno'},              'cardID','empno','empname', 'deptname','punchTime'             ]});

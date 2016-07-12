@@ -43,9 +43,9 @@ public class ApplicationListener implements ServletContextListener {
     SchedulerManager scheduler =  SchedulerManager.getInstance() ;
     scheduler.putSchedule( new Thread() {
       public void run() {
-        EtlJobImpl etljob  = new EtlJobImpl();
-        etljob.work();
-        logger.debug(" etljob work  ");
+//        EtlJobImpl etljob  = new EtlJobImpl();
+//        etljob.work();
+//        logger.debug(" etljob work  ");
       }
      });
 

@@ -4,19 +4,19 @@
 <beans>
 
   <!-- 工作的bean -->
-  <bean id="cronJob" class="com.soak.framework.jobs.CronJob" >
-    <property name="jdbcHandler">
-      <ref bean="jdbcHandler" />
+  <bean id="cronJob" class="com.soak.framework.jobs.CronJob">
+    <property name="basicDao">
+      <ref bean="basicDao" />
     </property>
-   </bean> 
+  </bean>
 
   <!-- job的配置开始 -->
   <bean id="jd" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-    <!-- 要执行的bean名称 -->  
+    <!-- 要执行的bean名称 -->
     <property name="targetObject">
       <ref bean="cronJob" />
     </property>
-    <!-- 要执行的方法名称 -->  
+    <!-- 要执行的方法名称 -->
     <property name="targetMethod">
       <value>test</value>
     </property>
@@ -24,6 +24,21 @@
       <value>false</value>
     </property>
   </bean>
+
+  <bean id="exportJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <!-- 要执行的bean名称 -->
+    <property name="targetObject">
+      <ref bean="cronJob" />
+    </property>
+    <!-- 要执行的方法名称 -->
+    <property name="targetMethod">
+      <value>exportDataForIntegralMall</value>
+    </property>
+    <property name="concurrent">
+      <value>false</value>
+    </property>
+  </bean>
+
   <!-- job的配置结束 -->
 
   <!-- 触发器   开始 -->
@@ -32,7 +47,17 @@
       <ref bean="jd" />
     </property>
     <property name="cronExpression">
-      <value>0 0/1 * * * ?</value> 
+      <value>0 * * * * ?</value>
+    </property>
+  </bean>
+
+  <bean id="exportJobTrig" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    <property name="jobDetail">
+      <ref bean="exportJob" />
+    </property>
+    <property name="cronExpression">
+      <!-- 每月1号的 23 ：15触发     0 15 23 1 * ?   -->
+      <value>0 0 18,20,22 * * ?</value>
     </property>
   </bean>
   <!-- 触发器  结束 -->
@@ -46,11 +71,11 @@
     <property name="triggers">
       <list>
         <ref bean="mytrig" />
+        <ref bean="exportJobTrig" />
       </list>
     </property>
   </bean>
   <!-- 启动触发器的配置结束 -->
-
 
 
 

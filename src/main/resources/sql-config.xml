@@ -1,7 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <sql>
-
+          
+  <sql-info>
+    <sql-name>考勤汇总</sql-name>
+    <sql-value><![CDATA[
+        SELECT  STATDATE AS STATDATE
+            ,T1.deptname AS DEPTNAME
+            ,T1.empno  AS EMPNO
+            ,T1.empname AS EMPNAME
+            ,T1.scheduleType AS SCHEDULETYPE
+            ,T1.ATNDSTATUS    AS ATNDSTATUS
+            ,islate          AS ISLATE
+            ,T1.PUNCH_IN_TIME AS  PUNCHINTIME
+            ,T1.PUNCH_OUT_TIME AS  PUNCHOUTTIME
+            ,BUSINESS_TRIPHOURS AS  BUSINESSTRIP
+            ,ORDINARY_OVERTIME AS  ORDINARYOVERTIME
+            ,WEEKEND_OVERTIME AS WEEKENDOVERTIME
+            ,HOLIDAY_OVERTIME AS HOLIDAYOVERTIME
+            ,ABSENCE_HOURS AS ABSENCE
+        FROM S_ATND_SUMMARY_SHEET T1  
+          WHERE T1.STATDATE BETWEEN '2016-06-01' AND '2016-06-30'
+           AND empno = '@empno' 
+        order by STATDATE asc
+     ]]>
+    </sql-value>
+  </sql-info>
+          
+          
   <sql-info>
     <sql-name>考勤</sql-name>
     <sql-value><![CDATA[
@@ -31,8 +57,8 @@
             ,WEEKEND_OVERTIME AS 周末加班
             ,ABSENCE_HOURS AS 请假时数
         FROM S_ATND_SUMMARY_SHEET T1  
-          WHERE T1.STATDATE BETWEEN '2016-04-01' AND '2016-04-30'
-            AND T1.EMPNO = '@empno' 
+          WHERE T1.STATDATE BETWEEN '2016-06-01' AND '2016-06-30'
+          --  AND T1.EMPNO = '@empno' 
      ]]>
     </sql-value>
   </sql-info>

@@ -1,5 +1,8 @@
 package com.soak.system.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.soak.framework.orm.Column;
 import com.soak.framework.orm.Table;
 
@@ -10,11 +13,11 @@ import com.soak.framework.orm.Table;
  * @author reuben
  * 
  */
-@Table(schema="bioffice", name = "sys_menu", pk = "sid")
+@Table(name = "sys_menu", pk = "sid")
 public class Menu {
 
   @Column(name = "sid")
-  private String uid; // 主键
+  private String sid; // 主键
 
   @Column(name = "menu_type")
   private String menuType; // 菜单类型 varchar(255)
@@ -43,12 +46,17 @@ public class Menu {
 //  @Column(name = "del_flag")
   private Boolean isDelete; // bigint(20)
 
-  public String getUid() {
-    return uid;
+  // 子菜单
+  private Set<Menu> children = new HashSet<Menu>();
+
+  private Boolean leaf ; //  是否叶子节点   true ： 叶子节点（无子菜单）  ， false 有子菜单
+
+  public String getSid() {
+    return sid;
   }
 
-  public void setUid(String uid) {
-    this.uid = uid;
+  public void setSid(String sid) {
+    this.sid = sid;
   }
 
   public String getMenuType() {
@@ -122,5 +130,20 @@ public class Menu {
   public void setIsDelete(Boolean isDelete) {
     this.isDelete = isDelete;
   }
+
+  public Set<Menu> getChildren() {
+    return children;
+  }
+
+  public void setChildren(Set<Menu> children) {
+    this.children = children;
+  }
+
+  public Boolean getLeaf() {
+    return  children==null || children.size() == 0 ? true : false ;
+  }
+
+  
+  
 
 }

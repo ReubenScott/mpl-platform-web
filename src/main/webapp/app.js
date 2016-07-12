@@ -6,7 +6,7 @@ Ext.onReady(function(){
 	Ext.application({
 		name : 'epl',
 		appFolder : "app", //指定根目录
-		launch:function(){
+		launch:function(){  // 当前页面加载完成执行函数
 	        Ext.create('Ext.container.Viewport', {
 			    layout: 'fit', 
 			    hideBorders: true, 
@@ -16,8 +16,9 @@ Ext.onReady(function(){
 	        });
 		},
 		controllers:[
-			'MenuController',
-			'XDBLController'
+			'epl.system.controller.MenuController',
+			'XDBLController',
+			'epl.attnd.controller.PunchRecordController'
 		]
 	});
 })

@@ -4,8 +4,11 @@
 <beans>
   <bean id="reportService" class="com.soak.edw.report.service.imp.ReportServiceImp" parent="basicService"  lazy-init="true" />
   
-  
   <bean id="infoService" class="com.soak.infoRecod.service.imp.InfoServiceImp" lazy-init="true" />
+  
+  <bean id="atndMeasureService" class="com.soak.attendance.service.imp.AtndMeasureServiceImp" lazy-init="true" />
+  
+  <bean id="sysMangerService" class="com.soak.system.service.imp.SysManageServiceImp" parent="basicService" lazy-init="true" />
   
   
 </beans>

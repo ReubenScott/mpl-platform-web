@@ -42,10 +42,10 @@ public class AtndMeasureAction extends BaseAction {
    * 获取打卡记录
    */
   public void punchRecord() {
-    Date startDate = DateUtil.parseShortDate("2016-04-03");
-    Date endDate = DateUtil.parseShortDate("2016-04-06");
+    Date startDate = DateUtil.parseShortDate("2016-01-03");
+    Date endDate = DateUtil.parseShortDate("2016-11-06");
     
-    List<PunchRecord>  punchRecords = atndMeasureService.queryPunchRecords("BI00124",startDate,endDate);
+    List<PunchRecord>  punchRecords = atndMeasureService.queryPunchRecords("BI00002",startDate,endDate);
     
     // 定义JSON字符串
 //    String jsonStr = "{\"id\": 2," + " \"title\": \"json title\", " + "\"config\": {" + "\"width\": 34," + "\"height\": 35," + "}, \"data\": ["

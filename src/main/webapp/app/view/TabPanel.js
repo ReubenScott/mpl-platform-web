@@ -1,13 +1,14 @@
 Ext.define('epl.view.TabPanel',{ 
     extend: 'Ext.tab.Panel', 
     alias: 'widget.center',
+
     initComponent : function(){ 
         Ext.apply(this,{ 
             id: 'content-panel', 
             region: 'center',  
             defaults: { 
                autoScroll:true, 
-               bodyPadding: 10 
+               frame:true,
             }, 
             activeTab: 0, 
             border: false, 

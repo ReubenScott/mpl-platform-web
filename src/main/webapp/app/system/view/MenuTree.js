@@ -1,7 +1,8 @@
-Ext.define('epl.view.MenuTree',{ 
+Ext.define('epl.system.view.MenuTree',{ 
     extend: 'Ext.tree.Panel', 
     alias: 'widget.menuTree',
-    requires:['epl.store.MenuStore'], 
+    requires:['epl.system.store.MenuStore'], 
+    
     initComponent : function(){ 
         Ext.apply(this,{ 
             id: 'menu-panel', 
@@ -19,7 +20,7 @@ Ext.define('epl.view.MenuTree',{
             containerScroll : true, 
             collapsible : true, 
             autoScroll: false,
-            store:Ext.create('epl.store.MenuStore')
+            store:Ext.create('epl.system.store.MenuStore')
         }); 
         this.callParent(arguments); 
     } 

@@ -3,7 +3,6 @@
 
 <struts>
 
-
   <!-- commons -->
   <package name="commons" namespace="/commons" extends="soak-default">
     <!-- 校验码图片 -->
@@ -15,10 +14,10 @@
       </result>
     </action>
   </package>
-  
-  <package name="System" namespace="/System" extends="soak-default">
+
+  <package name="system" namespace="/system" extends="soak-default">
     <default-interceptor-ref name="paramsPrepareParamsStack" />
-    <action name="*/*" class="org.soak.system.action.{1}Action" method="{2}">
+    <action name="*/*" class="com.soak.system.action.{1}Action" method="{2}">
       <result name="list">/System/{1}/list.jsp</result>
       <result name="addrBook">/System/{1}/addrBook.jsp</result>
       <result name="edit">/System/{1}/edit.jsp</result>
@@ -26,6 +25,39 @@
       <result name="editPassword">/System/{1}/editPassword.jsp</result>
       <result name="view">/System/{1}/view.jsp</result>
       <result name="webconfig">/System/UserManage/webconfig/webconfig.jsp</result>
+    </action>
+  </package>
+
+
+  <!--  考勤系统     -->
+  <package name="attendance" namespace="/attendance" extends="soak-default">
+    <default-interceptor-ref name="paramsPrepareParamsStack" />
+    <action name="*/*" class="com.soak.attendance.action.{1}Action" method="{2}">
+      <result name="list">/{1}/list.jsp</result>
+    </action>
+  </package>
+
+  <!--  report  -->
+  <package name="report" namespace="/report" extends="soak-default">
+    <default-interceptor-ref name="paramsPrepareParamsStack" />
+    <action name="*/*" class="com.soak.edw.report.action.{1}Action" method="{2}">
+      <result name="list">/{1}/list.jsp</result>
+    </action>
+  </package>
+  
+  <!--    以下  使用  / 无效     -->
+
+  <package name="self-service" namespace="/self-service" extends="soak-default">
+    <default-interceptor-ref name="paramsPrepareParamsStack" />
+    <action name="*/*" class="com.soak.edw.selfService.action.{1}Action" method="{2}">
+      <result name="list">/{1}/list.jsp</result>
+    </action>
+  </package>
+
+  <package name="inforecod" namespace="/inforecod" extends="soak-default">
+    <default-interceptor-ref name="paramsPrepareParamsStack" />
+    <action name="*/*" class="com.soak.infoRecod.action.{1}Action" method="{2}">
+      <result name="list">/{1}/list.jsp</result>
     </action>
   </package>
 
@@ -49,12 +81,8 @@
       </interceptor-ref>
     </action>
   </package>
-
-
-
-
-
-
+  
+  
   <package name="Capital" namespace="/Capital" extends="soak-default">
     <default-interceptor-ref name="paramsPrepareParamsStack" />
     <action name="*/*" class="org.soak.capital.web.{1}Action" method="{2}">
@@ -85,8 +113,6 @@
   </package>
 
 
-
-
   <package name="Login" namespace="/" extends="soak-default">
     <default-interceptor-ref name="paramsPrepareParamsStack" />
     <action name="*/*" class="org.soak.system.web.{1}Action" method="{2}">
@@ -95,17 +121,6 @@
       <result name="menu">/menu.jsp</result>
     </action>
   </package>
-  
-  <package name="Personal" namespace="/Personal" extends="soak-default">
-    <default-interceptor-ref name="paramsPrepareParamsStack" />
-    <action name="*/*" class="org.soak.personal.web.{1}Action" method="{2}">
-      <result name="draft">/Personal/{1}/draft.jsp</result>
-      <result name="send">/Personal/{1}/send.jsp</result>
-      <result name="receive">/Personal/{1}/receive.jsp</result>
-      <result name="edit">/Personal/{1}/edit.jsp</result>
-      <result name="list">/Personal/{1}/list.jsp</result>
-      <result name="view">/Personal/{1}/view.jsp</result>
-    </action>
-  </package>
-  
+
+
 </struts>
