@@ -1,45 +1,45 @@
 package com.soak.attendance.model;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 import com.soak.framework.orm.Column;
 import com.soak.framework.orm.Table;
 
 /***
- *  打卡记录
- *
+ * 打卡记录
+ * 
  */
 @Table(name = "f_atnd_punch_record", pk = "uid")
 public class PunchRecord {
 
   @Column(name = "uid")
-  private String uid ;  // 
+  private String uid; // 
 
   @Column(name = "SEQNO")
-  private String seqno ;  // 
+  private String seqno; // 
 
   @Column(name = "card_ID")
-  private String cardID ;  // 
-  
+  private String cardID; // 
+
   @Column(name = "empno")
-  private String empno ;  // 
+  private String empno; // 
 
   @Column(name = "empname")
-  private String empname ;  // 
+  private String empname; // 
 
   @Column(name = "deptname")
-  private String deptname ;  // varchar(10)
+  private String deptname; // varchar(10)
 
   @Column(name = "recordTime")
-  private Date punchTime ;   // 打卡时间
+  private Timestamp punchTime; // 打卡时间
 
   @Column(name = "location")
-  private String location ;   // 开始时间
+  private String location; // 开始时间
 
-  private Boolean state ;   // tinyint(1)0:通过,1:不通过;
+  private Boolean state; // tinyint(1)0:通过,1:不通过;
 
   @Column(name = "remark")
-  private String remark ;  // 描述
+  private String remark; // 描述
 
   public String getUid() {
     return uid;
@@ -89,11 +89,11 @@ public class PunchRecord {
     this.deptname = deptname;
   }
 
-  public Date getPunchTime() {
+  public Timestamp getPunchTime() {
     return punchTime;
   }
 
-  public void setPunchTime(Date punchTime) {
+  public void setPunchTime(Timestamp punchTime) {
     this.punchTime = punchTime;
   }
 
@@ -120,9 +120,5 @@ public class PunchRecord {
   public void setRemark(String remark) {
     this.remark = remark;
   }
-  
-  
+
 }
-
-
-
