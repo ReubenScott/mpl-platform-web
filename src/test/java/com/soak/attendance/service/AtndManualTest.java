@@ -42,7 +42,7 @@ public class AtndManualTest {
     jdbc = JdbcHandler.getInstance();
   }
 
-//  @Test // 第一步导入打卡数据
+  @Test // 第一步导入打卡数据
   public void testloadPunchRecord() {
     measureService.loadPunchRecord("E:/考勤/刷卡记录/");
   }
@@ -114,8 +114,7 @@ public class AtndManualTest {
     }
   }
 
-  @Test
-  // 导出汇总表
+//  @Test   // 导出汇总表
   public void testExecuteHuizong() {
     String filename = "D:/未命名.xlsx";// 设置下载时客户端Excel的名称
     //
