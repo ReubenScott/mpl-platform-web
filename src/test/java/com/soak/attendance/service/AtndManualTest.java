@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.poi.hssf.util.Region;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -16,7 +15,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,7 +40,7 @@ public class AtndManualTest {
     jdbc = JdbcHandler.getInstance();
   }
 
-  @Test // 第一步导入打卡数据
+//  @Test // 第一步导入打卡数据
   public void testloadPunchRecord() {
     measureService.loadPunchRecord("E:/考勤/刷卡记录/");
   }
@@ -54,21 +52,21 @@ public class AtndManualTest {
     }
   }
 
-//   @Test
+//  @Test   // 第二步： 导入 请假单，出差单，加班单
   public void testloadAtndManualApplicationForm() {
     // String filePath = "E:/考勤/201605/5月份请假单，出差单，加班单1.xlsx";
     // String filePath = "E:/考勤/201605/5月份出差单.xlsx";
-    String filePath = "E:/考勤/201606/请假单，出差单，加班单——6月份.xlsx";
+    String filePath = "E:/考勤/请假单，出差单，加班单.xlsx";
 
-//     measureService.loadOvertimeWorkApplicationForm(filePath);
-//     measureService.loadBusinessTripApplicationForm(filePath);
-//    measureService.loadOffWorkApplicationForm(filePath);
+    measureService.loadOvertimeWorkApplicationForm(filePath);
+    measureService.loadOffWorkApplicationForm(filePath);
+    measureService.loadBusinessTripApplicationForm(filePath);
 
   }
 
-//   @Test
+//  @Test  // 第三步： 考勤统计
   public void testAtndmeasureTest() {
-    measureService.atndmeasureTest("201606");
+    measureService.atndmeasureTest("201607");
     // measureService.atndmeasureTest( "201605", "BI00352" );
     // measureService.atndmeasureTest( "201604", "BI00371" , "BI00181");
 
@@ -92,31 +90,9 @@ public class AtndManualTest {
 
   }
 
-//   @Test
-  public void testExecuteMingxi() {
-    String sql = XmlSqlMapper.getInstance().getPreparedSQL("考勤");
-    // sql = sql.replaceAll("@empno", "BI00327");
-
-    JdbcHandler jdbc = JdbcHandler.getInstance();
-    Workbook workbook = jdbc.exportExcel(null, sql);
-    String tempFilePath = "D:/考勤201606.xlsx";
-
-    FileOutputStream fos;
-    try {
-      fos = new FileOutputStream(new File(tempFilePath));
-      workbook.write(fos);
-      fos.flush();
-      fos.close();
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-//  @Test   // 导出汇总表
+  @Test   // 导出汇总表
   public void testExecuteHuizong() {
-    String filename = "D:/未命名.xlsx";// 设置下载时客户端Excel的名称
+    String filename = "D:/考情汇总表.xlsx";// 设置下载时客户端Excel的名称
     //
     
 //    Workbook workbook = new HSSFWorkbook();// 创建一个Excel文件 2003
@@ -160,9 +136,8 @@ public class AtndManualTest {
 //    centerstyle.setFillForegroundColor(XSSFColor.WHITE.index);// 设置单元格的背景颜色．
 
     try {
-      
       // 获取本月天数
-      String yyyyMM = "201606";
+      String yyyyMM = "201607";
       String year = yyyyMM.substring(0, 4);
       String mm = yyyyMM.substring(4);
       Date startDate = DateUtil.parseShortDate(year + "-" + mm + "-" + "01"); // 月初
@@ -293,6 +268,12 @@ public class AtndManualTest {
 
            cell = dataRow2.createCell(k); // 加班
            if(summarySheet.getOverTime()!=null){
+             
+             if(summarySheet.getEmpname().equals("黄锋锋")){
+               System.out.println(summarySheet.getOverTime());
+             }
+             
+             
              cell.setCellValue(summarySheet.getOverTime());
            }
            cell.setCellStyle(ordinaryCellStyle);
@@ -321,4 +302,29 @@ public class AtndManualTest {
       e.printStackTrace();
     }
   }
+  
+  
+
+  //@Test
+  public void testExecuteMingxi() {
+   String sql = XmlSqlMapper.getInstance().getPreparedSQL("考勤");
+   // sql = sql.replaceAll("@empno", "BI00327");
+  
+   JdbcHandler jdbc = JdbcHandler.getInstance();
+   Workbook workbook = jdbc.exportExcel(null, sql);
+   String tempFilePath = "D:/考勤201606.xlsx";
+  
+   FileOutputStream fos;
+   try {
+     fos = new FileOutputStream(new File(tempFilePath));
+     workbook.write(fos);
+     fos.flush();
+     fos.close();
+   } catch (FileNotFoundException e) {
+     e.printStackTrace();
+   } catch (IOException e) {
+     e.printStackTrace();
+   }
+  }
+
 }

@@ -11,13 +11,34 @@ import com.soak.framework.util.StringUtil;
  */
 public enum ScheduleTypeDict {
   
-  DAYSHIFT      ( "白班",  "D" , "7:30" , "17:00"  ){
+//  DAYSHIFT      ( "白班",  "D" , "7:30" , "17:00"  ){
+//    public String getRestPeriodStart(){
+//      return "11:30";
+//    }
+//    
+//    public String getRestPeriodEnd(){
+//      return "13:00";
+//    }
+//  },  //默认白班
+//  NIGHTSHIFT1   ( "夜班1", "N1", "19:00", "03:00"  ), 
+//  NIGHTSHIFT2   ( "夜班2", "N2", "19:30", "03:30"  ),
+//  NIGHTSHIFT3   ( "夜班3", "N3", "17:00", "01:00"  ),
+//  MORNINGSHIFT1 ( "早班1", "M1", "7:00" , "15:00"  ), 
+//  MORNINGSHIFT2 ( "早班2", "M2", "7:30" , "15:30"  ), 
+//  SWINGSHIFT1   ( "中班1", "S1", "15:00", "23:00"  ), 
+//  SWINGSHIFT2   ( "中班2", "S2", "15:30", "23:30"  ), 
+//  EVENINGSHIFT1 ( "晚班1", "E1", "23:00", "7:00"   ), 
+//  EVENINGSHIFT2 ( "晚班2", "E2", "23:30", "7:30"   ), 
+//  ;
+
+
+  DAYSHIFT      ( "白班",  "D" , "7:00" , "18:00"  ){
     public String getRestPeriodStart(){
       return "11:30";
     }
     
     public String getRestPeriodEnd(){
-      return "13:00";
+      return "14:00";
     }
   },  //默认白班
   NIGHTSHIFT1   ( "夜班1", "N1", "19:00", "03:00"  ), 
@@ -30,7 +51,6 @@ public enum ScheduleTypeDict {
   EVENINGSHIFT1 ( "晚班1", "E1", "23:00", "7:00"   ), 
   EVENINGSHIFT2 ( "晚班2", "E2", "23:30", "7:30"   ), 
   ;
-   
    
   // 成员变量
   private String name;   

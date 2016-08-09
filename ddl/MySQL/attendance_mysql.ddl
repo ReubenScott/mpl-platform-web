@@ -68,7 +68,7 @@ CREATE TABLE atnd_schedule (
   ETL_DT              VARCHAR(10)  ,
     
   PRIMARY KEY(STATDATE,EMPNO)
-) ENGINE=INNODB DEFAULT CHARSET=utf8 ;
+) ENGINE=INNODB DEFAULT CHARSET = UTF8 ;
 
 
 
@@ -219,7 +219,16 @@ CREATE TABLE S_ATND_SUMMARY_SHEET (
  ) ENGINE=INNODB DEFAULT CHARSET=UTF8  ;    
  
 
- 
+-- 添加 新员工
+INSERT INTO f_emp_info (empno ,empname)
+SELECT DISTINCT empno , empname 
+  FROM f_atnd_punch_record A
+  WHERE A.empno LIKE 'BI%'  
+    AND NOT EXISTS (
+		  SELECT 1 FROM f_emp_info B
+		    WHERE A.empno= B.empno
+    )
+  ;
 
 -- 1. 员工信息 校验  维护 
 SELECT * FROM f_emp_info WHERE empno IS NULL
