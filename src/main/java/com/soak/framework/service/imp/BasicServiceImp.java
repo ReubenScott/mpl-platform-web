@@ -1,5 +1,6 @@
-package com.soak.framework.service.Imp;
+package com.soak.framework.service.imp;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Workbook;
@@ -44,4 +45,23 @@ public class BasicServiceImp implements IBasicService {
     return basicDao.findByAnnotatedSample(menu);
   }
 
+  
+  /**
+   * 
+   * @param sid
+   */
+  public void deleteEntityBySID(Serializable sid) {
+    // TODO Auto-generated method stub
+
+  }
+  
+  /**
+   * 
+   * @param sid
+   */
+  public boolean deleteAnnotatedEntity(Object annoEntity){
+    return basicDao.deleteAnnotatedEntity(annoEntity);
+  }
+  
+  
 }

@@ -1,19 +1,19 @@
 Ext.define("epl.view.MainLayout",{
 	extend:'Ext.panel.Panel',
 	alias:'widget.mainlayout',
-    layout:'border',
+  layout:'border',
 	defaults:{
 		split:true,
-        autoScroll:true, 
+    autoScroll:true
 	},
-    requires : [ 
-        'epl.view.Header', 
-        'epl.system.view.MenuTree', 
-        'epl.view.TabPanel', 
-        'epl.view.South' 
-    ], 
-    items:[{xtype:'north'},{xtype:'center'},{xtype:'menuTree'},{xtype:'south'}],
-    initComponent: function() {
+  requires : [ 
+      'epl.view.Header', 
+      'epl.system.view.MenuTree', 
+      'epl.view.TabPanel', 
+      'epl.view.South' 
+  ], 
+  items:[{xtype:'north'},{xtype:'center'},{xtype:'menuTree'},{xtype:'south'}],
+  initComponent: function() {
 //        var soup = {
 //            contents: [],
 //            add: function(ingredient) {
@@ -29,6 +29,6 @@ Ext.define("epl.view.MainLayout",{
 //        soup.add("water");
 //        soup.add("onions");
 //       alert( soup.contents)
-        this.callParent();
-    }
+      this.callParent();
+  }
 });

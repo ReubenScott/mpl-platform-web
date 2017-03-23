@@ -130,6 +130,44 @@
       <groupId>com.soak</groupId>
       <artifactId>etl</artifactId>
     </dependency>
+    
+    
+    <!-- DB Driver Start  -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+    </dependency>
+
+    <!-- DB Driver End  -->
+      
+    <!-- excel start -->
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi-ooxml</artifactId>
+    </dependency>
+    <!-- excel end -->
+    
+    <!-- logback+slf4j start -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.janino</groupId>
+      <artifactId>janino</artifactId>
+    </dependency>
+    <!-- logback+slf4j  end  -->
+    
 
     <!--  Spring  -->
     <dependency>

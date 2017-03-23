@@ -6,7 +6,7 @@ Ext.define('epl.system.view.MenuTree',{
     initComponent : function(){ 
         Ext.apply(this,{ 
             id: 'menu-panel', 
-            title: '系统菜单', 
+            title: '系统导航', 
             iconCls:'icon-menu', 
             margins : '0 0 -1 1', 
             region:'west', 

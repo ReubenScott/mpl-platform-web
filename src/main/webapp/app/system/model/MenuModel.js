@@ -4,14 +4,15 @@ Ext.define('epl.system.model.MenuModel', {
     fields: [
               {name: 'sid',  type: 'string' },
               {name: 'text', type: 'string'  , mapping: 'menuName'},
-              {name: 'parent_id',  type: 'string' },
+              {name: 'pid',  type: 'string' },
               {name: 'leaf',  type: 'boolean'},    
-              'menuType'
-              ,'orderNum'
-              ,'url'
-              ,'expanded'
-              ,'iconUrl'
-              ,'isDelete',
+              'menuType',
+              'orderNum',
+              'url',
+              {name: 'xtype', type: 'string' , mapping: 'xtype' },
+              'expanded',
+              'iconUrl',
+              'isDelete',
               {name: 'menuLevel', type: 'int'},
               'menuEvent'
               

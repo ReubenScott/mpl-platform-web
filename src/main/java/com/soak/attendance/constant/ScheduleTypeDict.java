@@ -1,8 +1,10 @@
 package com.soak.attendance.constant;
 
 import java.util.Date;
+import java.util.Map;
 
 import com.soak.framework.date.DateUtil;
+import com.soak.framework.jdbc.JdbcHandler;
 import com.soak.framework.util.StringUtil;
 
 /**
@@ -17,12 +19,12 @@ public enum ScheduleTypeDict {
 //    }
 //    
 //    public String getRestPeriodEnd(){
-//      return "13:00";
+//      return "14:00";
 //    }
 //  },  //默认白班
-//  NIGHTSHIFT1   ( "夜班1", "N1", "19:00", "03:00"  ), 
-//  NIGHTSHIFT2   ( "夜班2", "N2", "19:30", "03:30"  ),
-//  NIGHTSHIFT3   ( "夜班3", "N3", "17:00", "01:00"  ),
+//  NIGHTSHIFT1   ( "夜班1", "N1", "17:00", "01:00"  ), // 白班后接的夜班
+//  NIGHTSHIFT2   ( "夜班2", "N2", "19:00", "03:00"  ),
+//  NIGHTSHIFT3   ( "夜班3", "N3", "19:30", "03:30"  ),
 //  MORNINGSHIFT1 ( "早班1", "M1", "7:00" , "15:00"  ), 
 //  MORNINGSHIFT2 ( "早班2", "M2", "7:30" , "15:30"  ), 
 //  SWINGSHIFT1   ( "中班1", "S1", "15:00", "23:00"  ), 
@@ -30,26 +32,25 @@ public enum ScheduleTypeDict {
 //  EVENINGSHIFT1 ( "晚班1", "E1", "23:00", "7:00"   ), 
 //  EVENINGSHIFT2 ( "晚班2", "E2", "23:30", "7:30"   ), 
 //  ;
-
-
-  DAYSHIFT      ( "白班",  "D" , "7:00" , "18:00"  ){
+  
+  DAYSHIFT      ( "白班",  "D"   ){
     public String getRestPeriodStart(){
       return "11:30";
     }
     
     public String getRestPeriodEnd(){
-      return "14:00";
+      return "13:00";
     }
   },  //默认白班
-  NIGHTSHIFT1   ( "夜班1", "N1", "19:00", "03:00"  ), 
-  NIGHTSHIFT2   ( "夜班2", "N2", "19:30", "03:30"  ),
-  NIGHTSHIFT3   ( "夜班3", "N3", "17:00", "01:00"  ),
-  MORNINGSHIFT1 ( "早班1", "M1", "7:00" , "15:00"  ), 
-  MORNINGSHIFT2 ( "早班2", "M2", "7:30" , "15:30"  ), 
-  SWINGSHIFT1   ( "中班1", "S1", "15:00", "23:00"  ), 
-  SWINGSHIFT2   ( "中班2", "S2", "15:30", "23:30"  ), 
-  EVENINGSHIFT1 ( "晚班1", "E1", "23:00", "7:00"   ), 
-  EVENINGSHIFT2 ( "晚班2", "E2", "23:30", "7:30"   ), 
+  NIGHTSHIFT1   ( "夜班1", "N1" ), 
+  NIGHTSHIFT2   ( "夜班2", "N2" ),
+  NIGHTSHIFT3   ( "夜班3", "N3" ),
+  MORNINGSHIFT1 ( "早班1", "M1" ), 
+  MORNINGSHIFT2 ( "早班2", "M2" ), 
+  SWINGSHIFT1   ( "中班1", "S1" ), 
+  SWINGSHIFT2   ( "中班2", "S2" ), 
+  EVENINGSHIFT1 ( "晚班1", "E1" ), 
+  EVENINGSHIFT2 ( "晚班2", "E2" ), 
   ;
    
   // 成员变量
@@ -57,6 +58,9 @@ public enum ScheduleTypeDict {
   private String value;
   private String startTime;
   private String endTime;
+  private String restPeriodStart;
+  private String restPeriodEnd;
+  
 
   // 构造方法，注意：构造方法不能为public，因为enum并不可以被实例化
   private ScheduleTypeDict(String name, String value , String startTime, String endTime) {
@@ -65,14 +69,35 @@ public enum ScheduleTypeDict {
     this.startTime = startTime;
     this.endTime = endTime;
   }
+  
+  // 构造方法，注意：构造方法不能为public，因为enum并不可以被实例化
+  private ScheduleTypeDict(String name, String value ) {
+    this.name = name;
+    this.value = value;
+    JdbcHandler jdbcHandler = JdbcHandler.getInstance();
+//    String sql = "SELECT MIN(starttime) AS starttime , MAX(endtime) AS endtime FROM dim_scheduletype WHERE scheduleCODE = ? AND ScheduleName = ? " ;
+    
+    StringBuffer sql = new StringBuffer("SELECT scheduleCODE , ScheduleName , MIN(starttime) AS starttime , MAX(endtime) AS endtime ");
+    sql.append(", CASE WHEN COUNT(1)=2 THEN MIN(endtime) END AS restPeriodStart ");
+    sql.append(", CASE WHEN COUNT(1)=2 THEN MAX(starttime) END  AS restPeriodEnd ");
+    sql.append(" FROM dim_scheduletype ");
+    sql.append(" WHERE scheduleCODE = ? AND ScheduleName = ?  ");    
+    sql.append(" GROUP BY  scheduleCODE , ScheduleName");
+    
+    Map rs =  jdbcHandler.queryOneAsMap("attendance", sql.toString(), new String[]{ value , name });
+    this.startTime = rs.get("starttime").toString();
+    this.endTime = rs.get("endtime").toString();
+    this.restPeriodStart = rs.get("restPeriodStart") == null ? null : rs.get("restPeriodStart").toString() ;
+    this.restPeriodEnd = rs.get("restPeriodEnd") == null ? null : rs.get("restPeriodEnd").toString() ;
+  }
 
   //  休息时间
   public String getRestPeriodStart(){
-    return null;
+    return restPeriodStart;
   }
 
   public String getRestPeriodEnd(){
-    return null;
+    return restPeriodEnd;
   }
   
   // get set 方法
@@ -85,6 +110,7 @@ public enum ScheduleTypeDict {
   }
   
   public String getStartTime() {
+//    SELECT MIN(starttime) FROM dim_scheduletype WHERE scheduleCODE = 'D' 
     return startTime;
   }
 

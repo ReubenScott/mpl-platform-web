@@ -9,8 +9,9 @@
 
 
   <!-- develop  start  -->
-  <constant name="struts.devMode" value="true" />
+  <constant name="struts.devMode" value="false" />
   <constant name="struts.serve.static.browserCache" value="false" />
+  <constant name="struts.i18n.reload" value="false" />
   <!-- develop  end   -->
 
 
@@ -19,8 +20,6 @@
   <constant name="struts.mapper.alwaysSelectFullNamespace" value="flase"></constant>
   <constant name="struts.ognl.allowStaticMethodAccess" value="true" />
   <constant name="struts.custom.i18n.resources" value="ApplicationResource" />
-  <constant name="struts.i18n.reload" value="true" />
-  <constant name="struts.locale" value="zh_CN" />
   <constant name="struts.i18n.encoding" value="UTF-8" />
   <constant name="struts.ui.theme" value="simple" />
   <constant name="struts.multipart.maxSize" value="1048576100" />

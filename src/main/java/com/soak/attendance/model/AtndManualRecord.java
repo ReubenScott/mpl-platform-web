@@ -137,7 +137,7 @@ public class AtndManualRecord {
   }
 
   public Float getTotalHours() {
-    return totalHours;
+    return totalHours ;
   }
 
   public String getRemark() {

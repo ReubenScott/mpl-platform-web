@@ -20,8 +20,8 @@
             ,HOLIDAY_OVERTIME AS HOLIDAYOVERTIME
             ,ABSENCE_HOURS AS ABSENCE
         FROM S_ATND_SUMMARY_SHEET T1  
-          WHERE T1.STATDATE BETWEEN '2016-07-01' AND '2016-07-31'
-           AND empno = '@empno' 
+          WHERE T1.STATDATE BETWEEN '@startDate' AND '@endDate'
+             AND empno = '@empno' 
         order by STATDATE asc
      ]]>
     </sql-value>

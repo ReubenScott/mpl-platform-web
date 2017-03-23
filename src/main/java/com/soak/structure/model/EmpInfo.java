@@ -1,4 +1,4 @@
-package com.soak.attendance.model;
+package com.soak.structure.model;
 
 import com.soak.framework.orm.Column;
 import com.soak.framework.orm.Table;
@@ -7,7 +7,7 @@ import com.soak.framework.orm.Table;
  * 
  * 排班类型
  */
-@Table(name = "f_emp_info", pk = { "empNO" })
+@Table(name = "f_emp_info", pk = {"empNO" })
 public class EmpInfo {
 
   @Column(name = "empNO")
@@ -20,6 +20,10 @@ public class EmpInfo {
   private String deptId; // 部门编号
 
   private String deptName; // 部门编号
+  
+  private String status; // 人员状态
+  
+  private String entryate ; // 入职日期
   
   
   public EmpInfo(){

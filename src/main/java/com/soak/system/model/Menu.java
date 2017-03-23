@@ -28,6 +28,9 @@ public class Menu {
   @Column(name = "menuname")
   private String menuName;// 菜单名称 varchar(255)
 
+  @Column(name = "pid")
+  private String pid; // 父级菜单 varchar(255)
+
   @Column(name = "url")
   private String url; // 菜单url地址 varchar(255)
 
@@ -40,16 +43,16 @@ public class Menu {
   @Column(name = "menu_event")
   private String menuEvent; // 菜单事件 varchar(255)
 
-  @Column(name = "parent_id")
-  private String parentId; // 父级菜单 varchar(255)
+  @Column(name = "xtype")
+  private String xtype; // 展示页面模版 Display page template
 
-//  @Column(name = "del_flag")
+  // @Column(name = "del_flag")
   private Boolean isDelete; // bigint(20)
+
+  // private Boolean leaf; // 是否叶子节点 true ： 叶子节点（无子菜单） ， false 有子菜单
 
   // 子菜单
   private Set<Menu> children = new HashSet<Menu>();
-
-  private Boolean leaf ; //  是否叶子节点   true ： 叶子节点（无子菜单）  ， false 有子菜单
 
   public String getSid() {
     return sid;
@@ -115,12 +118,12 @@ public class Menu {
     this.menuEvent = menuEvent;
   }
 
-  public String getParentId() {
-    return parentId;
+  public String getPid() {
+    return pid;
   }
 
-  public void setParentId(String parentId) {
-    this.parentId = parentId;
+  public void setPid(String pid) {
+    this.pid = pid;
   }
 
   public Boolean getIsDelete() {
@@ -139,11 +142,18 @@ public class Menu {
     this.children = children;
   }
 
+  // 是否叶子节点 true ： 叶子节点（无子菜单） ， false 有子菜单
   public Boolean getLeaf() {
-    return  children==null || children.size() == 0 ? true : false ;
+    return children == null || children.size() == 0 ? true : false;
   }
 
-  
-  
+  public String getXtype() {
+    return xtype;
+  }
+
+  public void setXtype(String xtype) {
+    this.xtype = xtype;
+  }
+
 
 }

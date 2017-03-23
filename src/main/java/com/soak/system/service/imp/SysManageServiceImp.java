@@ -6,9 +6,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.Vector;
 
-import com.soak.framework.service.Imp.BasicServiceImp;
+import com.soak.framework.service.imp.BasicServiceImp;
 import com.soak.system.model.Menu;
 import com.soak.system.service.ISysManageService;
 
@@ -26,20 +25,25 @@ public class SysManageServiceImp extends BasicServiceImp implements ISysManageSe
   }
   
 
+  /**
+   * 构建菜单树， 步骤一 : 找出跟节点（允许有多个跟节点）
+   * @param menus
+   * @return
+   */
   private List<Menu> buildMenuTree(List<Menu> menus) {
     List<Menu> tree = new ArrayList<Menu>();
     Set<Serializable> sids = new HashSet<Serializable>();
     Set<Serializable> roots = new HashSet<Serializable>();
     for(Menu menu : menus){
       sids.add(menu.getSid());
-      roots.add(menu.getParentId());
+      roots.add(menu.getPid());
     }
     
     // 获取跟节点
     roots.removeAll(sids);
     for (Iterator<Menu> iterator = menus.iterator(); iterator.hasNext();) {
       Menu root = iterator.next();
-      if (roots.contains(root.getParentId())) {
+      if (roots.contains(root.getPid())) {
         tree.add(root);
         root.setChildren(new HashSet<Menu>());
         // 删除该数据， 减少下次的查询时间
@@ -55,11 +59,15 @@ public class SysManageServiceImp extends BasicServiceImp implements ISysManageSe
     return tree;
   }
 
-  
+  /**
+   * 构建菜单树， 步骤二 ： 连接父节点与子节点
+   * @param menus
+   * @return
+   */
   private void buildTree(Menu parent, List<Menu> menus) {
     for (Iterator<Menu> iterator = menus.iterator(); iterator.hasNext();) {
       Menu item = iterator.next();
-      if (parent.getSid().equals(item.getParentId())) {
+      if (parent.getSid().equals(item.getPid())) {
           parent.getChildren().add(item);
           // 删除该数据， 减少下次的查询时间
           iterator.remove();

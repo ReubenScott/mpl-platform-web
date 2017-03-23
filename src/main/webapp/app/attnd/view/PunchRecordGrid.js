@@ -3,7 +3,7 @@
  */
 Ext.define('epl.attnd.view.PunchRecordGrid', {
   extend : 'Ext.grid.Panel',
-  alias : 'widget.PunchRecordGrid',
+  alias : 'widget.attnd.PunchRecordGrid',
   store : 'epl.attnd.store.PunchRecordStore',
   
   selModel:{
@@ -40,22 +40,22 @@ Ext.define('epl.attnd.view.PunchRecordGrid', {
         flex : 1
       },
       {
-        header : 'cardID',
+        header : '卡号',
         dataIndex : 'cardID',
         flex : 1
       },
       {
-        header : 'EMPNO',
+        header : '员工号',
         dataIndex : 'empno',
         flex : 1
       },
       {
-        header : 'EMPNAME',
+        header : '姓名',
         dataIndex : 'empname',
         flex : 1
       },
       {
-        header : 'DEPTNAME',
+        header : '部门',
         dataIndex : 'deptname',
         field:{
           xtype:'textfield',
@@ -64,7 +64,7 @@ Ext.define('epl.attnd.view.PunchRecordGrid', {
         flex : 1
       },
       {
-        header : 'PUNCHTIME',
+        header : '打卡时间',
         dataIndex : 'punchTime',
         flex : 1
       } 

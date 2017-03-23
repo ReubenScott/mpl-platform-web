@@ -254,22 +254,27 @@ public class AtndSummarySheet {
   
 
   public Float getOverTime() {
-    Float overTime ;
-    switch(DateUtil.getWeek(statdate)){
-      case MONDAY    :
-      case TUESDAY   :
-      case WEDNESDAY :
-      case THURSDAY  :
-      case FRIDAY    :
-        overTime = getOrdinaryOvertime();
-        break ;
-      case SATURDAY  :
-      case SUNDAY    :
-        overTime = getWeekendOvertime();
-        break ;
-      default :
-        overTime = null ;
-    }
+    float ordinary = getOrdinaryOvertime()==null? 0f : getOrdinaryOvertime();
+    float weekend = getWeekendOvertime()== null? 0f : getWeekendOvertime();
+    float holiday = getHolidayOvertime()== null? 0f : getHolidayOvertime();
+    Float overTime = ordinary + weekend + holiday ;
+    
+//    Float overTime ;
+//    switch(DateUtil.getWeek(statdate)){
+//      case MONDAY    :
+//      case TUESDAY   :
+//      case WEDNESDAY :
+//      case THURSDAY  :
+//      case FRIDAY    :
+//        overTime = getOrdinaryOvertime();
+//        break ;
+//      case SATURDAY  :
+//      case SUNDAY    :
+//        overTime = getWeekendOvertime();
+//        break ;
+//      default :
+//        overTime = null ;
+//    }
     
     return overTime ;
   }

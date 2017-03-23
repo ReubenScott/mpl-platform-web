@@ -16,9 +16,12 @@ Ext.onReady(function(){
 	        });
 		},
 		controllers:[
-			'epl.system.controller.MenuController',
-			'XDBLController',
-			'epl.attnd.controller.PunchRecordController'
+			'epl.system.controller.MainController',
+      'epl.system.controller.MenuController',
+			'epl.attnd.controller.PunchRecordController',
+      
+      //
+      'XDBLController'
 		]
 	});
 })

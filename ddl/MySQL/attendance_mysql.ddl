@@ -30,22 +30,33 @@ CREATE TABLE F_dept_emp_info (
 
 /***
  * 排班类型   有跨天情况
- */
-CREATE TABLE dim_ScheduleType (
-   scheduleid VARCHAR(2) NOT NULL ,
-   ScheduleName VARCHAR(32),
-   STARTTIME TIME  COMMENT '开始时间',
-   HOURS FLOAT(4,2)  COMMENT '小时数',
-   remark VARCHAR(500) ,
-   SRC_DT VARCHAR(10) ,
-   ETL_DT VARCHAR(10) ,
-   PRIMARY KEY  (scheduleid)
- ) ENGINE=INNODB DEFAULT CHARSET=utf8 ;
-  
-INSERT INTO  dim_scheduletype VALUES ('1','白班','7:30' , 8 ,'','','') ;
-INSERT INTO  dim_scheduletype VALUES ('2','夜班1','17:00' , 8 ,'','','') ;
-INSERT INTO  dim_scheduletype VALUES ('3','夜班2','17:30' , 8 ,'','','') ;
+ */ 
+CREATE TABLE `dim_scheduletype` (
+   `scheduleCode` varchar(2) NOT NULL,
+   `ScheduleName` varchar(32) NOT NULL,
+   `STARTTIME` time NOT NULL COMMENT '开始时间',
+   `endtime` time default NULL,
+   `HOURS` float(4,2) default NULL COMMENT '小时数',
+   `remark` varchar(500) default NULL,
+   `SRC_DT` varchar(10) default NULL,
+   `ETL_DT` varchar(10) default NULL ,
+   PRIMARY KEY ( scheduleCode , ScheduleName , STARTTIME )
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
+insert  into `dim_scheduletype`
+   (`scheduleCODE`,`ScheduleName`,`STARTTIME`,`endtime`,`HOURS`,`remark`) 
+values ('D' ,'白班' ,'07:30:00','11:30:00',4.00,'长白班')
+      ,('D' ,'白班' ,'13:00:00','17:00:00',4.00,'长白班')
+      ,('E1','晚班1','23:00:00','07:00:00',8.00,'三班倒')
+      ,('E2','晚班2','23:30:00','07:30:00',8.00,'三班倒')
+      ,('M1','早班1','07:00:00','15:00:00',8.00,'三班倒')
+      ,('M2','早班2','07:30:00','15:30:00',8.00,'三班倒')
+      ,('N1','夜班1','17:00:00','01:00:00',8.00,'两班倒')
+      ,('N2','夜班2','19:00:00','03:00:00',8.00,'两班倒')
+      ,('N3','夜班3','19:30:00','03:30:00',8.00,'两班倒')
+      ,('S1','中班1','15:00:00','23:00:00',8.00,'三班倒')
+      ,('S2','中班2','15:30:00','23:30:00',8.00,'三班倒')
+;
 
 
 /***
@@ -228,10 +239,25 @@ SELECT DISTINCT empno , empname
 		  SELECT 1 FROM f_emp_info B
 		    WHERE A.empno= B.empno
     )
+ --   AND A.EMPNAME IN ('施周','葛茜')
   ;
+  
+  
+SELECT  * FROM i_emp_info a
+ WHERE NOT EXISTS (
+   SELECT 1 FROM f_emp_info b
+    WHERE a.empno = b.empno
+  )  
+  
 
 -- 1. 员工信息 校验  维护 
 SELECT * FROM f_emp_info WHERE empno IS NULL
+
+-- 查询员工信息
+SELECT * FROM f_emp_info emp
+   left JOIN f_dept_info dept 
+      ON emp.deptid = dept.uid     
+  WHERE emp.empname IN ('吴永兵','葛茜')  
 
  
 -- 2. 更新 打卡记录里 员工号为空 的情况
@@ -259,6 +285,19 @@ UPDATE atnd_manual_record AS t1
     ON t1.empname = T2.empname
 SET t1.empno = T2.empno    
 
+-- 更新  补录 加班单、请假单、出差单  员工部门号   （姓名填错 ）
+UPDATE atnd_manual_record AS T1
+INNER JOIN ( 
+SELECT  empno , empname FROM  atnd_manual_record a
+  WHERE empno IS NOT NULL 
+GROUP BY  empno  , empname 
+  HAVING COUNT(DISTINCT empno) = 1 ) AS T2  
+  ON T1.empname = T2.empname
+ SET T1.empno = T2.empno
+ WHERE T1.empno IS NULL 
+  AND T1.empname='蔡海东'
+  
+
 -- 手工录入 数据核对
 SELECT DISTINCT empno ,empname FROM atnd_manual_record
  WHERE empno IN 
@@ -285,7 +324,22 @@ SELECT T1.*
 ;
 
 
+-- 删除重复填单记录
+DELETE FROM atnd_manual_record 
+WHERE uid IN 
+  ( SELECT uid FROM (  
+    SELECT MIN(uid) AS uid
+     FROM atnd_manual_record   
+       GROUP BY DEPTNAME, EMPNO,EMPNAME,bookType,ScheduleType,vacationType,totalhours,STARTTIME,ENDTIME,isExempt,remark,SRC_DT,ETL_DT
+     HAVING COUNT(1) > 1   
+  ) A
+) ;
 
+
+-- 查看填写单  加班单 
+select * from atnd_manual_record
+  where etl_dt = '2016-12-23'  --  系统时间
+    AND bookType = 1 ;
   
 -- 上班 迟到 
 SELECT EMPNAME 
