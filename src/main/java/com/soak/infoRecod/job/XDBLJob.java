@@ -1,22 +1,13 @@
 package com.soak.infoRecod.job;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.concurrent.Delayed;
-import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.soak.common.io.FileUtil;
-import com.soak.common.terminal.FtpZilla;
-import com.soak.framework.jdbc.JdbcHandler;
+import com.soak.framework.jdbc.core.JdbcTemplate;
 
 /**
  * <p>
@@ -37,7 +28,7 @@ public class XDBLJob implements Runnable {
     // 2. zip 解压
     // FileUtil.unZip("D:/home/" + today + ".zip", "D:\\home\\");
     // 3. 文件入库
-    JdbcHandler jdbc = JdbcHandler.getInstance();
+    JdbcTemplate jdbc = JdbcTemplate.getInstance();
     File dir = new File("D:/home/" + today);
 
     //    for (File delfile : dir.listFiles()) {
@@ -45,13 +36,13 @@ public class XDBLJob implements Runnable {
 //    jdbc.truncateTable("edw", "YKJD_CUST_ENT");
 //    jdbc.truncateTable("edw", "YKJD_CUST_INFO");
 //    jdbc.truncateTable("edw", "YKJD_CUST_PER");
-    jdbc.truncateTable(null,"edw", "YKJD_LN_DUEBILL");
+    jdbc.truncateTable("edw", "YKJD_LN_DUEBILL");
 //    jdbc.truncateTable("edw", "YKJD_SS_DICT");
     
 //    jdbc.loadCsvFile("edw","YKJD_CUST_ENT", "D:/home/" + today + "/CUST_ENT.del" , (char) 44);
 //    jdbc.loadCsvFile("edw","YKJD_CUST_INFO", "D:/home/" + today + "/CUST_INFO.del" , (char) 44);
 //    jdbc.loadCsvFile("edw","YKJD_CUST_PER", "D:/home/" + today + "/CUST_PER.del" , (char) 44);
-    jdbc.loadCsvFile(null,"edw","YKJD_LN_DUEBILL", "D:/home/" + today + "/LN_DUEBILL.del" , (char) 44);
+    jdbc.loadCsvFile("edw","YKJD_LN_DUEBILL", "D:/home/" + today + "/LN_DUEBILL.del" , (char) 44);
 //    jdbc.loadCsvFile("edw","YKJD_SS_DICT", "D:/home/" + today + "/SS_DICT.del" , (char) 44);
       
     // select * from edw.ykjd_ss_dict ;

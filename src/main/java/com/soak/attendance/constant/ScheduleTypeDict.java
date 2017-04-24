@@ -3,9 +3,10 @@ package com.soak.attendance.constant;
 import java.util.Date;
 import java.util.Map;
 
-import com.soak.framework.date.DateUtil;
-import com.soak.framework.jdbc.JdbcHandler;
-import com.soak.framework.util.StringUtil;
+import com.soak.common.date.DateUtil;
+import com.soak.common.util.StringUtil;
+import com.soak.framework.jdbc.core.JdbcTemplate;
+
 
 /**
  * 
@@ -74,7 +75,7 @@ public enum ScheduleTypeDict {
   private ScheduleTypeDict(String name, String value ) {
     this.name = name;
     this.value = value;
-    JdbcHandler jdbcHandler = JdbcHandler.getInstance();
+    JdbcTemplate jdbcHandler = JdbcTemplate.getInstance();
 //    String sql = "SELECT MIN(starttime) AS starttime , MAX(endtime) AS endtime FROM dim_scheduletype WHERE scheduleCODE = ? AND ScheduleName = ? " ;
     
     StringBuffer sql = new StringBuffer("SELECT scheduleCODE , ScheduleName , MIN(starttime) AS starttime , MAX(endtime) AS endtime ");

@@ -20,12 +20,11 @@ import org.junit.Test;
 
 import com.soak.attendance.model.AtndSummarySheet;
 import com.soak.attendance.model.ScheduleType;
-import com.soak.attendance.service.AtndMeasureService;
 import com.soak.attendance.service.imp.AtndMeasureServiceImp;
-import com.soak.framework.date.DateUtil;
-import com.soak.framework.jdbc.JdbcHandler;
-import com.soak.framework.util.BeanUtil;
-import com.soak.framework.util.ExcelUtil;
+import com.soak.common.date.DateUtil;
+import com.soak.common.io.ExcelUtil;
+import com.soak.common.util.BeanUtil;
+import com.soak.framework.jdbc.core.JdbcTemplate;
 import com.soak.framework.xml.XmlSqlMapper;
 import com.soak.structure.model.DeptInfo;
 import com.soak.structure.model.EmpInfo;
@@ -36,13 +35,13 @@ public class AtndManualTest {
 
   AtndMeasureService measureService;
   OrganizationStructureService  structureService ;
-  JdbcHandler jdbc;
+  JdbcTemplate jdbc;
 
   @Before
   public void setUp() throws Exception {
     measureService = new AtndMeasureServiceImp();
     structureService = new OrganizationStructureServiceImp();
-    jdbc = JdbcHandler.getInstance();
+    jdbc = JdbcTemplate.getInstance();
   }
 
 //  @Test // 第一步导入打卡数据
@@ -59,13 +58,13 @@ public class AtndManualTest {
 
 //  @Test   // 第二步： 导入 请假单，出差单，加班单
   public void testloadAtndManualApplicationForm() {
-//     String filePath = "E:/考勤/201702/外出单——2017年2.17.xlsx";
+//     String filePath = "E:/考勤/201703/外出单——2017年.xlsx";
 //     measureService.loadBusinessTripApplicationForm(filePath);
      
-//    String filePath = "E:/考勤/201702/请假单——2017年2.13.xlsx";
+//    String filePath = "E:/考勤/201703/请假单——2017年.xlsx";
 //    measureService.loadOffWorkApplicationForm(filePath);
 
-//    String filePath = "E:/考勤/201702/加班单——2017年01月份2.10修改版.xlsx";
+//    String filePath = "E:/考勤/201703/加班单——2017年.xlsx";
 //    measureService.loadOvertimeWorkApplicationForm(filePath);
 
   }
@@ -73,8 +72,8 @@ public class AtndManualTest {
 //  @Test  // 第三步： 考勤统计
   public void testAtndmeasureTest() {
     // 临时计算
-   Date startDate = DateUtil.parseShortDate("2017-02-01"); 
-   Date endDate = DateUtil.parseShortDate("2017-02-28");
+   Date startDate = DateUtil.parseShortDate("2017-03-01"); 
+   Date endDate = DateUtil.parseShortDate("2017-03-31");
    
 //  2.    checkOneDayTypeByEmpId   节假日
    
@@ -106,7 +105,7 @@ public class AtndManualTest {
   }
   
 
-  @Test   // 获取部门信息
+//  @Test   // 获取部门信息
   public void testOrganizationStructureService() {
     List<DeptInfo> depts  =  structureService.getDeptInfo();
     
@@ -137,7 +136,7 @@ public class AtndManualTest {
 
     try {
       // 获取本月天数
-      String yyyyMM = "201702";
+      String yyyyMM = "201703";
       String year = yyyyMM.substring(0, 4);
       String mm = yyyyMM.substring(4);
       Date startDate = DateUtil.parseShortDate(year + "-" + mm + "-" + "01"); // 月初
@@ -220,7 +219,7 @@ public class AtndManualTest {
 //       List<EmpInfo> empInfos = jdbc.findByAnnotatedSample(null, new EmpInfo("BI00014"));
        EmpInfo empOfDept =  new EmpInfo();
        empOfDept.setDeptId(deptId) ;
-       List<EmpInfo> empInfos = jdbc.findByAnnotatedSample(null,empOfDept);
+       List<EmpInfo> empInfos = jdbc.findByAnnotatedSample(empOfDept);
        for(int i = 0 ; i< empInfos.size() ; i++){
          EmpInfo emp = empInfos.get(i);
          k = 0 ; 
@@ -261,7 +260,7 @@ public class AtndManualTest {
          sql = sql.replaceAll("@startDate", DateUtil.formatShortDate(startDate));
          sql = sql.replaceAll("@endDate",  DateUtil.formatShortDate(endDate));
          sql = sql.replaceAll("@empno", emp.getEmpNO());
-         List<AtndSummarySheet> summarySheets = jdbc.querySampleList(null, AtndSummarySheet.class, sql);
+         List<AtndSummarySheet> summarySheets = jdbc.querySampleList( AtndSummarySheet.class, sql);
          // 访问数据库，得到数据集  
          for(int si = 0 ; si< summarySheets.size() ; si++){
            AtndSummarySheet summarySheet = summarySheets.get(si);
@@ -300,9 +299,9 @@ public class AtndManualTest {
   }
   
 
-//  @Test   // 导出汇总表
+  @Test   // 导出汇总表
   public void testExecuteHuizong() {
-    String filename = "D:/考情汇总表.xlsx";// 设置下载时客户端Excel的名称
+    String filename = "D:/考情汇总表——全.xlsx";// 设置下载时客户端Excel的名称
     //
     
 //    Workbook workbook = new HSSFWorkbook();// 创建一个Excel文件 2003
@@ -347,7 +346,7 @@ public class AtndManualTest {
 
     try {
       // 获取本月天数
-      String yyyyMM = "201702";
+      String yyyyMM = "201703";
       String year = yyyyMM.substring(0, 4);
       String mm = yyyyMM.substring(4);
       Date startDate = DateUtil.parseShortDate(year + "-" + mm + "-" + "01"); // 月初
@@ -427,7 +426,7 @@ public class AtndManualTest {
 
      m = 5 ;
 //     List<EmpInfo> empInfos = jdbc.findByAnnotatedSample(null, new EmpInfo("BI00014"));
-     List<EmpInfo> empInfos = jdbc.findByAnnotatedSample(null, new EmpInfo());
+     List<EmpInfo> empInfos = jdbc.findByAnnotatedSample( new EmpInfo());
      for(int i = 0 ; i< empInfos.size() ; i++){
        EmpInfo emp = empInfos.get(i);
        k = 0 ; 
@@ -468,7 +467,7 @@ public class AtndManualTest {
        sql = sql.replaceAll("@startDate", DateUtil.formatShortDate(startDate));
        sql = sql.replaceAll("@endDate",  DateUtil.formatShortDate(endDate));
        sql = sql.replaceAll("@empno", emp.getEmpNO());
-       List<AtndSummarySheet> summarySheets = jdbc.querySampleList(null, AtndSummarySheet.class, sql);
+       List<AtndSummarySheet> summarySheets = jdbc.querySampleList( AtndSummarySheet.class, sql);
        // 访问数据库，得到数据集  
        for(int si = 0 ; si< summarySheets.size() ; si++){
          AtndSummarySheet summarySheet = summarySheets.get(si);
@@ -519,7 +518,7 @@ public class AtndManualTest {
    String sql = XmlSqlMapper.getInstance().getPreparedSQL("考勤");
    // sql = sql.replaceAll("@empno", "BI00327");
   
-   JdbcHandler jdbc = JdbcHandler.getInstance();
+   JdbcTemplate jdbc = JdbcTemplate.getInstance();
    Workbook workbook = jdbc.exportExcel(null, sql);
    String tempFilePath = "D:/考勤201606.xlsx";
   

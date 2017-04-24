@@ -17,10 +17,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.opensymphony.xwork2.ActionContext;
+import com.soak.common.mail.MailBean;
+import com.soak.common.mail.MailService;
 import com.soak.framework.action.BaseAction;
 import com.soak.framework.cache.EhCacheImpl;
-import com.soak.framework.mail.MailBean;
-import com.soak.framework.mail.MailService;
 import com.soak.framework.service.IBasicService;
 import com.soak.framework.xml.XmlSqlMapper;
 

@@ -2,7 +2,6 @@ package com.soak.attendance.model;
 
 import java.util.Date;
 
-import com.soak.framework.date.DateUtil;
 import com.soak.framework.orm.Column;
 import com.soak.framework.orm.Table;
 

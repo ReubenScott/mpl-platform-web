@@ -5,13 +5,14 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.soak.common.date.DateUtil;
 import com.soak.common.terminal.FtpZilla;
 import com.soak.common.terminal.UserAuthInfo;
 import com.soak.framework.dao.IBasicDao;
-import com.soak.framework.date.DateUtil;
-import com.soak.framework.thread.ThreadPool;
 import com.soak.framework.xml.XmlSqlMapper;
 
 public class CronJob {
@@ -57,11 +58,11 @@ public class CronJob {
     String exportDate = DateUtil.formatShortDate(monthEndETLDT) ;
     System.out.println(monthEndETLDT);
     
-    String dbalias = "db94" ;
+//    String dbalias = "db94" ;
 
     // 检查 跑批状态
     String checkSql = "select curdate , procstep from etl.systempara ";
-    Map checkMap = basicDao.queryOneAsMap(dbalias, checkSql);
+    Map checkMap = basicDao.queryOneAsMap(checkSql);
 
     if (checkMap != null) {
       Date etlDate = (Date) checkMap.get("curdate");
@@ -74,7 +75,7 @@ public class CronJob {
         sql = sql.replaceAll("@statdate", exportDate);
         logger.debug(sql);
         String filePath = tmpDir + "/CUST_INFO_"+exportDate+".del";
-        basicDao.exportCSV(dbalias,filePath, "GBK", (char) 44, sql);
+        basicDao.exportCSV(filePath, "GBK", (char) 44, sql);
 
         // 2. FTP 上传
         boolean updateFlag = false ;

@@ -120,11 +120,11 @@
     <!-- 依赖工程 -->
     <dependency>
       <groupId>com.soak</groupId>
-      <artifactId>framework</artifactId>
+      <artifactId>core</artifactId>
     </dependency>
     <dependency>
       <groupId>com.soak</groupId>
-      <artifactId>common</artifactId>
+      <artifactId>jdbc</artifactId>
     </dependency>
     <dependency>
       <groupId>com.soak</groupId>

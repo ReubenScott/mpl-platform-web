@@ -35,15 +35,14 @@ import com.soak.attendance.model.AtndSummarySheet;
 import com.soak.attendance.model.PunchRecord;
 import com.soak.attendance.model.ScheduleType;
 import com.soak.attendance.service.AtndMeasureService;
+import com.soak.common.date.DateStyle;
+import com.soak.common.date.DateUtil;
+import com.soak.common.io.ExcelUtil;
 import com.soak.common.metic.UUIDGenerator;
-import com.soak.framework.date.DateStyle;
-import com.soak.framework.date.DateUtil;
+import com.soak.common.util.StringUtil;
 import com.soak.framework.jdbc.Condition;
-import com.soak.framework.jdbc.JdbcHandler;
 import com.soak.framework.jdbc.Restrictions;
 import com.soak.framework.service.imp.BasicServiceImp;
-import com.soak.framework.util.ExcelUtil;
-import com.soak.framework.util.StringUtil;
 import com.soak.structure.model.EmpInfo;
 
 public class AtndMeasureServiceImp extends BasicServiceImp implements AtndMeasureService{
@@ -1116,7 +1115,7 @@ public class AtndMeasureServiceImp extends BasicServiceImp implements AtndMeasur
     params[14] = sheet.getLastMthAccumVacation();
     params[15] = sheet.getCurrentMthAccumVacation();
 
-    JdbcHandler jdbc = JdbcHandler.getInstance();
+//    JdbcHandler jdbc = JdbcHandler.getInstance();
 //    jdbc.execute(sql.toString(), params);
     
     basicDao.saveAnnotatedBean(sheet);    

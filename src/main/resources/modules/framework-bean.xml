@@ -14,7 +14,7 @@
 
 
 
-  <bean id="basicService" class="com.soak.framework.service.Imp.BasicServiceImp" lazy-init="true">
+  <bean id="basicService" class="com.soak.framework.service.imp.BasicServiceImp" lazy-init="true">
     <property name="basicDao">
       <ref bean="basicDao" />
     </property>
