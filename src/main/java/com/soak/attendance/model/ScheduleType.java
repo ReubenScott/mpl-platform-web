@@ -1,17 +1,21 @@
 package com.soak.attendance.model;
 
 import java.util.Date;
-import com.soak.framework.orm.Column;
-import com.soak.framework.orm.Table;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * 
  * 排班类型
  */
-@Table(name = "dim_ScheduleType", pk = { "scheduleid" })
+@Table(name = "dim_ScheduleType")
 public class ScheduleType {
 
-  @Column(name = "scheduleid")
+  
+  @Id
+  @Column(name = "schedulecode")
   private String scheduleid; // 排班类型
 
   @Column(name = "schedulename")

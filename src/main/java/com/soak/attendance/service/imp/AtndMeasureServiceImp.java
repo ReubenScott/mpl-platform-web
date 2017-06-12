@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -35,9 +37,9 @@ import com.soak.attendance.model.AtndSummarySheet;
 import com.soak.attendance.model.PunchRecord;
 import com.soak.attendance.model.ScheduleType;
 import com.soak.attendance.service.AtndMeasureService;
-import com.soak.common.date.DateStyle;
+import com.soak.common.constant.DateStyle;
 import com.soak.common.date.DateUtil;
-import com.soak.common.io.ExcelUtil;
+import com.soak.common.io.ImportUtility;
 import com.soak.common.metic.UUIDGenerator;
 import com.soak.common.util.StringUtil;
 import com.soak.framework.jdbc.Condition;
@@ -64,7 +66,7 @@ public class AtndMeasureServiceImp extends BasicServiceImp implements AtndMeasur
   public ScheduleTypeDict getStableScheduleType(String empno , Date eachDate) {
     // 加班 请假 出差
     String sql = "SELECT 1 FROM atnd_schedule WHERE empno = ? " ;
-    Map re  = basicDao.queryOneAsMap(null , sql, empno);
+    Map re  = basicDao.queryOneAsMap(sql, empno);
     if(re == null){
 //      logger.debug("SELECT 1 FROM atnd_schedule WHERE empno = " + empno );
     } else {
@@ -317,7 +319,7 @@ public class AtndMeasureServiceImp extends BasicServiceImp implements AtndMeasur
     }*/
     
     // 节假日
-    if(DateUtil.isBetween(date, DateUtil.parseShortDate("2016-10-01"), DateUtil.parseShortDate("2016-10-07"))){
+    if(DateUtil.isBetween(date, DateUtil.parseShortDate("2017-05-28"), DateUtil.parseShortDate("2017-05-30"))){
       return DateTypeDict.HOLIDAY ;
     }
     
@@ -389,11 +391,11 @@ public class AtndMeasureServiceImp extends BasicServiceImp implements AtndMeasur
       for (File file : files) {
         String filePath = file.getAbsolutePath();
         System.out.println(filePath);
-        basicDao.truncateTable(null, "atnd_punch_record");
+//        basicDao.truncateTable(null, "atnd_punch_record");
         // 导入打卡记录
         basicDao.loadExcelFile("atnd_punch_record", filePath);
         // 打卡记录 合并
-        basicDao.callProcedure("sp_f_atnd_punch_record", new Object[] { 1 });
+//        basicDao.callProcedure("sp_f_atnd_punch_record", new Object[] { 1 });
       }
     }
     
@@ -434,7 +436,7 @@ public class AtndMeasureServiceImp extends BasicServiceImp implements AtndMeasur
         for (int j = row.getFirstCellNum(); j < row.getLastCellNum(); j++) {
           // 通过 row.getCell(j).toString() 获取单元格内容，
           Cell cell = row.getCell(j);
-          String cellobjTmp = ExcelUtil.convertCellToString(cell);
+          String cellobjTmp = ImportUtility.getCellContent(cell);
           cells.add(cellobjTmp);
 
           if(!StringUtil.isEmpty(cellobjTmp)) {
@@ -576,7 +578,7 @@ public class AtndMeasureServiceImp extends BasicServiceImp implements AtndMeasur
         for (int j = row.getFirstCellNum(); j < row.getLastCellNum(); j++) {
           // 通过 row.getCell(j).toString() 获取单元格内容，
           Cell cell = row.getCell(j);
-          String cellobjTmp = ExcelUtil.convertCellToString(cell);
+          String cellobjTmp = ImportUtility.getCellContent(cell);
           cells.add(cellobjTmp);
 
           if(!StringUtil.isEmpty(cellobjTmp)) {
@@ -705,7 +707,7 @@ public class AtndMeasureServiceImp extends BasicServiceImp implements AtndMeasur
         for (int j = row.getFirstCellNum(); j < row.getLastCellNum(); j++) {
           // 通过 row.getCell(j).toString() 获取单元格内容，
           Cell cell = row.getCell(j);
-          String cellobjTmp = ExcelUtil.convertCellToString(cell);
+          String cellobjTmp = ImportUtility.getCellContent(cell);
           cells.add(cellobjTmp);
 
           if(!StringUtil.isEmpty(cellobjTmp)) {
@@ -902,9 +904,9 @@ public class AtndMeasureServiceImp extends BasicServiceImp implements AtndMeasur
     Date  scheduleEndTime =  scheduleType.getEndTime(eachDate);
     
     // 上班时间 附近的 打卡时间 
-    Date startPunchtime =  DateUtil.getApproximatelyTime(scheduleStartTime, punchtimes);
+    Date startPunchtime =  DateUtil.getApproximatelyTime(scheduleStartTime, punchtimes) ; 
     // 下班时间  附近的 打卡时间 
-    Date endPunchtime =  DateUtil.getApproximatelyTime(scheduleEndTime, punchtimes);
+    Date endPunchtime =  DateUtil.getApproximatelyTime(scheduleEndTime, punchtimes) ;
 
     sheet.setPunchInTime(startPunchtime);
     sheet.setPunchOutTime(endPunchtime);
@@ -1029,7 +1031,7 @@ public class AtndMeasureServiceImp extends BasicServiceImp implements AtndMeasur
                      }
                      //  是否迟到
                      if(islate == null ){
-                       startPunchtime = DateUtil.getApproximatelyTime(endTime, punchtimes) ;
+                       startPunchtime =  DateUtil.getApproximatelyTime(endTime, punchtimes)  ;
                        islate = isLate(startPunchtime , endTime);
                      }
                   }

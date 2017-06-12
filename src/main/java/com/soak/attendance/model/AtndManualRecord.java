@@ -1,10 +1,14 @@
 package com.soak.attendance.model;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.soak.attendance.constant.ScheduleTypeDict;
-import com.soak.framework.orm.Column;
-import com.soak.framework.orm.Table;
+import com.soak.common.date.DateUtil;
 
 /***
  * 
@@ -12,16 +16,16 @@ import com.soak.framework.orm.Table;
  * 
  * 1:加班,2:出差,3:请假;
  * 
- * @author reuben
  * 
  */
-@Table(name = "atnd_manual_record", pk = "uid")
+@Table(name = "atnd_manual_record")
 public class AtndManualRecord {
-  
+
   public static final int OVERTIME = 1;
   public static final int BUSINESSTRIP = 2;
   public static final int OFFWORK = 3;
 
+  @Id
   @Column(name = "uid")
   private String uid;
 
@@ -41,15 +45,15 @@ public class AtndManualRecord {
 
   @Column(name = "scheduleType")
   private String scheduleType; // 排班类型
-  
+
   @Column(name = "vacationType")
   private String vacationType; // 休假类型
 
   @Column(name = "starttime")
-  private Date startTime; // DATETIME COMMENT '开始时间' ,
+  private Timestamp startTime; // DATETIME COMMENT '开始时间' ,
 
   @Column(name = "endtime")
-  private Date endTime; // COMMENT '结束时间' ,
+  private Timestamp endTime; // COMMENT '结束时间' ,
 
   @Column(name = "totalhours")
   private Float totalHours; // COMMENT '小时数' ,
@@ -120,24 +124,24 @@ public class AtndManualRecord {
     this.bookType = bookType;
   }
 
-  public Date getStartTime() {
+  public Timestamp getStartTime() {
     return startTime;
   }
 
   public void setStartTime(Date startTime) {
-    this.startTime = startTime;
+    this.startTime = new java.sql.Timestamp(startTime.getTime()); 
   }
 
-  public Date getEndTime() {
+  public Timestamp getEndTime() {
     return endTime;
   }
 
   public void setEndTime(Date endTime) {
-    this.endTime = endTime;
+    this.endTime = new java.sql.Timestamp(endTime.getTime()); 
   }
 
   public Float getTotalHours() {
-    return totalHours ;
+    return totalHours;
   }
 
   public String getRemark() {
@@ -199,6 +203,5 @@ public class AtndManualRecord {
   public void setVacationType(String vacationType) {
     this.vacationType = vacationType;
   }
-  
 
 }

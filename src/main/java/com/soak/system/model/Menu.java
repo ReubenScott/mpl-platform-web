@@ -3,19 +3,19 @@ package com.soak.system.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.soak.framework.orm.Column;
-import com.soak.framework.orm.Table;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /***
  * 
  * 系统菜单
  * 
- * @author reuben
- * 
  */
-@Table(name = "sys_menu", pk = "sid")
+@Table(name = "sys_menu")
 public class Menu {
 
+  @Id
   @Column(name = "sid")
   private String sid; // 主键
 

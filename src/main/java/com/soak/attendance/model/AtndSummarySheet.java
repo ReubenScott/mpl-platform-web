@@ -1,16 +1,20 @@
 package com.soak.attendance.model;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
-import com.soak.framework.orm.Column;
-import com.soak.framework.orm.Table;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-@Table(name = "s_atnd_summary_sheet", pk = { "statdate", "empno" })
+@Table(name = "s_atnd_summary_sheet")
 public class AtndSummarySheet {
 
+  @Id
   @Column(name = "statdate")
   private Date statdate; // 统计日期
 
+  @Id
   @Column(name = "empno")
   private String empno; // 员工号
 
@@ -19,7 +23,7 @@ public class AtndSummarySheet {
 
   @Column(name = "deptname")
   private String deptname; // 所属部门
-  
+
   @Column(name = "scheduleType")
   private String scheduleType; // 排班类型
 
@@ -27,10 +31,10 @@ public class AtndSummarySheet {
   private String atndStatus; // 考勤状态 1 正常 ； 2 迟到 ； 3 漏打卡
 
   @Column(name = "punch_in_time")
-  private Date punchInTime; // time上班时间
+  private Timestamp punchInTime; // time上班时间
 
   @Column(name = "punch_out_time")
-  private Date punchOutTime; // time下班时间
+  private Timestamp punchOutTime; // time下班时间
 
   @Column(name = "business_triphours")
   private Float businessTrip; // float(4,2)出差
@@ -45,7 +49,7 @@ public class AtndSummarySheet {
   private Float holidayOvertime; // float(4,2)法定加班
 
   @Column(name = "isLate")
-  private Boolean isLate ; // 是否迟到 
+  private Boolean isLate; // 是否迟到
 
   @Column(name = "meal_subsidy")
   private Boolean mealSubsidy; // 有无餐补
@@ -128,20 +132,24 @@ public class AtndSummarySheet {
     this.atndStatus = atndStatus;
   }
 
-  public Date getPunchInTime() {
+  public Timestamp getPunchInTime() {
     return punchInTime;
   }
 
   public void setPunchInTime(Date punchInTime) {
-    this.punchInTime = punchInTime;
+    if(punchInTime!=null){
+      this.punchInTime = new java.sql.Timestamp(punchInTime.getTime()); 
+    }
   }
 
-  public Date getPunchOutTime() {
+  public Timestamp getPunchOutTime() {
     return punchOutTime;
   }
 
   public void setPunchOutTime(Date punchOutTime) {
-    this.punchOutTime = punchOutTime;
+    if(punchOutTime!=null){
+      this.punchOutTime = new java.sql.Timestamp(punchOutTime.getTime()); 
+    }
   }
 
   public Float getBusinessTrip() {
@@ -175,7 +183,6 @@ public class AtndSummarySheet {
   public void setHolidayOvertime(Float holidayOvertime) {
     this.holidayOvertime = holidayOvertime;
   }
-
 
   public Float getAbsence() {
     return absence;
@@ -250,33 +257,31 @@ public class AtndSummarySheet {
   }
 
   // get set **
-  
 
   public Float getOverTime() {
-    float ordinary = getOrdinaryOvertime()==null? 0f : getOrdinaryOvertime();
-    float weekend = getWeekendOvertime()== null? 0f : getWeekendOvertime();
-    float holiday = getHolidayOvertime()== null? 0f : getHolidayOvertime();
-    Float overTime = ordinary + weekend + holiday ;
-    
-//    Float overTime ;
-//    switch(DateUtil.getWeek(statdate)){
-//      case MONDAY    :
-//      case TUESDAY   :
-//      case WEDNESDAY :
-//      case THURSDAY  :
-//      case FRIDAY    :
-//        overTime = getOrdinaryOvertime();
-//        break ;
-//      case SATURDAY  :
-//      case SUNDAY    :
-//        overTime = getWeekendOvertime();
-//        break ;
-//      default :
-//        overTime = null ;
-//    }
-    
-    return overTime ;
-  }
+    float ordinary = getOrdinaryOvertime() == null ? 0f : getOrdinaryOvertime();
+    float weekend = getWeekendOvertime() == null ? 0f : getWeekendOvertime();
+    float holiday = getHolidayOvertime() == null ? 0f : getHolidayOvertime();
+    Float overTime = ordinary + weekend + holiday;
 
+    // Float overTime ;
+    // switch(DateUtil.getWeek(statdate)){
+    // case MONDAY :
+    // case TUESDAY :
+    // case WEDNESDAY :
+    // case THURSDAY :
+    // case FRIDAY :
+    // overTime = getOrdinaryOvertime();
+    // break ;
+    // case SATURDAY :
+    // case SUNDAY :
+    // overTime = getWeekendOvertime();
+    // break ;
+    // default :
+    // overTime = null ;
+    // }
+
+    return overTime;
+  }
 
 }

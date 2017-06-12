@@ -33,7 +33,7 @@
           </connectors>
         </configuration>
       </plugin>
-      
+
       <!-- Tomcat 插件 -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -130,8 +130,13 @@
       <groupId>com.soak</groupId>
       <artifactId>etl</artifactId>
     </dependency>
-    
-    
+
+    <!-- 注解  -->
+    <dependency>
+      <groupId>javax.persistence</groupId>
+      <artifactId>persistence-api</artifactId>
+    </dependency>
+
     <!-- DB Driver Start  -->
     <dependency>
       <groupId>mysql</groupId>
@@ -139,7 +144,7 @@
     </dependency>
 
     <!-- DB Driver End  -->
-      
+
     <!-- excel start -->
     <dependency>
       <groupId>org.apache.poi</groupId>
@@ -150,7 +155,7 @@
       <artifactId>poi-ooxml</artifactId>
     </dependency>
     <!-- excel end -->
-    
+
     <!-- logback+slf4j start -->
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -167,7 +172,7 @@
       <artifactId>janino</artifactId>
     </dependency>
     <!-- logback+slf4j  end  -->
-    
+
 
     <!--  Spring  -->
     <dependency>
@@ -206,9 +211,9 @@
       <artifactId>json-lib</artifactId>
       <classifier>jdk15</classifier>
     </dependency>
-      
+
     <dependency>
-      <groupId>jfree</groupId> 
+      <groupId>jfree</groupId>
       <artifactId>jfreechart</artifactId>
     </dependency>
 

@@ -1,18 +1,21 @@
 package com.soak.structure.model;
 
-import com.soak.framework.orm.Column;
-import com.soak.framework.orm.Table;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * 
  * 排班类型
  */
-@Table(name = "f_dept_info", pk = {"uid" })
+@Table(name = "f_dept_info")
 public class DeptInfo {
 
+  @Id
   @Column(name = "uid")
   private String sid; // 部门编号
-  
+
+  @Id
   @Column(name = "DeptNO")
   private String deptNO; // 编号
 

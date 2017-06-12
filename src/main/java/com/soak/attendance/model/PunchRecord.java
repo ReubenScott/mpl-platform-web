@@ -1,17 +1,20 @@
 package com.soak.attendance.model;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
-import com.soak.framework.orm.Column;
-import com.soak.framework.orm.Table;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /***
  * 打卡记录
  * 
  */
-@Table(name = "f_atnd_punch_record", pk = "uid")
+@Table(name = "f_atnd_punch_record")
 public class PunchRecord {
 
+  @Id
   @Column(name = "uid")
   private String uid; // 
 
@@ -93,8 +96,8 @@ public class PunchRecord {
     return punchTime;
   }
 
-  public void setPunchTime(Timestamp punchTime) {
-    this.punchTime = punchTime;
+  public void setPunchTime(Date punchTime) {
+    this.punchTime = new java.sql.Timestamp(punchTime.getTime()); 
   }
 
   public String getLocation() {

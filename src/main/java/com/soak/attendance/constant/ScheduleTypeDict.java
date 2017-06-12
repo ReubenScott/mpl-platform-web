@@ -85,7 +85,7 @@ public enum ScheduleTypeDict {
     sql.append(" WHERE scheduleCODE = ? AND ScheduleName = ?  ");    
     sql.append(" GROUP BY  scheduleCODE , ScheduleName");
     
-    Map rs =  jdbcHandler.queryOneAsMap("attendance", sql.toString(), new String[]{ value , name });
+    Map rs =  jdbcHandler.queryOneAsMap(sql.toString(), new String[]{ value , name });
     this.startTime = rs.get("starttime").toString();
     this.endTime = rs.get("endtime").toString();
     this.restPeriodStart = rs.get("restPeriodStart") == null ? null : rs.get("restPeriodStart").toString() ;

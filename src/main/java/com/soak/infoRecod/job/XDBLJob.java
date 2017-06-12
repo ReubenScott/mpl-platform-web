@@ -42,7 +42,7 @@ public class XDBLJob implements Runnable {
 //    jdbc.loadCsvFile("edw","YKJD_CUST_ENT", "D:/home/" + today + "/CUST_ENT.del" , (char) 44);
 //    jdbc.loadCsvFile("edw","YKJD_CUST_INFO", "D:/home/" + today + "/CUST_INFO.del" , (char) 44);
 //    jdbc.loadCsvFile("edw","YKJD_CUST_PER", "D:/home/" + today + "/CUST_PER.del" , (char) 44);
-    jdbc.loadCsvFile("edw","YKJD_LN_DUEBILL", "D:/home/" + today + "/LN_DUEBILL.del" , (char) 44);
+    jdbc.loadDelFile("edw","YKJD_LN_DUEBILL", "D:/home/" + today + "/LN_DUEBILL.del" , (char) 44);
 //    jdbc.loadCsvFile("edw","YKJD_SS_DICT", "D:/home/" + today + "/SS_DICT.del" , (char) 44);
       
     // select * from edw.ykjd_ss_dict ;
