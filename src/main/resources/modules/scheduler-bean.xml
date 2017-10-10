@@ -4,7 +4,7 @@
 <beans>
 
   <!-- 工作的bean -->
-  <bean id="cronJob" class="com.soak.framework.jobs.CronJob">
+  <bean id="cronJob" class="com.kindustry.framework.jobs.CronJob">
     <property name="basicDao">
       <ref bean="basicDao" />
     </property>

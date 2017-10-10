@@ -401,7 +401,7 @@ public class AtndMeasureServiceImp extends BasicServiceImp implements AtndMeasur
     basicDao.execute("UPDATE f_atnd_punch_record AS t1 LEFT JOIN f_emp_info T2 ON t1.empname = T2.empname SET t1.empno = T2.empno WHERE t1.empno IS  NULL");
 
     // 打卡记录 合并
-    basicDao.callProcedure("sp_f_atnd_punch_record", new Object[] { 1 });
+//    basicDao.callProcedure("sp_f_atnd_punch_record", new Object[] { 1 });
     
   }
   

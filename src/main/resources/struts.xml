@@ -31,17 +31,17 @@
   -->
 
 
-  <package name="soak-default" extends="struts-default">
+  <package name="kindustry-default" extends="struts-default">
     <result-types>
-      <result-type name="captcha" class="com.soak.framework.result.CaptchaResult" />
-      <result-type name="jfreechart" class="com.soak.framework.result.ChartResult"></result-type>
+      <result-type name="captcha" class="com.kindustry.framework.result.CaptchaResult" />
+      <result-type name="jfreechart" class="com.kindustry.framework.result.ChartResult"></result-type>
     </result-types>
     <interceptors>
-      <interceptor-stack name="soakDefaultStack">
+      <interceptor-stack name="kindustryDefaultStack">
         <interceptor-ref name="defaultStack" />
       </interceptor-stack>
     </interceptors>
-    <default-interceptor-ref name="soakDefaultStack" />
+    <default-interceptor-ref name="kindustryDefaultStack" />
     <global-results>
       <result name="exception">/exception.jsp</result>
       <result name="index">/Login/index.html</result>

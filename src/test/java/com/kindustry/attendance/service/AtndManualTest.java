@@ -45,7 +45,7 @@ public class AtndManualTest {
     jdbc = JdbcTemplate.getInstance();
   }
 
-//   @Test // 第一步导入打卡数据
+  @Test // 第一步导入打卡数据
   public void testloadPunchRecord() {
     measureService.loadPunchRecord("E:/考勤/刷卡记录/");
   }
@@ -70,7 +70,7 @@ public class AtndManualTest {
 
   }
 
-  @Test // 第三步： 考勤统计
+//  @Test // 第三步： 考勤统计
   public void testAtndmeasureTest() {
     // 临时计算
     Date startDate = DateUtil.parseShortDate("2017-05-01");

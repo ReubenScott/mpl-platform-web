@@ -5,9 +5,6 @@ import java.util.List;
 import com.kindustry.framework.annotation.XMLParse;
 import com.kindustry.framework.annotation.XMLParse.XMLType;
 
-//import com.soak.base.anno.XMLParse;
-//import com.soak.base.anno.XMLParse.XMLType;
-
 public class SelectBean {
 
 	@XMLParse

@@ -4,17 +4,17 @@
 <beans>
 
   <!--通知-->
-  <bean id="beforeAdvice" class="com.soak.infoInquiry.AopAdvice"></bean>
+  <bean id="beforeAdvice" class="com.kindustry.infoInquiry.AopAdvice"></bean>
 
   <!--切面类 -->
-  <bean id="busiTarget" class="com.soak.infoInquiry.service.imp.SelfServiceImp"></bean>
+  <bean id="busiTarget" class="com.kindustry.infoInquiry.service.imp.SelfServiceImp"></bean>
 
   <!--业务实现 -->
   <bean id="busiAop" class="org.springframework.aop.framework.ProxyFactoryBean">
     <!--代理类.调用的时候则是调用这个代理类 -->
     <property name="proxyInterfaces">
       <!--代理接口（业务类接口）-->
-      <value>com.soak.infoInquiry.service.SelfService</value>
+      <value>com.kindustry.infoInquiry.service.SelfService</value>
     </property>
     <property name="interceptorNames">
       <!--  通知   -->

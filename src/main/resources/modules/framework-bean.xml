@@ -4,22 +4,22 @@
 <beans>
   <description>该spring 配置文件，主要维护系统框架的bean信息</description>
 
-  <bean id="jdbcHandler" class="com.soak.framework.jdbc.JdbcHandler" init-method="getInstance" lazy-init="false"/>
+  <bean id="jdbcTemplate" class="com.kindustry.framework.jdbc.core.JdbcTemplate" init-method="getInstance" lazy-init="false"/>
 
-  <bean id="basicDao" class="com.soak.framework.dao.imp.BasicDaoImp" lazy-init="false">
-    <property name="jdbcHandler">
-      <ref bean="jdbcHandler" />
+  <bean id="basicDao" class="com.kindustry.framework.dao.imp.BasicDaoImp" lazy-init="false">
+    <property name="jdbcTemplate">
+      <ref bean="jdbcTemplate" />
     </property>
   </bean>
 
 
 
-  <bean id="basicService" class="com.soak.framework.service.imp.BasicServiceImp" lazy-init="true">
+  <bean id="basicService" class="com.kindustry.framework.service.imp.BasicServiceImp" lazy-init="true">
     <property name="basicDao">
       <ref bean="basicDao" />
     </property>
   </bean>
 
-  <bean id="ehCache" class="com.soak.framework.cache.EhCacheImpl" lazy-init="true" />
+  <bean id="ehCache" class="com.kindustry.framework.cache.EhCacheImpl" lazy-init="true" />
 
 </beans>

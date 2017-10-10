@@ -2,7 +2,6 @@ package com.kindustry.framework.util;
 
 import java.io.File;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,11 +19,6 @@ import com.kindustry.framework.model.SelectBean;
 import com.kindustry.framework.reflect.BeanInjecter;
 import com.kindustry.framework.reflect.ReflectTool;
 
-//import com.soak.base.anno.XMLParse;
-//import com.soak.base.core.DefaultRowMapper;
-//import com.soak.base.core.reflect.BeanInjecter;
-//import com.soak.base.core.reflect.ReflectTool;
-//import com.soak.base.model.SelectBean;
 
 public class XMLReader {
 

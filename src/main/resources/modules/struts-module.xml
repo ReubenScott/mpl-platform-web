@@ -4,7 +4,7 @@
 <struts>
 
   <!-- commons -->
-  <package name="commons" namespace="/commons" extends="soak-default">
+  <package name="commons" namespace="/commons" extends="kindustry-default">
     <!-- 校验码图片 -->
     <action name="getCaptchaImage">
       <result type="captcha">
@@ -15,9 +15,9 @@
     </action>
   </package>
 
-  <package name="system" namespace="/system" extends="soak-default">
+  <package name="system" namespace="/system" extends="kindustry-default">
     <default-interceptor-ref name="paramsPrepareParamsStack" />
-    <action name="*/*" class="com.soak.system.action.{1}Action" method="{2}">
+    <action name="*/*" class="com.kindustry.system.action.{1}Action" method="{2}">
       <result name="list">/System/{1}/list.jsp</result>
       <result name="addrBook">/System/{1}/addrBook.jsp</result>
       <result name="edit">/System/{1}/edit.jsp</result>
@@ -30,40 +30,40 @@
 
 
   <!--  考勤系统     -->
-  <package name="attendance" namespace="/attendance" extends="soak-default">
+  <package name="attendance" namespace="/attendance" extends="kindustry-default">
     <default-interceptor-ref name="paramsPrepareParamsStack" />
-    <action name="*/*" class="com.soak.attendance.action.{1}Action" method="{2}">
+    <action name="*/*" class="com.kindustry.attendance.action.{1}Action" method="{2}">
       <result name="list">/{1}/list.jsp</result>
     </action>
   </package>
 
   <!--  report  -->
-  <package name="report" namespace="/report" extends="soak-default">
+  <package name="report" namespace="/report" extends="kindustry-default">
     <default-interceptor-ref name="paramsPrepareParamsStack" />
-    <action name="*/*" class="com.soak.edw.report.action.{1}Action" method="{2}">
+    <action name="*/*" class="com.kindustry.edw.report.action.{1}Action" method="{2}">
       <result name="list">/{1}/list.jsp</result>
     </action>
   </package>
   
   <!--    以下  使用  / 无效     -->
 
-  <package name="self-service" namespace="/self-service" extends="soak-default">
+  <package name="self-service" namespace="/self-service" extends="kindustry-default">
     <default-interceptor-ref name="paramsPrepareParamsStack" />
-    <action name="*/*" class="com.soak.edw.selfService.action.{1}Action" method="{2}">
+    <action name="*/*" class="com.kindustry.edw.selfService.action.{1}Action" method="{2}">
       <result name="list">/{1}/list.jsp</result>
     </action>
   </package>
 
-  <package name="inforecod" namespace="/inforecod" extends="soak-default">
+  <package name="inforecod" namespace="/inforecod" extends="kindustry-default">
     <default-interceptor-ref name="paramsPrepareParamsStack" />
-    <action name="*/*" class="com.soak.infoRecod.action.{1}Action" method="{2}">
+    <action name="*/*" class="com.kindustry.infoRecod.action.{1}Action" method="{2}">
       <result name="list">/{1}/list.jsp</result>
     </action>
   </package>
 
 
-  <package name="business" namespace="/business" extends="soak-default">
-    <action name="*/*" class="org.soak.business.action.{1}Action" method="{2}">
+  <package name="business" namespace="/business" extends="kindustry-default">
+    <action name="*/*" class="org.kindustry.business.action.{1}Action" method="{2}">
       <result name="success">/business/{1}/{2}.jsp</result>
       <result name="chart" type="jfreechart">
         <param name="imageWidth">400</param>
@@ -83,9 +83,9 @@
   </package>
   
   
-  <package name="Capital" namespace="/Capital" extends="soak-default">
+  <package name="Capital" namespace="/Capital" extends="kindustry-default">
     <default-interceptor-ref name="paramsPrepareParamsStack" />
-    <action name="*/*" class="org.soak.capital.web.{1}Action" method="{2}">
+    <action name="*/*" class="org.kindustry.capital.web.{1}Action" method="{2}">
       <result name="success">/stock/{2}.jsp</result>
       <result name="invalid.token" type="freemarker">/pages/MainPage.jsp</result>
       <interceptor-ref name="defaultStack">
@@ -98,9 +98,9 @@
     </action>
   </package>
 
-  <package name="cms" namespace="/cms" extends="soak-default">
+  <package name="cms" namespace="/cms" extends="kindustry-default">
     <default-interceptor-ref name="paramsPrepareParamsStack" />
-    <action name="*/*" class="org.soak.cms.web.{1}Action" method="{2}">
+    <action name="*/*" class="org.kindustry.cms.web.{1}Action" method="{2}">
       <param name="includeMethods">addTiket</param>
       <param name="excludeMethods"></param>
       <result name="list">/stock/{1}/list.jsp</result>
@@ -113,9 +113,9 @@
   </package>
 
 
-  <package name="Login" namespace="/" extends="soak-default">
+  <package name="Login" namespace="/" extends="kindustry-default">
     <default-interceptor-ref name="paramsPrepareParamsStack" />
-    <action name="*/*" class="org.soak.system.web.{1}Action" method="{2}">
+    <action name="*/*" class="org.kindustry.system.web.{1}Action" method="{2}">
       <result name="main">/main.jsp</result>
       <result name="userhome">/userHome.jsp</result>
       <result name="menu">/menu.jsp</result>

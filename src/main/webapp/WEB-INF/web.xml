@@ -36,7 +36,7 @@
   </listener>
 
   <listener>
-    <listener-class>com.soak.framework.listener.ApplicationListener</listener-class>
+    <listener-class>com.kindustry.framework.listener.ApplicationListener</listener-class>
   </listener>
 
 
