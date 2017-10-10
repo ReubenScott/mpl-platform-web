@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.kindustry.framework.dao.IBasicDao;
-import com.kindustry.framework.dao.imp.JdbcDaoImp;
+import com.kindustry.framework.dao.imp.BasicDaoImp;
 import com.kindustry.framework.service.IBasicService;
 import com.kindustry.system.model.Menu;
 
@@ -16,7 +16,7 @@ public class BasicServiceImp implements IBasicService {
 
   protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-  protected IBasicDao basicDao = new JdbcDaoImp();
+  protected IBasicDao basicDao = new BasicDaoImp();
 
   public IBasicDao getBasicDao() {
     return basicDao;

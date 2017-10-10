@@ -4,11 +4,15 @@
 <beans>
   <description>该spring 配置文件，主要维护系统框架的bean信息</description>
 
-  <bean id="jdbcTemplate" class="com.kindustry.framework.jdbc.core.JdbcTemplate" init-method="getInstance" lazy-init="false"/>
+  <!-- com.kindustry.framework.jdbc.core.JdbcTemplate   -->
+  <bean id="jdbcTemplate" class="com.kindustry.framework.jdbc.core.JdbcTemplate" abstract="true" init-method="getInstance" />
+
+  <!-- com.kindustry.framework.jdbc.template.MySQLTemplate   -->
+  <bean id="MySQLTemplate" class="com.kindustry.framework.jdbc.template.MySQLTemplate" parent="jdbcTemplate" lazy-init="false" />
 
   <bean id="basicDao" class="com.kindustry.framework.dao.imp.BasicDaoImp" lazy-init="false">
     <property name="jdbcTemplate">
-      <ref bean="jdbcTemplate" />
+      <ref bean="MySQLTemplate" />
     </property>
   </bean>
 
