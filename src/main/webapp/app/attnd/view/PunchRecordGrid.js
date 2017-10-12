@@ -15,9 +15,9 @@ Ext.define('epl.attnd.view.PunchRecordGrid', {
   frame:true,
 
   tbar:[
-    {xtype:'button',text:'添加',id:'add',iconCls:'table_add'},
-    {xtype:'button',text:'删除',id:'delete',iconCls:'table_remove'},
-    {xtype:'button',text:'保存',id:'save',iconCls:'table_save'}
+    {xtype:'button',text:'添加',id:'add',iconCls:'button_add'},
+    {xtype:'button',text:'删除',id:'delete',iconCls:'button_remove'},
+    {xtype:'button',text:'保存',id:'save',iconCls:'button_save'}
   ],
 
   dockedItems:[{

@@ -16,7 +16,7 @@ Ext.define('epl.system.controller.MenuController',{
               itemclick: this.showMenu
           },
           'center panel[id=menu-form] button[action=delete]': {
-             click: this.deleteUser
+             click: this.deleteMenu
           }
 
         });
@@ -32,8 +32,8 @@ Ext.define('epl.system.controller.MenuController',{
           editform.findField('xtype').setValue(record.get('xtype'));
       }
     }
-    
-    ,deleteUser : function(btn) {
+    // 点击 删除菜单
+    ,deleteMenu : function(btn) {
       btn.up('form').getForm().submit({
         clientValidation: true,
         url: 'system/SysManage/deleteMenu.htm',

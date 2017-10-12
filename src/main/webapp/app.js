@@ -18,7 +18,8 @@ Ext.onReady(function(){
 		controllers:[
 			'epl.system.controller.MainController',
       'epl.system.controller.MenuController',
-			'epl.attnd.controller.PunchRecordController',
+			'epl.system.controller.MenuManageController',
+      'epl.attnd.controller.PunchRecordController',
       
       //
       'XDBLController'

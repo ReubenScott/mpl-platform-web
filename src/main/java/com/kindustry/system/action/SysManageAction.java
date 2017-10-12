@@ -116,14 +116,11 @@ public class SysManageAction extends BaseAction {
 
   // 删除菜单
   public void deleteMenu() {
-    System.out.println(menu);
-    System.out.println(menu.getSid());
-    
     sysMangerService.deleteAnnotatedEntity(menu);
     
     JSONObject res = new JSONObject();
     res.put("success", true);
-    res.put("msg", "保存成功");
+    res.put("msg", "删除成功");
 
     System.out.println(res.toString());
 

@@ -14,13 +14,14 @@ h1,h2,h3,h4,h5,h6{font-size:100%;}
     background-image: url(../images/dept_tree.png) !important;
 }
 
-.table_remove{
-	background-image: url(../images/remove.gif) !important;
-}
-.table_add{
-	background-image: url(../images/add.png) !important;
+.button_remove{
+	background-image: url(../images/button/remove.gif) !important;
 }
 
-.table_save{
-	background-image: url(../images/tabel_save.png) !important;
+.button_add{
+	background-image: url(../images/button/add.png) !important;
+}
+
+.button_save{
+	background-image: url(../images/button/save.png) !important;
 }
