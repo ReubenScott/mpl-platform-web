@@ -19,10 +19,18 @@ Ext.define('epl.system.controller.MenuManageController',{
   },
   // 右键菜单
   treeContextmenu : function(view, node, item, index, e){ 
+    //禁用浏览器的右键相应事件  
+    e.preventDefault();  
+    e.stopEvent(); 
+
+    //当点击时隐藏右键菜单  
+//    this.up("menu").hide();  
+    
+    
     var treeContextMenu = Ext.create('Ext.menu.Menu', {
       width: 100,
-//      margin: '0 0 10 0',
-      floating: false,  // 通常你想设置这个为真 (默认的)
+      margin: '0 0 0 0',
+      floating: true,  // 通常你想设置这个为真 (默认的)
       renderTo: Ext.getBody(),  // 通常由它的包含容器呈现
       allowOtherMenus:false,
       items: [{
@@ -31,17 +39,17 @@ Ext.define('epl.system.controller.MenuManageController',{
           handler: this.addChild
       },{
           text: '删除菜单',
-          iconCls:'button_remove'
+          iconCls:'button_remove',
+          handler: this.delMenu
       }]
     });
-
-    e.stopEvent();
+    
     treeContextMenu.context = {view: view, node: node, item: item, index: index};
-    if(node.hasChildNodes()){
-   //   Ext.getCmp('delMenuItem').setDisabled(true);
-    }else{
-  //    Ext.getCmp('delMenuItem').setDisabled(false);
+    
+    if(node.hasChildNodes()){  // 有子菜单的禁用删除
+      treeContextMenu.child("[iconCls=button_remove]").setDisabled(true);
     }
+    
     treeContextMenu.showAt(e.getXY());
   },
 
@@ -63,36 +71,34 @@ Ext.define('epl.system.controller.MenuManageController',{
       Ext.getCmp('parentText').setValue('系统菜单');
     }
   }
-  
+  /**
+   * 删除菜单
+   */
+  , delMenu : function(item, e){
+    var context = item.parentMenu.context,
+    node = context.node;
+    Ext.Msg.confirm('删除','确定要删除【'+node.data.text+'】？',function(btn){
+      if(btn=='yes'){
+        Ext.Ajax.request({
+          url: 'system/SysManage/deleteMenu.htm',
+          params:{sid:node.data.sid},
+          callback:function(options,success,response){
+            if(success){
+              var r = Ext.JSON.decode(response.responseText);
+              Ext.Msg.alert('提示',r.msg);
+              if(r.success){
+             //   if(node.data.sid==Ext.getCmp('sid').getValue()){ //如果表单显示的是当前删除的节点，清空
+             //     Ext.getCmp('myform').getForm().reset();
+             //   }
+                node.remove(true); //从节点上删除
+              }
+            }else{
+              alert("请求出错");
+            }
+          }
+        });
+      }
+    });
+  }
   
 });
-
-
-//Ext.create('Ext.menu.Menu',{
-//allowOtherMenus:false,
-//items:[{
-//  text:'新建下级菜单',
-////  icon: '/resource/images/buttons/add.gif',
-////   handler:addChild
-//},{
-//  text:'删除菜单',
-//  id:'delMenuItem',
-////  icon: '/resource/images/buttons/jian.gif',
-////   handler:del
-//}]
-//});
-
-//var treeContextMenu = Ext.create('Ext.menu.Menu',{
-//  allowOtherMenus:false,
-//  items:[{
-//    text:'新建下级菜单',
-//    icon: '/resource/images/buttons/add.gif',
-//  //   handler:addChild
-//  },{
-//    text:'删除菜单',
-//    id:'delMenuItem',
-//    icon: '/resource/images/buttons/jian.gif',
-// //   handler:del
-//  }]
-//});
-

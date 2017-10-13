@@ -1,13 +1,7 @@
 package com.kindustry.attendance.action;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-
-
-import net.sf.json.JSONArray;
-import net.sf.json.JsonConfig;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -24,13 +24,13 @@ Ext.define('epl.system.controller.MenuController',{
     // 点击 树形菜单
     showMenu : function(selModel, record){ 
       var mid = record.get('sid') ;
-      if (record.get('leaf')) { // 如果是叶子节点 （没有子菜单）
+//      if (record.get('leaf')) { // 如果是叶子节点 （没有子菜单）
           var editform = Ext.getCmp('menu-form').form;
           editform.findField('menu.sid').setValue(record.get('sid'));
           editform.findField('menu.menuName').setValue(record.get('text'));
           editform.findField('menu.url').setValue(record.get('url'));
           editform.findField('xtype').setValue(record.get('xtype'));
-      }
+//      }
     }
     // 点击 删除菜单
     ,deleteMenu : function(btn) {

@@ -10,13 +10,13 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public interface BaseCache {
-    public void set(String key, Object value) throws Exception;
+    public void set(String key, Object value) ;  // throws Exception
 
-    public void set(Map<String, Object> mapping) throws Exception;
+    public void set(Map<String, Object> mapping) ;  // throws Exception
 
-    public Object get(String key) throws Exception;
+    public Object get(String key) ; // throws Exception
 
-    public Object[] get(String key[]) throws Exception;
+    public Object[] get(String key[]); //  throws Exception
 
-    public void remove(String key) throws Exception;
+    public void remove(String key) ;  // throws Exception
 }

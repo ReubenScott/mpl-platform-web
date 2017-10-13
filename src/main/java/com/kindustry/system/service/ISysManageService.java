@@ -11,5 +11,5 @@ public interface ISysManageService extends IBasicService {
   
   public List<?> getMenuListByUID(String userid);
   
- 
+  public void dragMenu(String sid, String target, String targetType, String dropPosition);
 }

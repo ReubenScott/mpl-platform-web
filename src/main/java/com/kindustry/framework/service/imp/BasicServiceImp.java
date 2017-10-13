@@ -50,9 +50,8 @@ public class BasicServiceImp implements IBasicService {
    * 
    * @param sid
    */
-  public void deleteEntityBySID(Serializable sid) {
-    // TODO Auto-generated method stub
-
+  public boolean deleteEntityBySID(Class entity, Serializable sid) {
+    return basicDao.deleteEntityBySID(entity,sid);
   }
   
   /**

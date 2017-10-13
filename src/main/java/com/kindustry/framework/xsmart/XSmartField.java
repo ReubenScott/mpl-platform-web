@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.beanutils.PropertyUtils;
+//import org.apache.commons.beanutils.PropertyUtils;
 
 @SuppressWarnings("unchecked")
 public abstract class XSmartField
@@ -89,16 +89,16 @@ public abstract class XSmartField
 
   protected Object getBeanProperty(Object vo, String property)
   {
-    if (vo == null)
+//    if (vo == null)
       return null;
-    try
-    {
-      return PropertyUtils.getProperty(vo, property);
-    } catch (NoSuchMethodException e) {
-      return null;
-    } catch (Exception e) {
-      throw new XSmartException("property \"" + property + "\" is missing!", e);
-    }
+//    try
+//    {
+//      return PropertyUtils.getProperty(vo, property);
+//    } catch (NoSuchMethodException e) {
+//      return null;
+//    } catch (Exception e) {
+//      throw new XSmartException("property \"" + property + "\" is missing!", e);
+//    }
   }
 
   public static final boolean isEmpty(Object value)

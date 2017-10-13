@@ -1,18 +1,18 @@
 package com.kindustry.system.action;
 
-import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import javax.servlet.http.HttpServletRequest;
 
+import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.kindustry.common.json.JsonUtil;
+import com.kindustry.common.util.StringUtil;
 import com.kindustry.framework.action.BaseAction;
-import com.kindustry.framework.cache.EhCacheImpl;
 import com.kindustry.system.model.Menu;
 import com.kindustry.system.service.ISysManageService;
 
@@ -46,85 +46,106 @@ public class SysManageAction extends BaseAction {
    * 
    * 菜单树
    */
+  // @Cacheable(value="menuCache",key="'UserMenuKey'+#userid")
   public void menuList() {
-    List<Menu> list = sysMangerService.getAllMenuList();
-    // EhCacheImpl aa = this.getBean("ehCache");
-    // System.out.println(aa);
-
-    JSONArray jsonTree = new JSONArray();
-
-    for (Menu menu : list) {
-      JSONObject objcet = JSONObject.fromObject(menu);
-      jsonTree.add(objcet);
+    String cacheMenu = super.cacheGet("contentCache", "menutree"); // 菜单缓存
+    if (cacheMenu == null) {
+      List<Menu> list = sysMangerService.getAllMenuList();
+      cacheMenu = JsonUtil.toJson(list);
+      super.cachePut("contentCache", "menutree", cacheMenu);
     }
-    // JsonUtil.toJson("root",jsonTree)
-    System.out.println(jsonTree.toString());
-
-    super.ajaxResponse(jsonTree.toString());
+    super.ajaxResponse(cacheMenu);
   }
 
-  public void menuList2() {
+  /*
+   * private JSONObject sysMenu2JsonString(Menu menu) {
+   * JSONObject jsonMenu = new JSONObject();
+   * try {
+   * jsonMenu.put("sid", menu.getSid());
+   * jsonMenu.put("menuName", menu.getMenuName());
+   * jsonMenu.put("menuLevel", menu.getMenuLevel());
+   * jsonMenu.put("orderNum", menu.getOrderNum());
+   * if (menu.getIconUrl() != null && !menu.getIconUrl().equals("")) {
+   * // jsonMenu.put("icon",iconpath+"/"+menu.getIconUrl());
+   * jsonMenu.put("iconUrl", menu.getIconUrl());
+   * }
+   * if (menu.getChildren() != null && menu.getChildren().size() > 0) {
+   * JSONArray child = new JSONArray();
+   * Set<Menu> menuset = menu.getChildren();
+   * for (Menu cmenu : menuset) {
+   * // if(cmenu.getDelFlag()==0){
+   * child.add(sysMenu2JsonString(cmenu));
+   * // }
+   * }
+   * jsonMenu.put("children", child);
+   * jsonMenu.put("leaf", false);
+   * } else {
+   * jsonMenu.put("leaf", true);
+   * }
+   * } catch (Exception e) {
+   * e.printStackTrace();
+   * }
+   * return jsonMenu;
+   * }
+   */
 
-    List<Menu> list = sysMangerService.getAllMenuList();
-    EhCacheImpl aa = this.getBean("ehCache");
-    System.out.println(aa);
+  //  拖动报表修改类别或顺序
+  public void dragMenu() {
 
-    // ApplicationContext ac = new FileSystemXmlApplicationContext("applicationContext.xml");
-    // logger.debug(JsonUtil.toJson("root",list));
-
-    JSONArray jsonTree = new JSONArray();
-
-    for (Menu menu : list) {
-      JSONObject objcet = sysMenu2JsonString(menu);
-      jsonTree.add(objcet);
-    }
-    // JsonUtil.toJson("root",jsonTree)
-    System.out.println(jsonTree.toString());
-
-    super.ajaxResponse(jsonTree.toString());
-  }
-
-  private JSONObject sysMenu2JsonString(Menu menu) {
-    JSONObject jsonMenu = new JSONObject();
+    HttpServletRequest request = ServletActionContext.getRequest();
+    String sid = request.getParameter("sid");
+    String target = request.getParameter("target");
+    String targetType = request.getParameter("targetType");
+    String dropPosition = request.getParameter("dropPosition");
+    System.out.println(sid);
+    System.out.println(target);
+    System.out.println(targetType);
+    System.out.println(dropPosition);
+    
+    sysMangerService.dragMenu(sid, target, targetType, dropPosition);
+    
+    
+    Map res = new HashMap();
     try {
-      jsonMenu.put("sid", menu.getSid());
-      jsonMenu.put("menuName", menu.getMenuName());
-      jsonMenu.put("menuLevel", menu.getMenuLevel());
-      jsonMenu.put("orderNum", menu.getOrderNum());
-      if (menu.getIconUrl() != null && !menu.getIconUrl().equals("")) {
-        // jsonMenu.put("icon",iconpath+"/"+menu.getIconUrl());
-        jsonMenu.put("iconUrl", menu.getIconUrl());
-      }
-      if (menu.getChildren() != null && menu.getChildren().size() > 0) {
-        JSONArray child = new JSONArray();
-        Set<Menu> menuset = menu.getChildren();
-        for (Menu cmenu : menuset) {
-          // if(cmenu.getDelFlag()==0){
-          child.add(sysMenu2JsonString(cmenu));
-          // }
-        }
-        jsonMenu.put("children", child);
-        jsonMenu.put("leaf", false);
-      } else {
-        jsonMenu.put("leaf", true);
-      }
+//      SysReport report = reportManEService.dragReport(sid, target, targetType, dropPosition);
+      res.put("success", true);
+      res.put("msg", "保存成功！");
+//      res.put("sid", report.getSid());
+//      if (report.getSysReportType() != null) {
+//        res.put("type_id", report.getSysReportType().getSid());
+//        res.put("type_name", report.getSysReportType().getReportTypeName());
+//      } else {
+//        res.put("type_id", "");
+//        res.put("type_name", "");
+//      }
+//      res.put("postion", report.getPostion());
     } catch (Exception e) {
       e.printStackTrace();
+      try {
+        res.put("success", false);
+        res.put("msg", e.getMessage());
+      } catch (Exception ee) {
+      }
     }
-    return jsonMenu;
+//    this.resParam = res.toString();
+//    return AJAXUTF8;
   }
 
   // 删除菜单
   public void deleteMenu() {
-    sysMangerService.deleteAnnotatedEntity(menu);
-    
-    JSONObject res = new JSONObject();
+    HttpServletRequest request = ServletActionContext.getRequest();
+    String sid = request.getParameter("sid");
+
+    if (!StringUtil.isEmpty(sid)) {
+      sysMangerService.deleteEntityBySID(Menu.class, sid);
+    }
+
+    // sysMangerService.deleteAnnotatedEntity(menu);
+    super.cachEvict("contentCache", "menutree"); // 清除缓存
+    Map res = new HashMap();
     res.put("success", true);
     res.put("msg", "删除成功");
-
-    System.out.println(res.toString());
-
-    super.ajaxResponse(res.toString());
+    super.ajaxResponse(JsonUtil.toJson(res));
   }
 
 }

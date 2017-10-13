@@ -16,11 +16,15 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 import org.apache.commons.codec.net.URLCodec;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.Cache;
+import org.springframework.cache.Cache.ValueWrapper;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
 
 import com.kindustry.framework.listener.ApplicationListener;
 import com.kindustry.framework.util.BrowseTool;
@@ -34,6 +38,7 @@ public abstract class BaseAction extends ActionSupport { // implements ICacheSup
 
   public static final String NOPERMISSION = "NoPermission";
 
+  
   // protected IBasicService baseService;
 
   // public IBasicService getBaseService() {
@@ -53,6 +58,7 @@ public abstract class BaseAction extends ActionSupport { // implements ICacheSup
     // TODO Auto-generated method stub
 
   }
+  
 
   /*
    * public static IBaseService getBaseService() { return (IBaseService) applicationContext.getBean("baseService"); }
@@ -69,6 +75,38 @@ public abstract class BaseAction extends ActionSupport { // implements ICacheSup
     return (T) ApplicationListener.getBean(beanName);
   }
 
+  /**
+   * 获取缓存对象
+   */
+  public <T> T cacheGet(String cacheName , String keyName) {
+    EhCacheCacheManager cacheManager = this.getBean("cacheManager");
+    Cache cache = cacheManager.getCache(cacheName);
+    ValueWrapper wrapper = cache.get(keyName) ;
+    if(wrapper!=null){
+      return (T)wrapper.get();
+    }
+    return null;
+  }
+  
+  /**
+   * 设置缓存对象
+   */
+  public void cachePut(String cacheName , String keyName , Object value) {
+    EhCacheCacheManager cacheManager = this.getBean("cacheManager");
+    Cache cache = cacheManager.getCache(cacheName);
+    cache.put(keyName, value);
+  }
+  
+
+  /**
+   * 设置缓存对象
+   */
+  public void cachEvict(String cacheName , String key ) {
+    EhCacheCacheManager cacheManager = this.getBean("cacheManager");
+    Cache cache = cacheManager.getCache(cacheName);
+    cache.evict(key);
+  }
+  
   /**
    * ajax 响应
    * 

@@ -26,4 +26,15 @@
 
   <bean id="ehCache" class="com.kindustry.framework.cache.EhCacheImpl" lazy-init="true" />
 
+
+  <bean id="cacheManagerFactory" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+    <property name="configLocation" value="classpath:ehcache.xml" />
+  </bean>
+
+  <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+    <property name="cacheManager" ref="cacheManagerFactory" />
+  </bean>
+
+
+
 </beans>

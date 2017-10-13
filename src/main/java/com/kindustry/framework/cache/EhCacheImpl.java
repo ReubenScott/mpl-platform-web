@@ -25,12 +25,12 @@ public class EhCacheImpl implements BaseCache {
         this.name = name;
     }
 
-    public void set(String key, Object value) throws Exception {
+    public void set(String key, Object value) {
         Element element = new Element(key, value);
         this.ehcache.put(element);
     }
 
-    public void set(Map<String, Object> mapping) throws Exception {
+    public void set(Map<String, Object> mapping){
         Iterator<String> it = mapping.keySet().iterator();
         while (it.hasNext()) {
             String key = it.next();
@@ -39,12 +39,12 @@ public class EhCacheImpl implements BaseCache {
         }
     }
 
-    public Object get(String key) throws Exception {
+    public Object get(String key) {
         Element element = this.ehcache.get(key);
         return element == null ? null : element.getObjectValue();
     }
 
-    public Object[] get(String[] key) throws Exception {
+    public Object[] get(String[] key)  {
         if (key == null || key.length == 0) {
             return null;
         }
@@ -55,7 +55,7 @@ public class EhCacheImpl implements BaseCache {
         return result;
     }
 
-    public void remove(String key) throws Exception {
+    public void remove(String key) {
         ehcache.remove(key);
     }
 }

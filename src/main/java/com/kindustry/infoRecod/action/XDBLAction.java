@@ -1,10 +1,12 @@
 package com.kindustry.infoRecod.action;
 
-import net.sf.json.JSONObject;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.kindustry.common.json.JsonUtil;
 import com.kindustry.framework.action.BaseAction;
 import com.kindustry.framework.service.IBasicService;
 import com.kindustry.framework.thread.ThreadManager;
@@ -52,12 +54,12 @@ public class XDBLAction extends BaseAction {
     t.start();
 
     // 创建JSONObject对象
-    JSONObject json = new JSONObject();
+    Map json = new HashMap();
     // 向json中添加数据
     json.put("status", "start");
     // json.put("thread_id", t.getId());
 
-    super.ajaxResponse(json.toString());
+    super.ajaxResponse(JsonUtil.toJson(json));
   }
 
   public void xdbl23() {
@@ -77,12 +79,12 @@ public class XDBLAction extends BaseAction {
     t.start();
 
     // 创建JSONObject对象
-    JSONObject json = new JSONObject();
+    Map json = new HashMap();
     // 向json中添加数据
     json.put("status", "start");
     json.put("thread_id", t.getId());
 
-    super.ajaxResponse(json.toString());
+    super.ajaxResponse(JsonUtil.toJson(json));
   }
 
   public void xdblStop() {
@@ -92,11 +94,11 @@ public class XDBLAction extends BaseAction {
     System.out.println("222222222222222222222222222222222222");
 
     // 创建JSONObject对象
-    JSONObject json = new JSONObject();
+    Map json = new HashMap();
     // 向json中添加数据
     json.put("status", "stop");
 
-    super.ajaxResponse(json.toString());
+    super.ajaxResponse(JsonUtil.toJson(json));
 
   }
 

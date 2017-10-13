@@ -8,9 +8,6 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
@@ -131,27 +128,6 @@ public class SelfServiceAction extends BaseAction {
     MailService.sendMail(mail);
 
     return "list";
-  }
-
-  public void Ajax_Func2() {
-
-    // 定义JSON字符串
-    String jsonStr = "{\"id\": 2," + " \"title\": \"json title\", " + "\"config\": {" + "\"width\": 34," + "\"height\": 35," + "}, \"data\": ["
-        + "\"JAVA\", \"JavaScript\", \"PHP\"" + "]}";
-    // 创建JSONObject对象
-    JSONObject json = new JSONObject();
-    // 向json中添加数据
-    json.put("name", "wanglihong");
-    json.put("age", 12);
-    json.put("email", "sdsd@hotmlsom.com");
-    
-    // 创建JSONArray数组，并将json添加到数组
-    JSONArray array = new JSONArray();
-//    array.put(json);
-//    array.put(json);
-//    array.put(json);
-    
-    super.ajaxResponse(array.toString());
   }
 
 
