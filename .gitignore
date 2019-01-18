@@ -1,0 +1,7 @@
+# Ignore in this directory
+#.gitignore
+.classpath
+.settings
+.buildpath
+.project
+target

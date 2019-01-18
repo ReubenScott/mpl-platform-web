@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kindustry.invest.bond.model.Bond">
+
+  <insert id="add" parameterType="Bond">
+     <![CDATA[
+        insert into bond
+        ( code,name,facePrice,netPrice,fullPrice,accruedInterest,turnVolume
+         ,inpaydays,couponRate,bondCredit,mainCredit,assukind,dueDate,amount  
+        )
+        values
+        ( #{code},#{name},#{facePrice},#{netPrice},#{fullPrice},#{accruedInterest},#{turnVolume}
+         ,#{inpaydays},#{couponRate},#{bondCredit},#{mainCredit},#{assukind}, to_date(#{dueDate},'YYYY-MM-dd') ,#{amount}     
+        )
+     ]]>
+  </insert>
+
+  <insert id="truncate" parameterType="Bond">
+     <![CDATA[
+        delete from bond
+     ]]>
+  </insert>
+
+
+  <select id="findValueBond" resultType="Bond">
+    <![CDATA[
+      select * from bond 
+        where  netprice < faceprice  
+          and netprice > 0
+          and assukind <> '无担保' -- 担保方式
+          and assukind <> '' -- 担保方式
+          and couponRate >= 5 -- 利率
+          and turnVolume > 0  -- 交易量
+        order by (netprice - faceprice)/faceprice asc 
+         , (fullPrice - faceprice)/faceprice asc 
+         , couponrate desc 
+         , inpaydays desc
+         , turnVolume desc        
+    ]]>
+  </select>
+
+</mapper>
