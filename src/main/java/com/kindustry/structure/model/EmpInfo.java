@@ -1,23 +1,17 @@
 package com.kindustry.structure.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.persistence.Table;
-
 
 /**
  * 
  * 排班类型
  */
 @Table(name = "f_emp_info")
-public class EmpInfo implements Serializable{
+public class EmpInfo {
 
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 1L;
-
+  @Id
   @Column(name = "empNO")
   private String empNO; // 编号
 
@@ -28,18 +22,17 @@ public class EmpInfo implements Serializable{
   private String deptId; // 部门编号
 
   private String deptName; // 部门编号
-  
+
   private String status; // 人员状态
-  
-  private String entryate ; // 入职日期
-  
-  
-  public EmpInfo(){
-    
+
+  private String entryate; // 入职日期
+
+  public EmpInfo() {
+
   }
 
-  public EmpInfo(String empNO){
-    this.empNO = empNO ;
+  public EmpInfo(String empNO) {
+    this.empNO = empNO;
   }
 
   public String getEmpNO() {

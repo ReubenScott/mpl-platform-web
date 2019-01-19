@@ -20,7 +20,7 @@
 
 
   <build>
-    <finalName>edw</finalName>
+    <finalName>cashier</finalName>
 
     <plugins>
 
@@ -29,11 +29,19 @@
         <groupId>org.mortbay.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
         <configuration>
+          <webAppConfig>
+            <contextPath>/</contextPath>
+          </webAppConfig>
+          <scanIntervalSeconds>0</scanIntervalSeconds>
           <connectors>
             <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
               <port>8080</port>
               <maxIdleTime>60000</maxIdleTime>
             </connector>
+            <!--
+              <connector implementation="org.eclipse.jetty.server.ssl.SslSelectChannelConnector"> <port>8443</port> <keystore>keystore</keystore> <keyPassword>123456</keyPassword>
+              <password>123456</password> </connector>
+            -->
           </connectors>
         </configuration>
       </plugin>
@@ -115,20 +123,11 @@
     </dependency>
     -->
 
-    <!-- Servlet & Jsp  -->
+    <!-- J2EE   -->
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-      <version>2.5</version>
-      <scope>provided</scope>
+      <groupId>javax</groupId>
+      <artifactId>javaee-api</artifactId>
     </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>jsp-api</artifactId>
-      <version>2.0</version>
-      <scope>provided</scope>
-    </dependency>
-
 
     <!-- 注解  -->
     <dependency>
@@ -150,10 +149,6 @@
     </dependency>
     <!-- DB Driver End  -->
 
-    <dependency>
-      <groupId>javax</groupId>
-      <artifactId>javaee-api</artifactId>
-    </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
 -->
@@ -231,7 +226,7 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
     </dependency>
-    
+
     <dependency>
       <groupId>quartz</groupId>
       <artifactId>quartz</artifactId>

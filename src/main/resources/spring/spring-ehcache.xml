@@ -15,4 +15,10 @@
   <bean id="ehcacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
     <property name="cacheManager" ref="ehcacheManagerFactory" />
   </bean>
+
+  <!--
+  <bean id="ehCache" class="com.kindustry.framework.cache.EhCacheImpl" lazy-init="true" />
+-->
+
+
 </beans>

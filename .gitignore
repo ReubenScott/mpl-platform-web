@@ -5,3 +5,5 @@
 .buildpath
 .project
 target
+
+src/main/webapp/WEB-INF/lib

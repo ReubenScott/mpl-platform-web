@@ -1,26 +1,21 @@
 package com.kindustry.structure.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.persistence.Table;
-
 
 /**
  * 
  * 排班类型
  */
 @Table(name = "f_dept_info")
-public class DeptInfo implements Serializable{
+public class DeptInfo {
 
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 1L;
-
+  @Id
   @Column(name = "uid")
   private String sid; // 部门编号
-  
+
+  @Id
   @Column(name = "DeptNO")
   private String deptNO; // 编号
 
