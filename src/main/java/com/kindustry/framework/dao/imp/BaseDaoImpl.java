@@ -107,6 +107,7 @@ public class BaseDaoImpl<T extends BaseEntity> implements BaseSqlMap<T> , IBaseD
     SqlSession session = MyBatisUtil.getSession();
     try {
       session.insert(entity.getClass().getName() + ".add", entity);
+      
       session.commit();
     } catch (Exception e) {
       e.printStackTrace();
