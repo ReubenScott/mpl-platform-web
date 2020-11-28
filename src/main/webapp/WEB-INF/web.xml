@@ -4,11 +4,6 @@
 
   <display-name>Archetype Created Web Application</display-name>
 
-  <!-- Spring和mybatis的配置文件 -->
-  <context-param>
-    <param-name>contextConfigLocation</param-name>
-    <param-value>classpath:spring/spring-*.xml</param-value>
-  </context-param>
 
   <!-- 编码过滤器 -->
   <filter>
@@ -26,10 +21,6 @@
   </filter-mapping>
 
 
-  <!-- 应用 监听  -->
-  <listener>
-    <listener-class>com.kindustry.framework.listener.ApplicationListener</listener-class>
-  </listener>
   
 
   <!-- 防止Spring内存溢出监听器 -->
@@ -47,7 +38,7 @@
     <!-- 可以自定义servlet.xml配置文件的位置和名称，默认为WEB-INF目录下，名称为[<servlet-name>]-servlet.xml，如spring-servlet.xml -->
     <init-param>
       <param-name>contextConfigLocation</param-name>
-      <param-value>/WEB-INF/spring-mvc.xml</param-value>
+      <param-value>classpath:applicationContext.xml</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
     <async-supported>true</async-supported>

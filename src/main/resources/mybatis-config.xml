@@ -25,15 +25,27 @@
     <setting name="useColumnLabel" value="true" />
     <setting name="defaultExecutorType" value="REUSE" />
     <setting name="aggressiveLazyLoading" value="false" />
+    <setting name="logImpl" value="STDOUT_LOGGING" />
 
     <!--是否开启自动驼峰命名规则-->
     <setting name="mapUnderscoreToCamelCase" value="true " />
     <setting name="defaultStatementTimeout" value="25000" />
+    
   </settings>
+  
+  
+  <!-- 
+  <typeHandlers>
+    <typeHandler javaType="Object" jdbcType="CLOB"
+      handler="jp.co.bml.qualis.generator.ClobTypeHandler" />
+  </typeHandlers>
+  -->
+  
   
   <!-- 查询对象别名配置 -->
   <typeAliases>
     <typeAlias type="com.kindustry.invest.bond.model.Bond" alias="Bond" />
   </typeAliases>
+
 
 </configuration>

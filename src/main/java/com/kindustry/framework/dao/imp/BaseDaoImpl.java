@@ -15,12 +15,12 @@ import org.springframework.stereotype.Repository;
 
 import com.kindustry.framework.dao.IBaseDao;
 import com.kindustry.framework.orm.BaseEntity;
-import com.kindustry.framework.orm.BaseSqlMap;
+import com.kindustry.framework.orm.BaseMapper;
 import com.kindustry.framework.utils.MyBatisUtil;
 import com.kindustry.structure.model.ReflectHelper;
 
 @Repository("baseDao")
-public class BaseDaoImpl<T extends BaseEntity> implements BaseSqlMap<T> , IBaseDao {
+public class BaseDaoImpl<T extends BaseEntity> implements BaseMapper<T> , IBaseDao {
   protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
   @Resource

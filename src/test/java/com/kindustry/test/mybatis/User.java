@@ -1,4 +1,4 @@
-package com.kindustry.mybatis.test;
+package com.kindustry.test.mybatis;
 
 public class User {
   private String name;

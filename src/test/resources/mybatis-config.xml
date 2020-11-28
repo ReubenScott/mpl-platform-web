@@ -2,31 +2,58 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
+
+  <properties resource="jdbc.properties" />
+
   <settings>
     <!-- changes from the defaults for testing -->
+    <!-- 开启缓存,默认就是开启的,2层开关,需要在Mapper文件中也指定 cache 标签才会真正使用缓存 -->
     <setting name="cacheEnabled" value="false" />
+    <!-- 在null时也调用 setter,适应于返回Map,3.2版本以上可用 -->
+    <setting name="callSettersOnNulls" value="true" />
+
+    <!--使用jdbc的getGeneratedKeys获取自增的主键值 -->
     <setting name="useGeneratedKeys" value="true" />
+    <!--使用列标签代替列名 -->
+    <setting name="useColumnLabel" value="true" />
     <setting name="defaultExecutorType" value="REUSE" />
+    <!-- 延迟加载 -->
+    <setting name="lazyLoadingEnabled" value="true" />
+    <setting name="aggressiveLazyLoading" value="false" />
+    <!--是否开启自动驼峰命名规则 -->
+    <setting name="mapUnderscoreToCamelCase" value="true " />
   </settings>
 
   <typeAliases>
-    <typeAlias alias="User" type="test.mybatis.User" />
+    <typeAlias alias="Bond"  type="com.kindustry.invest.bond.model.Bond" />
+    <typeAlias alias="User" type="com.kindustry.test.mybatis.User" />
   </typeAliases>
 
-  <environments default="development">
-    <environment id="development">
-      <transactionManager type="jdbc" />
+
+  <environments default="MYSQL">
+    <environment id="MYSQL">
+      <transactionManager type="JDBC" />
       <dataSource type="POOLED">
-        <property name="driver" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://192.168.71.38:3306/mybatis_test" />
-        <property name="username" value="root" />
-        <property name="password" value="123456" />
+        <property name="driver" value="${mysql.jdbc.driverClassName}" />
+        <property name="url" value="${mysql.jdbc.url}" />
+        <property name="username" value="${mysql.jdbc.username}" />
+        <property name="password" value="${mysql.jdbc.password}" />
+      </dataSource>
+    </environment>
+    <environment id="POSTGRESQL">
+      <transactionManager type="JDBC" />
+      <dataSource type="POOLED">
+        <property name="driver" value="${postgresql.jdbc.driverClassName}" />
+        <property name="url" value="${postgresql.jdbc.url}" />
+        <property name="username" value="${postgresql.jdbc.username}" />
+        <property name="password" value="${postgresql.jdbc.password}" />
       </dataSource>
     </environment>
   </environments>
 
   <mappers>
     <mapper resource="mappers/UserMapper.xml" />
+    <mapper resource="com/kindustry/invest/bond/mapper/BondMapper.xml" />
   </mappers>
 
 </configuration>  

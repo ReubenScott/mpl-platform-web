@@ -1,4 +1,4 @@
-package com.kindustry.cms.test;
+package com.kindustry.test.cms;
 
 import java.io.IOException;
 

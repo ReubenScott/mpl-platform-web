@@ -5,29 +5,34 @@
        http://www.springframework.org/schema/tx   http://www.springframework.org/schema/tx/spring-tx.xsd
        http://www.springframework.org/schema/aop  http://www.springframework.org/schema/aop/spring-aop.xsd">
 
+  <!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 动态扫描 加载 mapper.xml -->
 
-  <!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 动态扫描  加载 mapper.xml -->
+  <!-- 配置mybatisSqlSessionFactoryBean -->
   <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
     <!-- 数据源 -->
     <property name="dataSource" ref="dataSource" />
-    <!-- Mybatis 环境配置文件  -->
-    <property name="configLocation" value="classpath:mybatis/mybatis-config.xml" />
+    <!-- Mybatis 环境配置文件 -->
+    <property name="configLocation" value="classpath:mybatis-config.xml" />
     <!-- 别名 -->
-    <property name="typeAliasesPackage" value="com.zhangguo.bookstore.entities"></property>
+    <property name="typeAliasesPackage" value="com.kindustry"></property>
     <!-- 自动扫描mapping.xml文件 sql映射文件路径 -->
     <property name="mapperLocations" value="classpath*:com/*/**/mapper/*Mapper.xml"></property>
   </bean>
 
-  <!-- 自动扫描对象关系映射 -->
-  <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-    <!--指定会话工厂，如果当前上下文中只定义了一个则该属性可省去 -->
-    <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
-    <!-- 指定要扫描的包，在此包之下的映射器都会被搜索到。可指定多个包，包与包之间用逗号或分号分隔-->
-    <property name="basePackage" value="com.*.**.mapper" />
-  </bean>
-
+  <!-- 配置SqlSessionTemplate -->
   <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
     <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory" />
   </bean>
-  
+
+  <!-- 自动扫描对象关系映射 -->
+  <!-- 配置mybatis mapper接口 -->
+  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    <!-- 指定要扫描的包，在此包之下的映射器都会被搜索到。可指定多个包，包与包之间用逗号或分号分隔 -->
+    <property name="basePackage" value="com.*.**.mapper" />
+    <!--指定会话工厂，如果当前上下文中只定义了一个则该属性可省去 -->
+    <property name="sqlSessionTemplateBeanName" value="sqlSessionTemplate" />
+  </bean>
+
+
+
 </beans>
