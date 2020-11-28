@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kindustry.framework.cache.BaseCache;
 import com.kindustry.framework.cache.ICacheSupport;
 import com.kindustry.framework.cache.factory.EhCacheFactory;
-import com.kindustry.framework.util.Configure;
+import com.kindustry.framework.config.Configure;
 
 /**
  * 自动缓存拦截器 功能：拦截实现了{@link ICacheSupport}接口的Action，如果缓存命中，则从缓存中返回结果
@@ -42,21 +42,21 @@ public class AutoCacheInterceptor implements HandlerInterceptor {
 
     System.out.println("postHandle");
 
-    Object action = paramObject ;
+    Object action = paramObject;
 
     if (action instanceof ICacheSupport && isCacheEnable()) {
-      ICacheSupport isc = (ICacheSupport) paramObject ;
+      ICacheSupport isc = (ICacheSupport) paramObject;
       logger.debug("The target Action <" + action.getClass().getName() + "> has enabled cache <" + isc.getCacheName() + ">.");
       cache = EhCacheFactory.getInstance().getCache(isc.getCacheName());
       Object obj = cache.get(isc.getCacheKey());
       if (obj == null) {
         // 缓存未命中
         logger.debug("cache key <" + isc.getCacheKey() + "> did not hit.");
-//        String result = inv.invoke();
+        // String result = inv.invoke();
         cache.set(isc.getCacheKey(), isc.prepareCache());
         // 缓存未命中
         logger.debug("cache key <" + isc.getCacheKey() + "> has stored.");
-//        return result;
+        // return result;
       } else if (isc.isUseCacheData()) {
         // 缓存命中
         logger.debug("cache key <" + isc.getCacheKey() + "> has hit.");
@@ -65,11 +65,11 @@ public class AutoCacheInterceptor implements HandlerInterceptor {
       } else {
         // 缓存命中，但是被拒绝，更新缓存
         logger.debug("cache key <" + isc.getCacheKey() + "> has hit.But this request drops it.");
-//        String result = inv.invoke();
+        // String result = inv.invoke();
         cache.set(isc.getCacheKey(), isc.prepareCache());
         // 更新缓存
         logger.debug("cache key <" + isc.getCacheKey() + "> has been refreshed.");
-//        return result;
+        // return result;
       }
     }
   }

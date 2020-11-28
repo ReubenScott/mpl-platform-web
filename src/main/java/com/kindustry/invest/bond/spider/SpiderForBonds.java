@@ -8,7 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.helper.HttpConnection;
@@ -24,7 +24,8 @@ public class SpiderForBonds extends Spider {
 
   @Override
   public void execute() {
-    String url = "http://basic.10jqka.com.cn/122695/dividend.html"; // 通过 债券现金流 计算 债券剩余面值
+    String url = "http://basic.10jqka.com.cn/122695/dividend.html"; // 通过 债券现金流
+                                                                    // 计算 债券剩余面值
 
   }
 
@@ -50,10 +51,10 @@ public class SpiderForBonds extends Spider {
       for (int i = 2; i < trs.size(); i++) {
         Elements tds = trs.get(i).select("td"); // 获取每一行的列数据
         Bond bond = new Bond();
-        bond.setCode(tds.get(0).text()); // 
-        bond.setName(tds.get(1).text()); // 
-        bond.setNetPrice(Float.valueOf(tds.get(2).text())); // 
-        bond.setFullPrice(Float.valueOf(tds.get(3).text())); // 
+        bond.setCode(tds.get(0).text()); //
+        bond.setName(tds.get(1).text()); //
+        bond.setNetPrice(Float.valueOf(tds.get(2).text())); //
+        bond.setFullPrice(Float.valueOf(tds.get(3).text())); //
 
         if (bond.getName().contains("PR") || bond.getNetPrice() < 90f) {
           float balance = getBondBalance(bond.getCode());
@@ -64,16 +65,16 @@ public class SpiderForBonds extends Spider {
           bond.setFacePrice(100f); // 默认面值为 100 元
         }
 
-        bond.setAccruedInterest(Float.valueOf(tds.get(3).text()) - Float.valueOf(tds.get(2).text())); // 
-        bond.setTurnVolume(Float.valueOf(tds.get(5).text())); // 
+        bond.setAccruedInterest(Float.valueOf(tds.get(3).text()) - Float.valueOf(tds.get(2).text())); //
+        bond.setTurnVolume(Float.valueOf(tds.get(5).text())); //
         if (!StringUtils.isEmpty(tds.get(6).text())) {
-          bond.setInpaydays(Integer.valueOf(tds.get(6).text())); // 
+          bond.setInpaydays(Integer.valueOf(tds.get(6).text())); //
         }
-        bond.setCouponRate(Float.valueOf(tds.get(11).text())); // 
-        bond.setBondCredit(tds.get(14).text()); // 
-        bond.setMainCredit(tds.get(15).text()); // 
-        bond.setAssukind(tds.get(16).text()); // 
-        bond.setDueDate(tds.get(17).text()); // 
+        bond.setCouponRate(Float.valueOf(tds.get(11).text())); //
+        bond.setBondCredit(tds.get(14).text()); //
+        bond.setMainCredit(tds.get(15).text()); //
+        bond.setAssukind(tds.get(16).text()); //
+        bond.setDueDate(tds.get(17).text()); //
 
         // for (int j = 0; j < tds.size(); j++) {
         // String oldClose = tds.get(j).text();
@@ -132,7 +133,7 @@ public class SpiderForBonds extends Spider {
     return balance;
   }
 
-  public static void  main(String args[]) {
+  public static void main(String args[]) {
     SpiderForBonds splider = new SpiderForBonds();
     List<Bond> bonds = splider.getBonds();
     BondDao bondDao = new BondDaoImpl();

@@ -14,7 +14,7 @@
   <parent>
     <groupId>com.kindustry</groupId>
     <artifactId>all-parent-pom</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <relativePath>../all-parent-pom</relativePath>
   </parent>
 
@@ -23,6 +23,11 @@
     <finalName>cashier</finalName>
 
     <plugins>
+      <!-- compiler插件, 设定JDK版本 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
 
       <!-- Jetty 插件 -->
       <plugin>
@@ -38,10 +43,8 @@
               <port>8080</port>
               <maxIdleTime>60000</maxIdleTime>
             </connector>
-            <!--
-              <connector implementation="org.eclipse.jetty.server.ssl.SslSelectChannelConnector"> <port>8443</port> <keystore>keystore</keystore> <keyPassword>123456</keyPassword>
-              <password>123456</password> </connector>
-            -->
+            <!-- <connector implementation="org.eclipse.jetty.server.ssl.SslSelectChannelConnector"> <port>8443</port> <keystore>keystore</keystore> <keyPassword>123456</keyPassword> 
+              <password>123456</password> </connector> -->
           </connectors>
         </configuration>
       </plugin>
@@ -116,20 +119,15 @@
 
 
   <dependencies>
-    <!--  配置项目依赖   
-    <dependency>
-      <groupId>com.kindustry</groupId>
-      <artifactId>core</artifactId>
-    </dependency>
-    -->
+    <!-- 配置项目依赖 <dependency> <groupId>com.kindustry</groupId> <artifactId>core</artifactId> </dependency> -->
 
-    <!-- J2EE   -->
+    <!-- J2EE -->
     <dependency>
       <groupId>javax</groupId>
       <artifactId>javaee-api</artifactId>
     </dependency>
 
-    <!-- 注解  -->
+    <!-- 注解 -->
     <dependency>
       <groupId>javax.persistence</groupId>
       <artifactId>persistence-api</artifactId>
@@ -137,7 +135,7 @@
 
 
     <!-- 导入Mysql数据库链接jar包 -->
-    <!-- DB Driver Start  -->
+    <!-- DB Driver Start -->
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
@@ -147,11 +145,10 @@
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
     </dependency>
-    <!-- DB Driver End  -->
+    <!-- DB Driver End -->
 
 
-    <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
--->
+    <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
@@ -170,10 +167,10 @@
     </dependency>
 
 
-    <!-- commons  包     -->
+    <!-- commons 包 -->
     <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
     </dependency>
 
     <dependency>
@@ -181,7 +178,7 @@
       <artifactId>commons-beanutils</artifactId>
     </dependency>
 
-    <!--   -->
+    <!-- -->
     <dependency>
       <groupId>commons-fileupload</groupId>
       <artifactId>commons-fileupload</artifactId>
@@ -255,16 +252,12 @@
 
     <!-- 映入JSON -->
     <dependency>
-      <groupId>org.codehaus.jackson</groupId>
-      <artifactId>jackson-mapper-asl</artifactId>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
     </dependency>
 
-    <!-- 格式化对象，方便输出日志
-    <dependency>
-      <groupId>com.alibaba</groupId>
-      <artifactId>fastjson</artifactId>
-    </dependency>
-     -->
+
+    <!-- 格式化对象，方便输出日志 <dependency> <groupId>com.alibaba</groupId> <artifactId>fastjson</artifactId> </dependency> -->
 
     <!-- 导入dbcp的jar包，用来在applicationContext.xml中配置数据库 -->
     <dependency>
@@ -281,7 +274,7 @@
     <!-- 缓存 -->
     <dependency>
       <groupId>net.sf.ehcache</groupId>
-      <artifactId>ehcache-core</artifactId>
+      <artifactId>ehcache</artifactId>
     </dependency>
 
 
@@ -296,7 +289,7 @@
     </dependency>
     <!-- excel end -->
 
-    <!-- 公式运算  -->
+    <!-- 公式运算 -->
     <dependency>
       <groupId>commons-jexl</groupId>
       <artifactId>commons-jexl</artifactId>
@@ -307,22 +300,20 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <type>jar</type>
     </dependency>
-    <dependency>
-      <groupId>org.codehaus.janino</groupId>
-      <artifactId>janino</artifactId>
-    </dependency>
-    <!-- logback+slf4j  end  -->
+    <!-- logback+slf4j end -->
 
 
 
-    <!-- 单元测试    -->
+    <!-- 单元测试 -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
