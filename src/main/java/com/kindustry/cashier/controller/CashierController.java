@@ -7,12 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kindustry.cashier.entity.Goods;
 import com.kindustry.cashier.service.ICashierService;
 
 @Controller
-@RequestMapping("/cashier/*")
+@RequestMapping("/cashier")
 // 指定唯一一个*.do请求关联到该Controller @RequestParam(value = "username") String username
 public class CashierController {
 
@@ -29,8 +30,8 @@ public class CashierController {
     this.cashierService = cashierService;
   }
 
-  @RequestMapping("login.do")
-  // @RequestMapping(value = "/simple-demo/demo", method = RequestMethod.GET)
+  @ResponseBody
+  @RequestMapping(value = "login.do", method = RequestMethod.GET)
   public String testLogin(@RequestParam(value = "barcode") String barcode) {
     // 如果不加任何参数，则在请求/test2/login.do时，便默认执行该方法
 
