@@ -2,7 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.kindustry</groupId>
   <artifactId>spl-platform-web</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
@@ -29,90 +28,12 @@
         <artifactId>maven-compiler-plugin</artifactId>
       </plugin>
 
-      <!-- Jetty 插件 -->
+      <!-- shade插件配置 -->
       <plugin>
-        <groupId>org.mortbay.jetty</groupId>
-        <artifactId>jetty-maven-plugin</artifactId>
-        <configuration>
-          <webAppConfig>
-            <contextPath>/</contextPath>
-          </webAppConfig>
-          <scanIntervalSeconds>0</scanIntervalSeconds>
-          <connectors>
-            <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-              <port>8080</port>
-              <maxIdleTime>60000</maxIdleTime>
-            </connector>
-            <!-- <connector implementation="org.eclipse.jetty.server.ssl.SslSelectChannelConnector"> <port>8443</port> <keystore>keystore</keystore> <keyPassword>123456</keyPassword> 
-              <password>123456</password> </connector> -->
-          </connectors>
-        </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
       </plugin>
-
-      <!-- Tomcat 插件 -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>tomcat-maven-plugin</artifactId>
-        <version>1.1</version>
-        <configuration>
-          <url>http://localhost:8080/manager/html</url>
-          <server>tomcat</server>
-          <username>admin</username>
-          <password>admin</password>
-          <path>/edw</path>
-          <update>true</update>
-        </configuration>
-      </plugin>
-
-      <!-- JBoss 插件 -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>jboss-maven-plugin</artifactId>
-        <version>1.5.0</version>
-        <configuration>
-          <jbossHome>D:\Program Files\Middleware\jboss-5.0.0.GA</jbossHome>
-          <serverName>default</serverName>
-          <hostName>localhost</hostName>
-          <port>8080</port>
-          <fileName>${project.build.directory}/${project.build.finalName}.war</fileName>
-        </configuration>
-      </plugin>
-
-
-      <plugin>
-        <groupId>org.codehaus.cargo</groupId>
-        <artifactId>cargo-maven2-plugin</artifactId>
-        <version>1.4.5</version>
-        <configuration>
-          <container>
-            <containerId>jboss51x</containerId>
-            <type>remote</type>
-          </container>
-          <configuration>
-            <type>runtime</type>
-            <properties>
-              <cargo.remote.username>admin</cargo.remote.username>
-              <cargo.remote.password>admin</cargo.remote.password>
-              <cargo.hostname>localhost</cargo.hostname>
-              <cargo.rmi.port>1099</cargo.rmi.port>
-            </properties>
-          </configuration>
-        </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>org.jboss.integration</groupId>
-            <artifactId>jboss-profileservice-spi</artifactId>
-            <version>5.1.0.GA</version>
-          </dependency>
-          <dependency>
-            <groupId>org.jboss.jbossas</groupId>
-            <artifactId>jboss-as-client</artifactId>
-            <version>5.1.0.GA</version>
-            <type>pom</type>
-          </dependency>
-        </dependencies>
-      </plugin>
-
+      
     </plugins>
   </build>
 
@@ -219,6 +140,10 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
     </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context-support</artifactId>
+      </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
