@@ -25,8 +25,9 @@ public class CashierController {
   @Autowired
   private ICashierService cashierService;
 
-  // 同一個JBoss容器 @Resource(lookup ="java:global/EJBServer/ContainerServiceBean!com.kindustry.ejb.service.ContainerService")
+  // 同一個JBoss容器  @Resource(lookup ="java:global/EJBServer/ContainerServiceBean!com.kindustry.ejb.service.ContainerService")
   @Resource(name = "convertBean")
+  // 對應  <jee:remote-slsb id="convertBean"  jndi-name="EJBServer/ContainerServiceBean!com.kindustry.ejb.service.ContainerService" 
   private ContainerService localConvertBean;
 
   @ResponseBody

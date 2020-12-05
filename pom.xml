@@ -63,7 +63,7 @@
   <dependencies>
     <!-- 配置项目依赖 <dependency> <groupId>com.kindustry</groupId> <artifactId>core</artifactId> </dependency> -->
 
-    <!-- 本地Jar 包 -->
+    <!-- 本地Jar包  Start -->
     <dependency>
       <groupId>EJBClient</groupId>
       <artifactId>EJBClient</artifactId>
@@ -72,6 +72,14 @@
       <!-- ${basedir} 项目根目录 -->
       <systemPath>${basedir}/lib/EJBServer-1.0.jar</systemPath>
     </dependency>
+    <dependency>
+      <groupId>wildfly</groupId>
+      <artifactId>client</artifactId>
+      <version>1.0</version>
+      <scope>system</scope>
+      <systemPath>D:/Application/Studio/wildfly/bin/client/jboss-client.jar</systemPath>
+    </dependency>
+    <!-- 本地Jar包  End  -->
 
     <!-- J2EE -->
     <dependency>
