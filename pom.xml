@@ -28,12 +28,33 @@
         <artifactId>maven-compiler-plugin</artifactId>
       </plugin>
 
+      <!-- 配置Maven插件将本地Jar打包进War中 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/lib</outputDirectory>
+              <includeScope>system</includeScope>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
       <!-- shade插件配置 -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
       </plugin>
-      
+
+
+
     </plugins>
   </build>
 
@@ -41,6 +62,16 @@
 
   <dependencies>
     <!-- 配置项目依赖 <dependency> <groupId>com.kindustry</groupId> <artifactId>core</artifactId> </dependency> -->
+
+    <!-- 本地Jar 包 -->
+    <dependency>
+      <groupId>EJBClient</groupId>
+      <artifactId>EJBClient</artifactId>
+      <version>1.0</version>
+      <scope>system</scope>
+      <!-- ${basedir} 项目根目录 -->
+      <systemPath>${basedir}/lib/EJBServer-1.0.jar</systemPath>
+    </dependency>
 
     <!-- J2EE -->
     <dependency>
@@ -65,6 +96,11 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
+    </dependency>
+    <!-- DB2 -->
+    <dependency>
+      <groupId>com.ibm.db2.jcc</groupId>
+      <artifactId>db2jcc</artifactId>
     </dependency>
     <!-- DB Driver End -->
 
@@ -140,10 +176,10 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
     </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-context-support</artifactId>
-      </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
@@ -221,36 +257,36 @@
     </dependency>
 
     <!-- 日志文件管理包 -->
-      <!-- logback+slf4j start -->
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-api</artifactId>
-        <scope>compile</scope>
-      </dependency>
-      <dependency>
-        <groupId>ch.qos.logback</groupId>
-        <artifactId>logback-core</artifactId>
-      </dependency>
-      <dependency>
-        <groupId>ch.qos.logback</groupId>
-        <artifactId>logback-classic</artifactId>
-      </dependency>
-      <dependency>
-        <groupId>ch.qos.logback</groupId>
-        <artifactId>logback-access</artifactId>
-      </dependency>
-      <!-- logback+slf4j end -->
+    <!-- logback+slf4j start -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-access</artifactId>
+    </dependency>
+    <!-- logback+slf4j end -->
 
-      <!-- 日志文件管理包-提高性能log输出性能 -->
-      <!-- janino -->
-      <dependency>
-        <groupId>org.codehaus.janino</groupId>
-        <artifactId>commons-compiler</artifactId>
-      </dependency>
-      <dependency>
-        <groupId>org.codehaus.janino</groupId>
-        <artifactId>janino</artifactId>
-      </dependency>
+    <!-- 日志文件管理包-提高性能log输出性能 -->
+    <!-- janino -->
+    <dependency>
+      <groupId>org.codehaus.janino</groupId>
+      <artifactId>commons-compiler</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.janino</groupId>
+      <artifactId>janino</artifactId>
+    </dependency>
 
 
     <!-- 单元测试 -->
