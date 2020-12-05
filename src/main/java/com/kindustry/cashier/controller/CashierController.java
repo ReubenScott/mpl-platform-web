@@ -1,5 +1,7 @@
 package com.kindustry.cashier.controller;
 
+import javax.annotation.Resource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kindustry.cashier.entity.Goods;
 import com.kindustry.cashier.service.ICashierService;
+import com.kindustry.ejb.service.ContainerService;
 
 @Controller
 @RequestMapping("/cashier")
@@ -22,12 +25,17 @@ public class CashierController {
   @Autowired
   private ICashierService cashierService;
 
-  public ICashierService getCashierService() {
-    return cashierService;
-  }
+  @Resource(lookup = "java:global/EJBServer/ContainerServiceBean!com.kindustry.ejb.service.ContainerService")
+  private ContainerService localConvertBean;
 
-  public void setCashierService(ICashierService cashierService) {
-    this.cashierService = cashierService;
+  @ResponseBody
+  @RequestMapping(value = "test.do", method = RequestMethod.GET)
+  public String testLogin3() {
+    System.out.println(localConvertBean);
+    localConvertBean.findCdsyu("11");
+    System.out.println(cashierService);
+    Goods goods = cashierService.findGoodsByBarcode("", "");
+    return "loginSuccess";
   }
 
   @ResponseBody
@@ -53,14 +61,6 @@ public class CashierController {
     // 可以指定页面请求方式的类型，默认为get请求
 
     if (!"admin".equals(username) || !"admin".equals(password)) {
-      return "loginError";
-    }
-    return "loginSuccess";
-  }
-
-  @RequestMapping(params = "method=2")
-  public String testLogin3(String username, String password, int age) {
-    if (!"admin".equals(username) || !"admin".equals(password) || age < 5) {
       return "loginError";
     }
     return "loginSuccess";

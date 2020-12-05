@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jboss-web PUBLIC "-//JBoss//DTD Web Application 5.0//EN" "http://www.jboss.org/j2ee/dtd/jboss-web_5_0.dtd">
 <jboss-web>
+  <!-- For load class independently 
+  <class-loading java2ClassLoadingCompliance='true'>
+    <loader-repository>
+      com.example:archive=unique-archive-name
+      <loader-repository-config>
+        java2ParentDelegation=true
+      </loader-repository-config>
+    </loader-repository>
+  </class-loading>
+  -->
+  <!-- For context 配置网站实际使用目录 -->
   <context-root>/</context-root>
+  <!-- For session copy 用来设定集群session复制功能 -->
+  <replication-config>
+    <cache-name>standard-session-cache</cache-name>
+  </replication-config>
+  <!-- For session time 用来设定集群session激活控制 -->
+  <max-active-sessions>20</max-active-sessions>
+  <passivation-config>
+    <use-session-passivation>true</use-session-passivation>
+    <passivation-min-idle-time>60</passivation-min-idle-time>
+    <passivation-max-idle-time>600</passivation-max-idle-time>
+  </passivation-config>
 </jboss-web>
