@@ -1,7 +1,5 @@
 package com.kindustry.cashier.controller;
 
-import javax.annotation.Resource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +23,8 @@ public class CashierController {
   @Autowired
   private ICashierService cashierService;
 
-  @Resource(lookup = "java:global/EJBServer/ContainerServiceBean!com.kindustry.ejb.service.ContainerService")
+  // 同一個JBoss容器 @Resource(lookup = "java:global/EJBServer/ContainerServiceBean!com.kindustry.ejb.service.ContainerService")
+  // @Resource(mappedName = "convertBean")
   private ContainerService localConvertBean;
 
   @ResponseBody
