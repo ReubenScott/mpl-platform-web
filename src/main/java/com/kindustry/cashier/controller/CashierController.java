@@ -1,5 +1,7 @@
 package com.kindustry.cashier.controller;
 
+import javax.annotation.Resource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +25,9 @@ public class CashierController {
   @Autowired
   private ICashierService cashierService;
 
-  // 同一個JBoss容器 @Resource(lookup = "java:global/EJBServer/ContainerServiceBean!com.kindustry.ejb.service.ContainerService")
-  // @Resource(mappedName = "convertBean")
+  // 同一個JBoss容器  @Resource(lookup ="java:global/EJBServer/ContainerServiceBean!com.kindustry.ejb.service.ContainerService")
+  @Resource(name = "convertBean")
+  // 對應  <jee:remote-slsb id="convertBean"  jndi-name="EJBServer/ContainerServiceBean!com.kindustry.ejb.service.ContainerService" 
   private ContainerService localConvertBean;
 
   @ResponseBody

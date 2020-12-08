@@ -1,1 +1,23 @@
-<?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans"   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   xmlns:util="http://www.springframework.org/schema/util"  xmlns:c="http://www.springframework.org/schema/c"  xmlns:jee="http://www.springframework.org/schema/jee"  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd                        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd                         http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">    <!-- properties文件中定义了jndi属性-->  <util:properties id="jndienvironment" location="classpath:properties/jndi.properties" />  <!--通过JNDI引用 -->  <jee:remote-slsb id="convertBean"     jndi-name="java:global/EJBServer/ContainerServiceBean!com.kindustry.ejb.service.ContainerService"     business-interface="com.kindustry.ejb.service.ContainerService"    resource-ref="true" environment-ref="jndienvironment"     /></beans>
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xmlns:util="http://www.springframework.org/schema/util"
+  xmlns:c="http://www.springframework.org/schema/c"
+  xmlns:jee="http://www.springframework.org/schema/jee"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd 
+                        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
+
+  
+  <!-- properties文件中定义了jndi属性-->
+  <util:properties id="jndienvironment" location="classpath:properties/jndi.properties" />
+
+  <!--通过JNDI引用 -->
+  <jee:remote-slsb id="convertBean" 
+    jndi-name="EJBServer/ContainerServiceBean!com.kindustry.ejb.service.ContainerService" 
+    business-interface="com.kindustry.ejb.service.ContainerService"
+    resource-ref="true" environment-ref="jndienvironment" cache-session-bean="false" expose-access-context="false" 
+     />
+
+
+</beans>
