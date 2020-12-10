@@ -10,7 +10,7 @@
 
   
   <!-- properties文件中定义了jndi属性-->
-  <util:properties id="jndienvironment" location="classpath:properties/jndi.properties" />
+  <util:properties id="jndienvironment" location="classpath:properties/jboss-ejb-client.properties" />
 
   <!--通过JNDI引用 -->
   <jee:remote-slsb id="convertBean" 
