@@ -12,9 +12,9 @@
 
   <parent>
     <groupId>com.kindustry</groupId>
-    <artifactId>all-parent-pom</artifactId>
+    <artifactId>parent-pom</artifactId>
     <version>1.0</version>
-    <relativePath>../all-parent-pom</relativePath>
+    <relativePath>../parent-pom</relativePath>
   </parent>
 
 

@@ -25,6 +25,7 @@
   <bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
     <property name="supportedMediaTypes">
       <list>
+        <!-- 用于返回数据的格式，否则默认为ISO-88859-1 -->
         <value>text/html;charset=UTF-8</value>
       </list>
     </property>
