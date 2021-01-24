@@ -5,12 +5,11 @@ import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.stereotype.Service;
 
-import com.kindustry.framework.utils.HttpHelper;
-import com.kindustry.system.model.SysLog;
+import com.kindustry.system.entity.SysLog;
 import com.kindustry.system.service.ISysLogService;
 
 //import com.baomidou.framework.aop.LogPoint;
@@ -34,7 +33,7 @@ public class SysLogServiceImpl /*extends BaseServiceImpl<SysLogMapper, SysLog> *
 		/**
 		 * 日志入库  
 		 */
-		HttpServletRequest request = HttpHelper.getHttpServletRequest();
+		HttpServletRequest request =  null ; // HttpHelper.getHttpServletRequest();
 		SysLog sl = new SysLog();
 //		Token tk = SSOHelper.attrToken(request);
 //		if ( tk != null ) {

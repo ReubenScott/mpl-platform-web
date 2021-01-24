@@ -9,7 +9,7 @@ import org.junit.Test;
 import com.kindustry.invest.bond.dao.BondDao;
 import com.kindustry.invest.bond.dao.impl.BondDaoImpl;
 import com.kindustry.invest.bond.model.Bond;
-import com.kindustry.invest.bond.spider.SpiderForBonds;
+import com.kindustry.network.spider.core.item.SpiderForBonds;
 
 public class SpiderForBondsTest {
 

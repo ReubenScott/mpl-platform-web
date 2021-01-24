@@ -1,47 +1,60 @@
 package com.kindustry.common.result;
 
+import java.io.Serializable;
+
 /**
- * Author: D.Yang
- * Email: koyangslash@gmail.com
- * Date: 16/8/31
- * Time: 下午5:50
+ * Author: D.Yang Email: koyangslash@gmail.com Date: 16/8/31 Time: 下午5:50
  * Describe: 封装Json返回信息
  */
-public class JsonResult {
-    private boolean success;
-    private String status;
-    private String msg;
-    private Object obj;
+public class JsonResult implements Serializable {
 
-    public boolean isSuccess() {
-        return success;
-    }
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 6877561452672002978L;
 
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
+  /** 是否成功 */
+  private boolean success;
 
-    public String getStatus() {
-        return status;
-    }
+  /** 消息码 */
+  private String status;
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+  /** 消息 */
+  private String msg;
 
-    public String getMsg() {
-        return msg;
-    }
+  /** 数据 */
+  private Object data;
 
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
+  public boolean isSuccess() {
+    return success;
+  }
 
-    public Object getObj() {
-        return obj;
-    }
+  public void setSuccess(boolean success) {
+    this.success = success;
+  }
 
-    public void setObj(Object obj) {
-        this.obj = obj;
-    }
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
+  }
+
+  public String getMsg() {
+    return msg;
+  }
+
+  public void setMsg(String msg) {
+    this.msg = msg;
+  }
+
+  public Object getData() {
+    return data;
+  }
+
+  public void setData(Object data) {
+    this.data = data;
+  }
+
 }

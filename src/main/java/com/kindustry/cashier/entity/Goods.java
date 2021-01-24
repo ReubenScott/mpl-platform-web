@@ -1,12 +1,22 @@
 package com.kindustry.cashier.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 /**
  * 图书实体
  */
-public class Goods {
+public class Goods implements Serializable {
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1314621980403352719L;
+
   /**
    * 商品条码
    */
@@ -65,6 +75,7 @@ public class Goods {
   /**
    * 机构号
    */
+  @JsonProperty("mail")  
   private String branchNo; // branch_no varchar(20) , -- 机构号 暂时不用
 
   /**
@@ -168,6 +179,7 @@ public class Goods {
     this.branchNo = branchNo;
   }
 
+  @JsonIgnore
   public String getRemarks() {
     return remarks;
   }

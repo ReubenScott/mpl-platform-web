@@ -1,8 +1,15 @@
 package com.kindustry.system.controller;
 
+import java.util.Date;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.kindustry.common.result.JsonResult;
+import com.kindustry.common.util.JsonUtil;
+import com.kindustry.framework.web.BaseController;
 
 
 /**
@@ -14,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @Date 2016-04-13
  */
 @Controller
-@RequestMapping("/sys/mail")
+@RequestMapping("/sys/mail/")
 public class MailController extends BaseController {
 
 	/**
@@ -32,7 +39,23 @@ public class MailController extends BaseController {
 //			}
 //			model.addAttribute("tipMsg", tipMsg);
 //		}
-		return "/mail/send";
+		return  "/mail/send";
 	}
 
+  @ResponseBody
+	@RequestMapping(value = {"modifyGet"}, produces={"application/json"} ) 
+  public Object addEmpGet() throws Exception {
+//	    JsonUtil.toJSONString(obj)
+//      JSONObject responseObj = new JSONObject();
+    JsonResult rio = new JsonResult();
+    
+    rio.setSuccess(true);
+    rio.setMsg("welcome,"+ "sssss ");
+    
+    rio.setData(new Date().getTime());
+
+    return  JsonUtil.toJSONString(rio);
+//    return  JsonUtil.toJSONString("id", 123/*reqObj.getIntValue("id")*/);
+  }
+	
 }

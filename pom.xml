@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.kindustry</groupId>
   <artifactId>spl-platform-web</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
@@ -13,9 +13,9 @@
 
   <parent>
     <groupId>com.kindustry</groupId>
-    <artifactId>all-parent-pom</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <relativePath>../all-parent-pom</relativePath>
+    <artifactId>platform-pom</artifactId>
+    <version>1.0</version>
+    <relativePath>../platform-pom</relativePath>
   </parent>
 
 
@@ -23,113 +23,91 @@
     <finalName>cashier</finalName>
 
     <plugins>
-
-      <!-- Jetty 插件 -->
+      <!-- compiler插件, 设定JDK版本 -->
       <plugin>
-        <groupId>org.mortbay.jetty</groupId>
-        <artifactId>jetty-maven-plugin</artifactId>
-        <configuration>
-          <webAppConfig>
-            <contextPath>/</contextPath>
-          </webAppConfig>
-          <scanIntervalSeconds>0</scanIntervalSeconds>
-          <connectors>
-            <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-              <port>8080</port>
-              <maxIdleTime>60000</maxIdleTime>
-            </connector>
-            <!--
-              <connector implementation="org.eclipse.jetty.server.ssl.SslSelectChannelConnector"> <port>8443</port> <keystore>keystore</keystore> <keyPassword>123456</keyPassword>
-              <password>123456</password> </connector>
-            -->
-          </connectors>
-        </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
       </plugin>
 
-      <!-- Tomcat 插件 -->
+      <!-- 配置Maven插件将本地Jar打包进War中 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/lib</outputDirectory>
+              <includeScope>system</includeScope>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- shade插件配置 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+      </plugin>
+
+
+      <!-- JBoss deploy plugin -->
+      <plugin>
+        <groupId>org.wildfly.plugins</groupId>
+        <artifactId>wildfly-maven-plugin</artifactId>
+      </plugin>
+
+
+      <!-- Tomcat deploy plugin -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>tomcat-maven-plugin</artifactId>
-        <version>1.1</version>
         <configuration>
-          <url>http://localhost:8080/manager/html</url>
-          <server>tomcat</server>
+          <url>http://localhost:8080/manager/text</url>  <!-- tomcat管理路径 -->
+          <server>tomcat</server>  <!-- 与settings.xml文件中server的id相同 -->
           <username>admin</username>
-          <password>admin</password>
-          <path>/edw</path>
+          <password>passwd</password>
+          <path>/cashier</path>
           <update>true</update>
         </configuration>
       </plugin>
-
-      <!-- JBoss 插件 -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>jboss-maven-plugin</artifactId>
-        <version>1.5.0</version>
-        <configuration>
-          <jbossHome>D:\Program Files\Middleware\jboss-5.0.0.GA</jbossHome>
-          <serverName>default</serverName>
-          <hostName>localhost</hostName>
-          <port>8080</port>
-          <fileName>${project.build.directory}/${project.build.finalName}.war</fileName>
-        </configuration>
-      </plugin>
-
-
-      <plugin>
-        <groupId>org.codehaus.cargo</groupId>
-        <artifactId>cargo-maven2-plugin</artifactId>
-        <version>1.4.5</version>
-        <configuration>
-          <container>
-            <containerId>jboss51x</containerId>
-            <type>remote</type>
-          </container>
-          <configuration>
-            <type>runtime</type>
-            <properties>
-              <cargo.remote.username>admin</cargo.remote.username>
-              <cargo.remote.password>admin</cargo.remote.password>
-              <cargo.hostname>localhost</cargo.hostname>
-              <cargo.rmi.port>1099</cargo.rmi.port>
-            </properties>
-          </configuration>
-        </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>org.jboss.integration</groupId>
-            <artifactId>jboss-profileservice-spi</artifactId>
-            <version>5.1.0.GA</version>
-          </dependency>
-          <dependency>
-            <groupId>org.jboss.jbossas</groupId>
-            <artifactId>jboss-as-client</artifactId>
-            <version>5.1.0.GA</version>
-            <type>pom</type>
-          </dependency>
-        </dependencies>
-      </plugin>
-
     </plugins>
   </build>
 
 
 
   <dependencies>
-    <!--  配置项目依赖   
-    <dependency>
-      <groupId>com.kindustry</groupId>
-      <artifactId>core</artifactId>
-    </dependency>
-    -->
+    <!-- 配置项目依赖 <dependency> <groupId>com.kindustry</groupId> <artifactId>core</artifactId> </dependency> -->
 
-    <!-- J2EE   -->
+    <!-- 本地Jar包 Start 
+    <dependency>
+      <groupId>EJBClient</groupId>
+      <artifactId>EJBClient</artifactId>
+      <version>1.0</version>
+      <scope>system</scope>
+       ${basedir} 项目根目录 
+      <systemPath>${basedir}/lib/EJBServer-1.0.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>wildfly</groupId>
+      <artifactId>client</artifactId>
+      <version>1.0</version>
+      <scope>system</scope>
+      <systemPath>D:/Application/Middleware/JBoss/bin/client/jboss-client.jar</systemPath>
+    </dependency>
+     本地Jar包 End -->
+
+    <!-- J2EE -->
     <dependency>
       <groupId>javax</groupId>
       <artifactId>javaee-api</artifactId>
     </dependency>
 
-    <!-- 注解  -->
+    <!-- 注解 -->
     <dependency>
       <groupId>javax.persistence</groupId>
       <artifactId>persistence-api</artifactId>
@@ -137,7 +115,7 @@
 
 
     <!-- 导入Mysql数据库链接jar包 -->
-    <!-- DB Driver Start  -->
+    <!-- DB Driver Start -->
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
@@ -147,11 +125,15 @@
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
     </dependency>
-    <!-- DB Driver End  -->
+    <!-- DB2 -->
+    <dependency>
+      <groupId>com.ibm.db2.jcc</groupId>
+      <artifactId>db2jcc</artifactId>
+    </dependency>
+    <!-- DB Driver End -->
 
 
-    <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
--->
+    <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
@@ -170,10 +152,10 @@
     </dependency>
 
 
-    <!-- commons  包     -->
+    <!-- commons 包 -->
     <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
     </dependency>
 
     <dependency>
@@ -181,7 +163,7 @@
       <artifactId>commons-beanutils</artifactId>
     </dependency>
 
-    <!--   -->
+    <!-- -->
     <dependency>
       <groupId>commons-fileupload</groupId>
       <artifactId>commons-fileupload</artifactId>
@@ -224,6 +206,10 @@
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
     </dependency>
 
@@ -255,16 +241,16 @@
 
     <!-- 映入JSON -->
     <dependency>
-      <groupId>org.codehaus.jackson</groupId>
-      <artifactId>jackson-mapper-asl</artifactId>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
     </dependency>
 
-    <!-- 格式化对象，方便输出日志
-    <dependency>
-      <groupId>com.alibaba</groupId>
-      <artifactId>fastjson</artifactId>
-    </dependency>
-     -->
+
+    <!-- 格式化对象，方便输出日志 <dependency> <groupId>com.alibaba</groupId> <artifactId>fastjson</artifactId> </dependency> -->
 
     <!-- 导入dbcp的jar包，用来在applicationContext.xml中配置数据库 -->
     <dependency>
@@ -281,7 +267,7 @@
     <!-- 缓存 -->
     <dependency>
       <groupId>net.sf.ehcache</groupId>
-      <artifactId>ehcache-core</artifactId>
+      <artifactId>ehcache</artifactId>
     </dependency>
 
 
@@ -296,7 +282,7 @@
     </dependency>
     <!-- excel end -->
 
-    <!-- 公式运算  -->
+    <!-- 公式运算 -->
     <dependency>
       <groupId>commons-jexl</groupId>
       <artifactId>commons-jexl</artifactId>
@@ -307,22 +293,35 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-access</artifactId>
+    </dependency>
+    <!-- logback+slf4j end -->
+
+    <!-- 日志文件管理包-提高性能log输出性能 -->
+    <!-- janino -->
+    <dependency>
+      <groupId>org.codehaus.janino</groupId>
+      <artifactId>commons-compiler</artifactId>
     </dependency>
     <dependency>
       <groupId>org.codehaus.janino</groupId>
       <artifactId>janino</artifactId>
     </dependency>
-    <!-- logback+slf4j  end  -->
 
 
-
-    <!-- 单元测试    -->
+    <!-- 单元测试 -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
