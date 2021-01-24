@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.kindustry.cashier.entity.Goods;
 import com.kindustry.cashier.service.ICashierService;
 import com.kindustry.cashier.service.IPaymentService;
+import com.kindustry.cashier.vo.DeviceInfo;
 import com.kindustry.common.cache.EhcacheHelper;
 import com.kindustry.common.result.JsonResult;
 import com.kindustry.common.util.JsonUtil;
@@ -33,6 +34,19 @@ public class CashierController extends BaseController {
 
   @Resource
   private IPaymentService paymentService;
+  
+
+  /**
+   * 設備註冊
+   * @param deviceinfo
+   * @return
+   */
+  @ResponseBody
+  @RequestMapping(value = "regester", method = { RequestMethod.POST, RequestMethod.GET })
+  public boolean regester(DeviceInfo deviceinfo){
+    cashierService.regester(deviceinfo);
+    return false ;
+  }
 
   @ResponseBody
   @RequestMapping(value = "findGoods", method = { RequestMethod.POST, RequestMethod.GET })
@@ -65,6 +79,7 @@ public class CashierController extends BaseController {
       System.out.println(JsonUtil.toJSONString(element));
     }
 
+    System.out.println(JsonUtil.toJSONString(rio));
     // String content = JsonUtil.toJSONString(goods);
     // goods = JsonUtil.parse(content, Goods.class);
     // System.out.println(goods);

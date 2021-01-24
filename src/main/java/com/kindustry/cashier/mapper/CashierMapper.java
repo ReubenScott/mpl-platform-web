@@ -6,12 +6,13 @@ import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.annotation.MapperScan;
 
 import com.kindustry.cashier.entity.Goods;
+import com.kindustry.framework.orm.BaseMapper;
 
 /**
  * 商品数据访问接口
  */
 @MapperScan
-public interface CashierMapper {
+public interface CashierMapper extends BaseMapper<Goods> {
 
   /**
    * 根据商品编号获得商品对象 findGoodsByBarcode
@@ -28,15 +29,7 @@ public interface CashierMapper {
    */
   public int add(Goods entity);
 
-  /**
-   * 根据商品编号删除商品
-   */
-  public int delete(int id);
 
-  /**
-   * 更新商品
-   */
-  public int update(Goods entity);
   
   
 }

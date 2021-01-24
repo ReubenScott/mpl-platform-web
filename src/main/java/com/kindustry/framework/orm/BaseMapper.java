@@ -1,11 +1,14 @@
 package com.kindustry.framework.orm;
 
+
 /**
- *@author TonyJ
- *@time 2015-1-31 下午03:45:52
- *@email tanglongjia@126.com
+ * 数据库访问标识接口
+ *
+ * @author TonyJ
+ * @time 2015-1-31 下午03:45:52
+ * @email tanglongjia@126.com
  */
-public interface BaseSqlMap<T extends BaseEntity> extends SqlMap {
+public interface BaseMapper<T extends BaseEntity> {
 
   /**
    * 保存
@@ -33,6 +36,7 @@ public interface BaseSqlMap<T extends BaseEntity> extends SqlMap {
    * @param param
    * @return
    */
+  // @SelectProvider(type = BaseSqlProvider.class, method = "get")
   T selectSingle(Object param);
 
   /**
@@ -41,7 +45,13 @@ public interface BaseSqlMap<T extends BaseEntity> extends SqlMap {
    * @param entity
    * @return
    */
+  // @InsertProvider(type = BaseSqlProvider.class, method = "insert")
   T insert(T entity);
+
+  /**
+   * 添加商品
+   */
+  public int save(T entity);
 
   /**
    * 更新
@@ -49,6 +59,7 @@ public interface BaseSqlMap<T extends BaseEntity> extends SqlMap {
    * @param entity
    * @return
    */
+  // @UpdateProvider(type = BaseSqlProvider.class, method = "update")
   boolean update(T entity);
 
   /**
@@ -57,6 +68,10 @@ public interface BaseSqlMap<T extends BaseEntity> extends SqlMap {
    * @param param
    * @return
    */
-  boolean delete(Object param);
+  // @DeleteProvider(type = BaseSqlProvider.class, method = "delete")
+  boolean delete(int pk);
+
+  // @SelectProvider(type = BaseSqlProvider.class, method = "isExisted")
+  // boolean isExisted(PK pk);
 
 }

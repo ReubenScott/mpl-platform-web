@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.kindustry.cashier.entity.Goods;
 import com.kindustry.cashier.mapper.CashierMapper;
 import com.kindustry.cashier.service.ICashierService;
+import com.kindustry.cashier.vo.DeviceInfo;
 import com.kindustry.common.util.JsonUtil;
 import com.kindustry.framework.service.imp.BaseServiceImp;
 
@@ -27,6 +28,13 @@ public class CashierServiceImp extends BaseServiceImp implements ICashierService
   
   @Resource
   private CashierMapper cashierDao;
+
+
+  @Override
+  public boolean regester(DeviceInfo deviceinfo) {
+    // TODO Auto-generated method stub
+    return false;
+  }
 
   // 通过条形码查询商品
   @Cacheable(value="contentCache",key="#barcode" , unless="#result == null")  // 启用缓存 
@@ -77,6 +85,7 @@ public class CashierServiceImp extends BaseServiceImp implements ICashierService
      
     return true ;
   }
+
 
   
 }

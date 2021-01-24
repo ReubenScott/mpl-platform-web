@@ -44,7 +44,7 @@ public class MailController extends BaseController {
 
   @ResponseBody
 	@RequestMapping(value = {"modifyGet"}, produces={"application/json"} ) 
-  public Object addEmpGet() throws Exception {
+  public Object addEmpGet() {
 //	    JsonUtil.toJSONString(obj)
 //      JSONObject responseObj = new JSONObject();
     JsonResult rio = new JsonResult();

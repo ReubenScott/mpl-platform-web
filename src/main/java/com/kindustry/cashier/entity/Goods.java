@@ -1,21 +1,22 @@
 package com.kindustry.cashier.entity;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.kindustry.framework.orm.BaseEntity;
 
 /**
  * 图书实体
  */
-public class Goods implements Serializable {
+public class Goods extends BaseEntity {
+
   /**
    * 
    */
-  private static final long serialVersionUID = 1314621980403352719L;
+  private static final long serialVersionUID = 1L;
 
   /**
    * 商品条码
@@ -65,22 +66,19 @@ public class Goods implements Serializable {
   /**
    * 首次入库时间
    */
+  @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
   private Date storageTime; // storage_time TIMESTAMP(0) WITHOUT TIME ZONE, --
-
-  /**
-   * 更新时间
-   */
-  private Date updateTime; // update_time timestamp, -- 更新时间
 
   /**
    * 机构号
    */
-  @JsonProperty("mail")  
+  @JsonProperty("branchNo")
   private String branchNo; // branch_no varchar(20) , -- 机构号 暂时不用
 
   /**
    * 备注
    */
+  @JsonIgnore
   private String remarks; // remarks VARCHAR(80), -- 备注
 
   public String getBarcode() {
@@ -163,14 +161,6 @@ public class Goods implements Serializable {
     this.storageTime = storageTime;
   }
 
-  public Date getUpdateTime() {
-    return updateTime;
-  }
-
-  public void setUpdateTime(Date updateTime) {
-    this.updateTime = updateTime;
-  }
-
   public String getBranchNo() {
     return branchNo;
   }
@@ -179,7 +169,6 @@ public class Goods implements Serializable {
     this.branchNo = branchNo;
   }
 
-  @JsonIgnore
   public String getRemarks() {
     return remarks;
   }

@@ -13,11 +13,11 @@ import org.springframework.stereotype.Repository;
 
 import com.kindustry.framework.dao.IBaseDao;
 import com.kindustry.framework.orm.BaseEntity;
-import com.kindustry.framework.orm.BaseSqlMap;
+import com.kindustry.framework.orm.BaseMapper;
 import com.kindustry.structure.model.ReflectHelper;
 
 @Repository("baseDao")
-public class BaseDaoImpl<T extends BaseEntity> implements BaseSqlMap<T> , IBaseDao {
+public class BaseDaoImpl<T extends BaseEntity> implements BaseMapper<T> , IBaseDao {
   protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
   @Resource
@@ -84,16 +84,16 @@ public class BaseDaoImpl<T extends BaseEntity> implements BaseSqlMap<T> , IBaseD
     return true;
   }
 
-  @Override
-  public boolean delete(Object param) {
-    try {
-      getSqlSession().delete(entityClass.getName() + SQL_DELETE, param);
-    } catch (Exception e) {
-      logger.error("删除数据异常：", e);
-      return false;
-    }
-    return true;
-  }
+//  @Override
+//  public boolean delete(Object param) {
+//    try {
+//      getSqlSession().delete(entityClass.getName() + SQL_DELETE, param);
+//    } catch (Exception e) {
+//      logger.error("删除数据异常：", e);
+//      return false;
+//    }
+//    return true;
+//  }
 
   @Override
   public <T> int insert(String _mybitsId, T obj) {
@@ -271,5 +271,17 @@ public class BaseDaoImpl<T extends BaseEntity> implements BaseSqlMap<T> , IBaseD
   @Override
   public Object queryOne(String _mybitsId, Object object) {
     return session.selectOne(_mybitsId, object);
+  }
+
+  @Override
+  public int save(T entity) {
+    // TODO Auto-generated method stub
+    return 0;
+  }
+
+  @Override
+  public boolean delete(int pk) {
+    // TODO Auto-generated method stub
+    return false;
   }
 }

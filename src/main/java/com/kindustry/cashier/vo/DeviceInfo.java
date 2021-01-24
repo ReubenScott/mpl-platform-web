@@ -3,7 +3,7 @@ package com.kindustry.cashier.vo;
 /**
  * 客户端
  */
-public class Client {
+public class DeviceInfo {
 
   // IP 地址
   private String ip;

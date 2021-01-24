@@ -32,7 +32,7 @@
     #{id}:其中Id表示接收输入的参数，参数名称就是Id,如果输入参数是简单类型，#{}中的参数名可以任意，可以是value或者其它名称; resultType:指定sql输出结果所映射的java对象类型,select指定resultType表示将单条记录映射成java对象。
     resultMap="goods"  resultType="com.kindustry.cashier.entity.Goods" 
   -->
-  <select id="getGoodsByBarcode" parameterType="java.lang.String" resultMap="goods" >
+  <select id="getGoodsByBarcode" parameterType="java.lang.String" resultType="com.kindustry.cashier.entity.Goods"  >
     select * from goods where barcode=#{barcode}
   </select>
 
