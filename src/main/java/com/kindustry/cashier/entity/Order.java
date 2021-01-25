@@ -1,12 +1,18 @@
 package com.kindustry.cashier.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * 订单
  */
-public class Order {
+public class Order implements Serializable{
+
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 6707052106861044048L;
 
   // paycode VARCHAR(20) NOT NULL, -- 订单号
   private String paycode;

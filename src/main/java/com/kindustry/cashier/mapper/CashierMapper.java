@@ -2,9 +2,8 @@ package com.kindustry.cashier.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
+import org.mybatis.spring.annotation.MapperScan;
 
 import com.kindustry.cashier.entity.Goods;
 import com.kindustry.framework.orm.BaseMapper;
@@ -12,10 +11,8 @@ import com.kindustry.framework.orm.BaseMapper;
 /**
  * 商品数据访问接口
  */
-// @MapperScan
-@Mapper
-@Repository
-public interface CashierMapper extends BaseMapper {
+@MapperScan
+public interface CashierMapper extends BaseMapper<Goods> {
 
   /**
    * 根据商品编号获得商品对象 findGoodsByBarcode
@@ -32,14 +29,7 @@ public interface CashierMapper extends BaseMapper {
    */
   public int add(Goods entity);
 
-  /**
-   * 根据商品编号删除商品
-   */
-  public int delete(int id);
 
-  /**
-   * 更新商品
-   */
-  public int update(Goods entity);
-
+  
+  
 }

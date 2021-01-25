@@ -1,5 +1,6 @@
 package com.kindustry.framework.orm;
 
+
 /**
  * 数据库访问标识接口
  *
@@ -7,7 +8,6 @@ package com.kindustry.framework.orm;
  * @time 2015-1-31 下午03:45:52
  * @email tanglongjia@126.com
  */
-// @MapperScan
 public interface BaseMapper<T extends BaseEntity> {
 
   /**
@@ -49,6 +49,11 @@ public interface BaseMapper<T extends BaseEntity> {
   T insert(T entity);
 
   /**
+   * 添加商品
+   */
+  public int save(T entity);
+
+  /**
    * 更新
    * 
    * @param entity
@@ -64,7 +69,7 @@ public interface BaseMapper<T extends BaseEntity> {
    * @return
    */
   // @DeleteProvider(type = BaseSqlProvider.class, method = "delete")
-  boolean delete(Object param);
+  boolean delete(int pk);
 
   // @SelectProvider(type = BaseSqlProvider.class, method = "isExisted")
   // boolean isExisted(PK pk);

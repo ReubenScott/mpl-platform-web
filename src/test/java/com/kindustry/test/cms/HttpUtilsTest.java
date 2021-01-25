@@ -10,7 +10,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.junit.Test;
 
-import com.kindustry.network.utils.HttpUtils;
+import com.kindustry.network.util.HttpUtils;
 
 public class HttpUtilsTest {
 

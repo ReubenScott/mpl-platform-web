@@ -1,6 +1,5 @@
 package com.kindustry.system.service.impl;
 
-import java.util.Date;
 import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,8 +8,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.stereotype.Service;
 
-import com.kindustry.framework.utils.HttpHelper;
-import com.kindustry.system.model.SysLog;
 import com.kindustry.system.service.ISysLogService;
 
 //import com.baomidou.framework.aop.LogPoint;
@@ -25,10 +22,7 @@ import com.kindustry.system.service.ISysLogService;
  *
  */
 @Service
-public class SysLogServiceImpl /* extends BaseServiceImpl<SysLogMapper, SysLog> */implements ISysLogService/*
-                                                                                                            * ,
-                                                                                                            * LogPoint
-                                                                                                            */{
+public class SysLogServiceImpl /* extends BaseServiceImpl<SysLogMapper, SysLog> */implements ISysLogService/* , LogPoint */{
 
   private static final String LOG_CONTENT = "[类名]:%s,[方法]:%s,[参数]:%s,[IP]:%s";
 
@@ -37,15 +31,15 @@ public class SysLogServiceImpl /* extends BaseServiceImpl<SysLogMapper, SysLog> 
     /**
      * 日志入库
      */
-    HttpServletRequest request = HttpHelper.getHttpServletRequest();
-    SysLog sl = new SysLog();
+    HttpServletRequest request = null; // HttpHelper.getHttpServletRequest();
+    // SysLog sl = new SysLog();
     // Token tk = SSOHelper.attrToken(request);
     // if ( tk != null ) {
     // sl.setUid(tk.getId());
     // }
-    sl.setContent(operateContent(joinPoint, methodName, request));
-    sl.setOperation(operate);
-    sl.setCrTime(new Date());
+    // sl.setContent(operateContent(joinPoint, methodName, request));
+    // sl.setOperation(operate);
+    // sl.setCrTime(new Date());
     // baseMapper.insert(sl);
   }
 

@@ -3,7 +3,7 @@ package com.kindustry.system.service;
 import java.util.List;
 
 import com.kindustry.framework.service.IBaseService;
-import com.kindustry.system.model.Menu;
+import com.kindustry.system.entity.Menu;
 
 public interface ISysManageService extends IBaseService {
   

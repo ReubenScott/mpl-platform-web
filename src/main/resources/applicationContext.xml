@@ -26,7 +26,10 @@
   <import resource="spring/spring-mybatis.xml" />
   <import resource="spring/spring-mvc.xml" />
   <import resource="spring/spring-ehcache.xml" />
+    
+  <!--
   <import resource="spring/spring-ejbclient.xml" />
+  -->
 
 
   <!-- =======================================

@@ -3,52 +3,49 @@ package com.kindustry.framework.orm;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- *@author TonyJ
- *@time 2015-1-31 下午03:37:46
- *@email tanglongjia@126.com
- */
-public class BaseEntity implements Serializable, Cloneable {
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-  /** 
-         *  
-         */
-  private static final long serialVersionUID = 2413960745071474764L;
+/**
+ * 
+ * @author kindustry
+ *
+ */
+public abstract class BaseEntity implements Serializable, Cloneable {
 
   /**
-   *标识Id
+   * 
    */
-  private long id;
+  private static final long serialVersionUID = 1L;
+
+  /**
+   * 标识Id
+   */
+  // private long id;
 
   /**
    * 用户名
    */
-  private String userName;
+  @JsonIgnore
+  private String createUser;
 
   /**
    * 创建时间
    */
+  @JsonIgnore
   private Date createTime;
 
   /**
    * 更新时间
    */
+  @JsonIgnore
   private Date updateTime;
 
-  public long getId() {
-    return id;
+  public String getCreateUser() {
+    return createUser;
   }
 
-  public void setId(long id) {
-    this.id = id;
-  }
-
-  public String getUserName() {
-    return userName;
-  }
-
-  public void setUserName(String userName) {
-    this.userName = userName;
+  public void setCreateUser(String createUser) {
+    this.createUser = createUser;
   }
 
   public Date getCreateTime() {
@@ -66,7 +63,5 @@ public class BaseEntity implements Serializable, Cloneable {
   public void setUpdateTime(Date updateTime) {
     this.updateTime = updateTime;
   }
-  
-  
 
 }

@@ -4,7 +4,6 @@ import org.apache.ibatis.session.SqlSession;
 
 import com.kindustry.framework.dao.imp.BaseDaoImpl;
 import com.kindustry.framework.orm.BaseEntity;
-import com.kindustry.framework.utils.MyBatisUtil;
 import com.kindustry.structure.dao.AdminDao;
 import com.kindustry.structure.model.Admin;
 
@@ -17,7 +16,6 @@ public class AdminDaoForMyBatisImpl extends BaseDaoImpl<BaseEntity> implements A
 
 	public Admin findAdminByUsername(String username) {
 		//打开一个session
-		SqlSession session = MyBatisUtil.getSession();
 		Admin admin = null;
 		try {
 			

@@ -2,13 +2,11 @@ package com.kindustry.framework.dao.imp;
 
 import java.util.List;
 import java.util.Map;
-import java.sql.Connection;
 
 import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Repository;
 import com.kindustry.framework.dao.IBaseDao;
 import com.kindustry.framework.orm.BaseEntity;
 import com.kindustry.framework.orm.BaseMapper;
-import com.kindustry.framework.utils.MyBatisUtil;
 import com.kindustry.structure.model.ReflectHelper;
 
 @Repository("baseDao")
@@ -24,7 +21,7 @@ public class BaseDaoImpl<T extends BaseEntity> implements BaseMapper<T> , IBaseD
   protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
   @Resource
-  protected SqlSessionTemplate sqlSession;
+  protected SqlSessionTemplate session;
 
   protected Class<T> entityClass;
 
@@ -35,11 +32,11 @@ public class BaseDaoImpl<T extends BaseEntity> implements BaseMapper<T> , IBaseD
   }
 
   public SqlSession getSqlSession() {
-    return sqlSession;
+    return session;
   }
 
   public void setSqlSession(SqlSessionTemplate sqlSession) {
-    this.sqlSession = sqlSession;
+    this.session = sqlSession;
   }
 
   @Override
@@ -87,24 +84,23 @@ public class BaseDaoImpl<T extends BaseEntity> implements BaseMapper<T> , IBaseD
     return true;
   }
 
-  @Override
-  public boolean delete(Object param) {
-    try {
-      getSqlSession().delete(entityClass.getName() + SQL_DELETE, param);
-    } catch (Exception e) {
-      logger.error("删除数据异常：", e);
-      return false;
-    }
-    return true;
-  }
+//  @Override
+//  public boolean delete(Object param) {
+//    try {
+//      getSqlSession().delete(entityClass.getName() + SQL_DELETE, param);
+//    } catch (Exception e) {
+//      logger.error("删除数据异常：", e);
+//      return false;
+//    }
+//    return true;
+//  }
 
   @Override
   public <T> int insert(String _mybitsId, T obj) {
-    return sqlSession.insert(_mybitsId, obj);
+    return session.insert(_mybitsId, obj);
   }
 
   public void add(Object entity) {
-    SqlSession session = MyBatisUtil.getSession();
     try {
       session.insert(entity.getClass().getName() + ".add", entity);
       
@@ -155,7 +151,6 @@ public class BaseDaoImpl<T extends BaseEntity> implements BaseMapper<T> , IBaseD
   // }
 
   public void update(Object entity) {
-    SqlSession session = MyBatisUtil.getSession();
     try {
       session.update(entity.getClass().getName() + ".update", entity);
       session.commit();
@@ -168,7 +163,6 @@ public class BaseDaoImpl<T extends BaseEntity> implements BaseMapper<T> , IBaseD
   }
 
   public void del(Class entityClass, int id) {
-    SqlSession session = MyBatisUtil.getSession();
     try {
       session.delete(entityClass.getName() + ".del", id);
       session.commit();
@@ -181,7 +175,6 @@ public class BaseDaoImpl<T extends BaseEntity> implements BaseMapper<T> , IBaseD
   }
 
   public void del(Class entityClass, int[] ids) {
-    SqlSession session = MyBatisUtil.getSession();
     try {
       for (int id : ids) {
         session.delete(entityClass.getName() + ".del", id);
@@ -196,7 +189,6 @@ public class BaseDaoImpl<T extends BaseEntity> implements BaseMapper<T> , IBaseD
   }
 
   public void del(Class entityClass, String[] ids) {
-    SqlSession session = MyBatisUtil.getSession();
     try {
       for (String id : ids) {
         session.delete(entityClass.getName() + ".del", Integer.parseInt(id));
@@ -211,7 +203,6 @@ public class BaseDaoImpl<T extends BaseEntity> implements BaseMapper<T> , IBaseD
   }
 
   public void wipe(Class entityClass) {
-    SqlSession session = MyBatisUtil.getSession();
     try {
       session.delete(entityClass.getName() + ".truncate");
       session.commit();
@@ -224,7 +215,6 @@ public class BaseDaoImpl<T extends BaseEntity> implements BaseMapper<T> , IBaseD
   }
 
   public Object findById(Class entityClass, int id) {
-    SqlSession session = MyBatisUtil.getSession();
     try {
       return session.selectOne(entityClass.getName() + ".findById", id);
     } catch (Exception e) {
@@ -236,7 +226,6 @@ public class BaseDaoImpl<T extends BaseEntity> implements BaseMapper<T> , IBaseD
   }
 
   public List findAll(Class entityClass) {
-    SqlSession session = MyBatisUtil.getSession();
     try {
       return session.selectList(entityClass.getName() + ".findAll");
     } catch (Exception e) {
@@ -261,26 +250,38 @@ public class BaseDaoImpl<T extends BaseEntity> implements BaseMapper<T> , IBaseD
    */
 
   public <T> int delete(String _mybitsId, T obj) {
-    return sqlSession.delete(_mybitsId, obj);
+    return session.delete(_mybitsId, obj);
   }
 
   @Override
   public <T> int update(String _mybitsId, T obj) {
-    return sqlSession.update(_mybitsId, obj);
+    return session.update(_mybitsId, obj);
   }
 
   @Override
   public <T> List<T> query(String _mybitsId, Map<String, Object> _params) {
-    return sqlSession.selectList(_mybitsId, _params);
+    return session.selectList(_mybitsId, _params);
   }
 
   @Override
   public <T> List<T> query(String _mybitsId, Object _params) {
-    return sqlSession.selectList(_mybitsId, _params);
+    return session.selectList(_mybitsId, _params);
   }
 
   @Override
   public Object queryOne(String _mybitsId, Object object) {
-    return sqlSession.selectOne(_mybitsId, object);
+    return session.selectOne(_mybitsId, object);
+  }
+
+  @Override
+  public int save(T entity) {
+    // TODO Auto-generated method stub
+    return 0;
+  }
+
+  @Override
+  public boolean delete(int pk) {
+    // TODO Auto-generated method stub
+    return false;
   }
 }

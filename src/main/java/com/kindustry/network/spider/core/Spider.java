@@ -12,7 +12,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 
-import com.kindustry.invest.bond.spider.SpiderForBonds;
+import com.kindustry.network.spider.core.item.SpiderForBonds;
 import com.kindustry.network.spider.core.item.SpiderForIBM;
 
 
