@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.kindustry.common.result.JsonResult;
+import com.kindustry.framework.dto.BaseDto;
 import com.kindustry.framework.controller.BaseController;
 
 //import com.baomidou.framework.controller.SuperController;
@@ -47,7 +47,7 @@ public class AccountController extends BaseController {
 
   @ResponseBody
   @RequestMapping(value = "login", method = { RequestMethod.POST, RequestMethod.GET })
-  public JsonResult findGoods(@RequestParam(value = "username") String barcode) {
+  public BaseDto findGoods(@RequestParam(value = "username") String barcode) {
     // 如果不加任何参数，则在请求/test2/login.do时，便默认执行该方法 findGoodsByBarcode
     // goods = paymentService.getBean(barcode);
     // System.out.println(goods.getName());
@@ -62,7 +62,7 @@ public class AccountController extends BaseController {
     // System.out.println(host);
     // System.out.println(mac);
 
-    JsonResult rio = new JsonResult();
+    BaseDto rio = new BaseDto();
     rio.setSuccess(true);
 
     // String content = JsonUtil.toJSONString(goods);

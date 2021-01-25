@@ -17,10 +17,10 @@ import com.kindustry.cashier.service.ICashierService;
 import com.kindustry.cashier.service.IPaymentService;
 import com.kindustry.cashier.vo.DeviceInfo;
 import com.kindustry.common.cache.EhcacheHelper;
-import com.kindustry.common.result.JsonResult;
 import com.kindustry.common.util.BrowserUtil;
 import com.kindustry.common.util.JsonUtil;
 import com.kindustry.framework.annotation.Token;
+import com.kindustry.framework.dto.BaseDto;
 import com.kindustry.framework.controller.BaseController;
 
 @Controller
@@ -52,7 +52,7 @@ public class CashierController extends BaseController {
   @ResponseBody
   @RequestMapping(value = "findGoods", method = { RequestMethod.POST, RequestMethod.GET })
   // , headers="Accept=application/json;charset=UTF-8"
-  public JsonResult findGoods(@RequestParam(value = "barcode") String barcode) {
+  public BaseDto findGoods(@RequestParam(value = "barcode") String barcode) {
     // 如果不加任何参数，则在请求/test2/login.do时，便默认执行该方法 findGoodsByBarcode
     String agent = request.getHeader("user-agent");
     System.out.println(agent);
@@ -71,7 +71,7 @@ public class CashierController extends BaseController {
     System.out.println(host);
     System.out.println(mac);
 
-    JsonResult rio = new JsonResult();
+    BaseDto rio = new BaseDto();
     rio.setSuccess(true);
     rio.setMsg("welcome," + token);
     rio.setData(goods);
@@ -100,7 +100,7 @@ public class CashierController extends BaseController {
   @Token(save = true)
   @ResponseBody
   @RequestMapping(value = "prePayment", method = { RequestMethod.POST, RequestMethod.GET })
-  public JsonResult prePayment(String username, String password) {
+  public BaseDto prePayment(String username, String password) {
     String token = super.getAttribute("token");
 
     String clientip = getClientIpAddress();
@@ -110,7 +110,7 @@ public class CashierController extends BaseController {
     // 生成客户端Token
     cashierService.putCacheBean("token", clientip, token);
 
-    JsonResult rio = new JsonResult();
+    BaseDto rio = new BaseDto();
     rio.setSuccess(true);
     rio.setMsg("welcome," + token);
     rio.setData(token);
@@ -137,7 +137,7 @@ public class CashierController extends BaseController {
   // @Token(save = true)
   @ResponseBody
   @RequestMapping(value = "payment", method = RequestMethod.POST)
-  public JsonResult payment(String username, String password) {
+  public BaseDto payment(String username, String password) {
     // 服务端缓存的 Token
     String clientip = getClientIpAddress();
     String stoken = cashierService.getCacheBean("token", clientip);
@@ -177,7 +177,7 @@ public class CashierController extends BaseController {
       logger.error("服务端 没有缓存  Token 或   客户端没提交 Token");
     }
 
-    JsonResult rio = new JsonResult();
+    BaseDto rio = new BaseDto();
     rio.setSuccess(true);
     // rio.setMsg("welcome," + token);
     // rio.setData(token);

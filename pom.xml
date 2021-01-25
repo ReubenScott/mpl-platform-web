@@ -81,7 +81,7 @@
 
 
   <dependencies>
-    <!-- 配置项目依赖 <dependency> <groupId>com.kindustry</groupId> <artifactId>core</artifactId> </dependency> -->
+ <!-- 配置项目依赖 <dependency> <groupId>com.kindustry</groupId> <artifactId>core</artifactId> </dependency> -->
 
     <!-- 本地Jar包 Start 
     <dependency>
@@ -241,7 +241,7 @@
 
     <!-- 映入JSON -->
     <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
+       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
     </dependency>
     <dependency>

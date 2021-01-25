@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+  <!-- AOP 事务管理 属性 -->
+  <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+    <tx:attributes>
+      <tx:method name="add*" propagation="REQUIRED" />
+      <tx:method name="append*" propagation="REQUIRED" />
+      <tx:method name="save*" propagation="REQUIRED" />
+      <tx:method name="update*" propagation="REQUIRED" rollback-for="Exception" />
+      <tx:method name="modify*" propagation="REQUIRED" />
+      <tx:method name="edit*" propagation="REQUIRED" />
+      <tx:method name="insert*" propagation="REQUIRED" rollback-for="Exception" />
+      <tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception" />
+      <tx:method name="remove*" propagation="REQUIRED" />
+      <tx:method name="repair" propagation="REQUIRED" />
+
+
+      <tx:method name="select*" propagation="REQUIRED" read-only="true" />
+      <tx:method name="get*" propagation="REQUIRED" read-only="true" />
+      <tx:method name="find*" propagation="REQUIRED" read-only="true" />
+      <tx:method name="load*" propagation="REQUIRED" read-only="true" />
+      <tx:method name="search*" propagation="REQUIRED" read-only="true" />
+      <tx:method name="datagrid*" propagation="REQUIRED" read-only="true" />
+
+      <tx:method name="*" propagation="REQUIRED" read-only="true" />
+    </tx:attributes>
+  </tx:advice>
+
+  <!-- 配置AOP切面 -->
+  <aop:config>
+    <aop:pointcut id="transactionPointcut" expression="execution(* com.baomidou.springwind.service.impl..*.*(..))" />
+    <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice" />
+  </aop:config>
+
+  <!-- 激活自动代理功能 , 强制使用cglib代理   如果为false则spring会自动选择- -->
+  <aop:aspectj-autoproxy proxy-target-class="true" />
+
+
+
+
+  <!--通知-->
+  <bean id="beforeAdvice" class="com.kindustry.infoInquiry.AopAdvice"></bean>
+
+  <!--切面类 -->
+  <bean id="busiTarget" class="com.kindustry.infoInquiry.service.imp.SelfServiceImp"></bean>
+
+  <!--业务实现 -->
+  <bean id="busiAop" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <!--代理类.调用的时候则是调用这个代理类 -->
+    <property name="proxyInterfaces">
+      <!--代理接口（业务类接口）-->
+      <value>com.kindustry.infoInquiry.service.SelfService</value>
+    </property>
+    <property name="interceptorNames">
+      <!--  通知   -->
+      <list>
+        <value>beforeAdvisor</value>
+      </list>
+    </property>
+    <property name="target">
+      <!--业务实现类 -->
+      <ref bean="busiTarget" />
+    </property>
+  </bean>
+
+  <!--切点-->
+  <bean id="pointCut" class="org.springframework.aop.support.JdkRegexpMethodPointcut">
+    <!--需要对那些方法进行拦截-->
+    <property name="pattern">
+      <value>.*doBusiTo</value>
+    </property>
+  </bean>
+
+  <bean id="beforeAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
+    <!--通知-->
+    <property name="advice">
+      <ref bean="beforeAdvice" />
+    </property>
+    <property name="pointcut">
+      <ref bean="pointCut" />
+    </property>
+
+  </bean>
+
+</beans>
