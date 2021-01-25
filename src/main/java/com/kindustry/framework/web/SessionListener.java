@@ -1,23 +1,23 @@
-package com.kindustry.framework.listener;
+package com.kindustry.framework.web;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSessionAttributeListener;
-import javax.servlet.http.HttpSessionBindingEvent;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
-import javax.servlet.http.HttpSessionActivationListener;
-import javax.servlet.http.HttpSessionBindingListener;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.io.PrintWriter;
-import java.io.FileOutputStream;
 import java.util.HashMap;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSessionActivationListener;
+import javax.servlet.http.HttpSessionAttributeListener;
+import javax.servlet.http.HttpSessionBindingEvent;
+import javax.servlet.http.HttpSessionBindingListener;
+import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SessionListener implements HttpSessionActivationListener, HttpSessionBindingListener, HttpSessionAttributeListener, HttpSessionListener {
 
@@ -40,7 +40,7 @@ public class SessionListener implements HttpSessionActivationListener, HttpSessi
   public Connection GetDBConnection() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
     try {
       Class.forName("com.mysql.jdbc.Driver").newInstance();
-      conn =  DriverManager.getConnection(url, name, password);
+      conn = DriverManager.getConnection(url, name, password);
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -62,6 +62,7 @@ public class SessionListener implements HttpSessionActivationListener, HttpSessi
   /**
    * session 创建 处理 HttpSessionListener
    */
+  @Override
   public void sessionCreated(HttpSessionEvent hse) {
     sessionCounter++;
     // logout("sessionCreated('" + event.getSession().getId() + "'),目前有"+ users
@@ -72,6 +73,7 @@ public class SessionListener implements HttpSessionActivationListener, HttpSessi
   /**
    * session 超时 处理 HttpSessionListener
    */
+  @Override
   public void sessionDestroyed(HttpSessionEvent hse) {
     sessionCounter--;
     // logout("sessionDestroyed('" + event.getSession().getId() + "'),目前有"+
@@ -84,16 +86,19 @@ public class SessionListener implements HttpSessionActivationListener, HttpSessi
   }
 
   // HttpSessionActivationListener
+  @Override
   public void sessionDidActivate(HttpSessionEvent se) {
     // logout("sessionDidActivate(" + se.getSession().getId() + ")");
   }
 
+  @Override
   public void sessionWillPassivate(HttpSessionEvent se) {
     // logout("sessionWillPassivate(" + se.getSession().getId() + ")");
   }
 
   // HttpSessionActivationListener
   // HttpSessionBindingListener
+  @Override
   public void valueBound(HttpSessionBindingEvent event) {
     context = event.getSession().getServletContext();
     userlist = (HashMap) context.getAttribute("userlist");
@@ -106,6 +111,7 @@ public class SessionListener implements HttpSessionActivationListener, HttpSessi
     logout("valueBound(" + event.getSession().getId() + event.getValue() + ")");
   }
 
+  @Override
   public void valueUnbound(HttpSessionBindingEvent event) {
 
     context = event.getSession().getServletContext();
@@ -120,11 +126,13 @@ public class SessionListener implements HttpSessionActivationListener, HttpSessi
   }
 
   // HttpSessionAttributeListener
+  @Override
   public void attributeAdded(HttpSessionBindingEvent event) {
     // logout("attributeAdded('" + event.getSession().getId() + "', '"+
     // event.getName() + "', '" + event.getValue() + "')");
   }
 
+  @Override
   public void attributeRemoved(HttpSessionBindingEvent event) {
     // 更改离线会员在数据库中的在线状态。
     if (event.getName() == "member") {
@@ -156,6 +164,7 @@ public class SessionListener implements HttpSessionActivationListener, HttpSessi
     // event.getName() + "', '" + event.getValue() + "')");
   }
 
+  @Override
   public void attributeReplaced(HttpSessionBindingEvent se) {
     // logout("attributeReplaced('" + se.getSession().getId() + ",'"+
     // se.getName() + "','" + se.getValue() + "')");

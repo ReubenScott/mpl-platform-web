@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.kindustry.framework.web.BaseController;
+import com.kindustry.framework.controller.BaseController;
 
 /**
  * <p>
@@ -18,13 +18,13 @@ import com.kindustry.framework.web.BaseController;
 @RequestMapping("/sys/echarts")
 public class EchartsController extends BaseController {
 
-	/**
-	 * 地图
-	 */
-	@RequestMapping("/map")
-	public String map(Model model) {
-		
-		return "/echarts/map";
-	}
+  /**
+   * 地图
+   */
+  @RequestMapping("/map")
+  public String map(Model model) {
+
+    return "/echarts/map";
+  }
 
 }

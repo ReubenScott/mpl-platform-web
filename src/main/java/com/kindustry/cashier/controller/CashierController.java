@@ -18,9 +18,10 @@ import com.kindustry.cashier.service.IPaymentService;
 import com.kindustry.cashier.vo.DeviceInfo;
 import com.kindustry.common.cache.EhcacheHelper;
 import com.kindustry.common.result.JsonResult;
+import com.kindustry.common.util.BrowserUtil;
 import com.kindustry.common.util.JsonUtil;
 import com.kindustry.framework.annotation.Token;
-import com.kindustry.framework.web.BaseController;
+import com.kindustry.framework.controller.BaseController;
 
 @Controller
 @RequestMapping("/cashier")
@@ -34,18 +35,18 @@ public class CashierController extends BaseController {
 
   @Resource
   private IPaymentService paymentService;
-  
 
   /**
    * 設備註冊
+   * 
    * @param deviceinfo
    * @return
    */
   @ResponseBody
   @RequestMapping(value = "regester", method = { RequestMethod.POST, RequestMethod.GET })
-  public boolean regester(DeviceInfo deviceinfo){
+  public boolean regester(DeviceInfo deviceinfo) {
     cashierService.regester(deviceinfo);
-    return false ;
+    return false;
   }
 
   @ResponseBody
@@ -53,6 +54,9 @@ public class CashierController extends BaseController {
   // , headers="Accept=application/json;charset=UTF-8"
   public JsonResult findGoods(@RequestParam(value = "barcode") String barcode) {
     // 如果不加任何参数，则在请求/test2/login.do时，便默认执行该方法 findGoodsByBarcode
+    String agent = request.getHeader("user-agent");
+    System.out.println(agent);
+    System.out.println(BrowserUtil.getDeviceInfo1());
     System.out.println(cashierService);
     String token = (String) getAttribute("token");
     Goods goods = cashierService.findGoodsByBarcode(barcode);
@@ -72,9 +76,8 @@ public class CashierController extends BaseController {
     rio.setMsg("welcome," + token);
     rio.setData(goods);
 
-    
     Goods element = EhcacheHelper.get("contentCache", barcode);
-//    Goods element = cashierService.getCacheBean("contentCache", barcode);
+    // Goods element = cashierService.getCacheBean("contentCache", barcode);
     if (element != null) {
       System.out.println(JsonUtil.toJSONString(element));
     }
@@ -106,8 +109,7 @@ public class CashierController extends BaseController {
 
     // 生成客户端Token
     cashierService.putCacheBean("token", clientip, token);
-    
-    
+
     JsonResult rio = new JsonResult();
     rio.setSuccess(true);
     rio.setMsg("welcome," + token);
@@ -134,52 +136,51 @@ public class CashierController extends BaseController {
    */
   // @Token(save = true)
   @ResponseBody
-  @RequestMapping(value = "payment" , method = RequestMethod.POST )
+  @RequestMapping(value = "payment", method = RequestMethod.POST)
   public JsonResult payment(String username, String password) {
-    // 服务端缓存的 Token 
+    // 服务端缓存的 Token
     String clientip = getClientIpAddress();
-    String stoken = cashierService.getCacheBean("token", clientip); 
+    String stoken = cashierService.getCacheBean("token", clientip);
     logger.debug("token: " + stoken);
-    
-    // 客户端提交的参数 
+
+    // 客户端提交的参数
     String ip = super.getParameter("ip");
     String host = super.getParameter("host");
     String mac = super.getParameter("mac");
     String ctoken = super.getParameter("token");
-    
+
     System.out.println(ip);
     System.out.println(host);
     System.out.println(mac);
     System.out.println(ctoken);
-    
-    if(stoken!=null && ctoken!=null ){ 
+
+    if (stoken != null && ctoken != null) {
       // 锁定缓存的各Token , 各个客户机不相互干预.
-      synchronized(stoken){ 
+      synchronized (stoken) {
         // 防止重复提交。 重新刷新取一次缓存
-        if(ctoken.equals(cashierService.getCacheBean("token", clientip))){
+        if (ctoken.equals(cashierService.getCacheBean("token", clientip))) {
           List<String> keys = cashierService.getCacheKeys("token");
           System.out.println(keys.size());
           for (String obj : keys) {
             System.out.println(obj);
           }
-        
+
           // 支付成功清除缓存
-          if(true){
+          if (true) {
             cashierService.cacheEvict("token", clientip);
             logger.debug("TEST: " + clientip);
           }
         }
       }
     } else {
-      // 服务端 没有缓存  Token 或   客户端没提交 Token 
+      // 服务端 没有缓存 Token 或 客户端没提交 Token
       logger.error("服务端 没有缓存  Token 或   客户端没提交 Token");
     }
-   
 
     JsonResult rio = new JsonResult();
     rio.setSuccess(true);
-//    rio.setMsg("welcome," + token);
-//    rio.setData(token);
+    // rio.setMsg("welcome," + token);
+    // rio.setData(token);
 
     return rio;
   }
