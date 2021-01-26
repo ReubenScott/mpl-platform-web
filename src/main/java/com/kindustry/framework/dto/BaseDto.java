@@ -3,21 +3,19 @@ package com.kindustry.framework.dto;
 import java.io.Serializable;
 
 /**
- * Author: D.Yang Email: koyangslash@gmail.com Date: 16/8/31 Time: 下午5:50
- * Describe: 封装Json返回信息
+ * 
+ * @author chenjun
+ *         Describe: 封装Json返回信息
  */
 public class BaseDto implements Serializable {
 
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 6877561452672002978L;
+  private static final long serialVersionUID = 1L;
 
   /** 是否成功 */
-  private boolean success;
+  private Boolean success;
 
   /** 消息码 */
-  private String status;
+  private Integer state;
 
   /** 消息 */
   private String msg;
@@ -25,20 +23,20 @@ public class BaseDto implements Serializable {
   /** 数据 */
   private Object data;
 
-  public boolean isSuccess() {
+  public Boolean getSuccess() {
     return success;
   }
 
-  public void setSuccess(boolean success) {
+  public void setSuccess(Boolean success) {
     this.success = success;
   }
 
-  public String getStatus() {
-    return status;
+  public Integer getState() {
+    return state;
   }
 
-  public void setStatus(String status) {
-    this.status = status;
+  public void setState(Integer state) {
+    this.state = state;
   }
 
   public String getMsg() {

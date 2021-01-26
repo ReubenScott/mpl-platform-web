@@ -1,9 +1,7 @@
 package com.kindustry.cashier.controller;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -47,10 +45,16 @@ public class CashierController extends BaseController {
    */
   @ResponseBody
   @RequestMapping(value = "regester", method = { RequestMethod.POST, RequestMethod.GET })
-  public boolean regester(DeviceInfo deviceinfo) {
+  public BaseDto regester(DeviceInfo deviceinfo) {
     // cashierService.regester(deviceinfo);
     System.out.println(deviceinfo);
-    return false;
+
+    BaseDto rio = new BaseDto();
+    // rio.setSuccess(true);
+    rio.setMsg("welcome");
+    rio.setData(deviceinfo);
+
+    return rio;
   }
 
   @ResponseBody
@@ -64,6 +68,7 @@ public class CashierController extends BaseController {
     System.out.println(cashierService);
     // String token = (String) getAttribute("token");
     Goods goods = cashierService.findGoodsByBarcode(barcode);
+    goods.setStorageTime(new Date());
     // goods = paymentService.getBean(barcode);
     // System.out.println(goods.getName());
     // System.out.println(goods.getBarcode());
@@ -74,15 +79,10 @@ public class CashierController extends BaseController {
     System.out.println(super.request);
     System.out.println(super.response);
 
-    Date date = new Date();
-
-    Map<String, Object> map = new HashMap<>();
-    map.put("date", date);
-
     BaseDto rio = new BaseDto();
-    rio.setSuccess(true);
+    // rio.setSuccess(true);
     rio.setMsg("welcome");
-    rio.setData(map);
+    rio.setData(goods);
 
     Goods element = EhcacheHelper.get("contentCache", barcode);
     // Goods element = cashierService.getCacheBean("contentCache", barcode);
