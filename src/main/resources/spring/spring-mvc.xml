@@ -50,7 +50,7 @@
       <!-- 进行拦截：/**表示拦截所有controller -->
       <mvc:mapping path="/**" />
       <!--class文件路径改成你自己写得拦截器路径！！ -->
-      <bean class="com.kindustry.framework.interceptor.TokenInterceptor" />
+      <bean class="com.kindustry.framework.web.TokenInterceptor" />
     </mvc:interceptor>
   </mvc:interceptors>
 

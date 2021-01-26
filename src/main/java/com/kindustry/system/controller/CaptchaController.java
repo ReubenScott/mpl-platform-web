@@ -4,8 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.kindustry.framework.web.BaseController;
-
+import com.kindustry.framework.controller.BaseController;
 
 /**
  * <p>
@@ -19,17 +18,18 @@ import com.kindustry.framework.web.BaseController;
 @RequestMapping("/captcha")
 public class CaptchaController extends BaseController {
 
-	/**
-	 * 生成图片
-	 */
-	@ResponseBody
-	@RequestMapping("/image")
-	public void image(String ctoken) {
-//		try {
-//			MyCaptcha.getInstance().generate(request, response.getOutputStream(), ctoken);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-	}
+  /**
+   * 生成图片
+   */
+  @ResponseBody
+  @RequestMapping("/image")
+  public void image(String ctoken) {
+    // try {
+    // MyCaptcha.getInstance().generate(request, response.getOutputStream(),
+    // ctoken);
+    // } catch (IOException e) {
+    // e.printStackTrace();
+    // }
+  }
 
 }

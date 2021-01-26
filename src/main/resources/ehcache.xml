@@ -31,6 +31,8 @@
   <!-- 内容缓存 -->
   <cache name="contentCache" maxElementsInMemory="10000" eternal="false" timeToLiveSeconds="36000" overflowToDisk="true" />
   
+  <!-- 商品信息缓存 -->
+  <cache name="goodsCache" maxElementsInMemory="10000" memoryStoreEvictionPolicy="LFU" timeToLiveSeconds="36000" overflowToDisk="true" />
   
   <!-- 订单 Token  -->
   <cache name="token"

@@ -1,5 +1,4 @@
-package com.kindustry.framework.interceptor;
-
+package com.kindustry.framework.web;
 
 import java.lang.reflect.Method;
 import java.util.UUID;
@@ -27,15 +26,17 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
       if (annotation != null) {
         boolean needSaveSession = annotation.save();
         if (needSaveSession) {
-//          request.getSession(true).setAttribute("token", UUID.randomUUID().toString());
+          // request.getSession(true).setAttribute("token",
+          // UUID.randomUUID().toString());
           HttpSession session = request.getSession(true);
-          // Token [signature=e93e39f6b44ad12b8dec8349da73f237, timestamp=1447303373541]
+          // Token [signature=e93e39f6b44ad12b8dec8349da73f237,
+          // timestamp=1447303373541]
           String signature = UUID.randomUUID().toString();
-          String sessonId = session.getId() ;
+          String sessonId = session.getId();
           long createTime = session.getCreationTime();
-          request.setAttribute("token", sessonId + createTime );
-//        request.setAttribute("token", UUID.randomUUID().toString());
-          logger.info(signature, sessonId, createTime );
+          request.setAttribute("token", sessonId + createTime);
+          // request.setAttribute("token", UUID.randomUUID().toString());
+          logger.info(signature, sessonId, createTime);
         }
         boolean needRemoveSession = annotation.remove();
         if (needRemoveSession) {
