@@ -2,24 +2,13 @@ package com.kindustry.framework.controller;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.web.bind.ServletRequestDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  * 
@@ -28,70 +17,18 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  */
 public class BaseController {
 
-  @Autowired
+  @Resource
   protected HttpServletRequest request;
 
-  @InitBinder
-  protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
-    DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-    CustomDateEditor dateEditor = new CustomDateEditor(format, true);
-    binder.registerCustomEditor(Date.class, dateEditor);
-  }
+  @Resource
+  protected HttpServletResponse response;
 
-  public <T> T getAttribute(String attributeName) {
-    return (T) this.getRequest().getAttribute(attributeName);
-  }
-
-  public void setAttribute(String attributeName, Object object) {
-    this.getRequest().setAttribute(attributeName, object);
-  }
-
-  public Object getSession(String attributeName) {
-    return this.getRequest().getSession(true).getAttribute(attributeName);
-  }
-
-  public void setSession(String attributeName, Object object) {
-    this.getRequest().getSession(true).setAttribute(attributeName, object);
-  }
-
-  public HttpServletRequest getRequest() {
-    RequestAttributes ra = RequestContextHolder.getRequestAttributes();
-    return ((ServletRequestAttributes) ra).getRequest();
-  }
-
-  public HttpServletResponse getResponse() {
-    RequestAttributes ra = RequestContextHolder.getRequestAttributes();
-    // return ((ServletRequestAttributes) ra).getResponse();
-    return null;
-  }
-
-  public HttpSession getSession() {
-    return this.getRequest().getSession(true);
-  }
-
-  public String getParameter(String paraName) {
-    return this.getRequest().getParameter(paraName);
-  }
-
-  /**
-   * 获取表单格式数据(或url拼接参数)
-   * 
-   * @return
-   */
-  public Map<String, String[]> getParameterMap() {
-    return this.getRequest().getParameterMap();
-  }
-
-  public String getHeader(String headerName) {
-    return this.getRequest().getHeader(headerName);
-  }
-
-  public Map getHeaderMap() {
-    Enumeration headerNames = this.getRequest().getHeaderNames();
-    Map headerMap = new HashMap();
+  public Map<String, String> getHeaderMap() {
+    Enumeration<String> headerNames = request.getHeaderNames();
+    Map<String, String> headerMap = new HashMap<String, String>();
     while (headerNames.hasMoreElements()) {
-      String headerName = (String) headerNames.nextElement();
-      String headerValue = getRequest().getHeader(headerName);
+      String headerName = headerNames.nextElement();
+      String headerValue = request.getHeader(headerName);
       headerMap.put(headerName, headerValue);
     }
     return headerMap;
@@ -103,7 +40,6 @@ public class BaseController {
    * @return
    */
   public String getClientIpAddress() {
-    HttpServletRequest request = this.getRequest();
     // String ip = request.getHeader("x-forwarded-for");
     // if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
     // ip = request.getHeader("Proxy-Client-IP");
@@ -201,10 +137,9 @@ public class BaseController {
    * 允许跨域访问
    */
   public void allowCrossDomainAccess() {
-    HttpServletResponse servletResponse = getResponse();
-    servletResponse.setHeader("Access-Control-Allow-Origin", "*");
-    servletResponse.setHeader("Access-Control-Allow-Methods", "POST,GET");
-    servletResponse.setHeader("Access-Control-Allow-Headers:x-requested-with", "content-type");
+    response.setHeader("Access-Control-Allow-Origin", "*");
+    response.setHeader("Access-Control-Allow-Methods", "POST,GET");
+    response.setHeader("Access-Control-Allow-Headers:x-requested-with", "content-type");
   }
 
 }

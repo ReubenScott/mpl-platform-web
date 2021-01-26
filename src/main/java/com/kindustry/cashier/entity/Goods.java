@@ -3,13 +3,15 @@ package com.kindustry.cashier.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kindustry.framework.orm.BaseEntity;
 
 /**
- * 图书实体
+ * 商品信息表
  */
 public class Goods extends BaseEntity {
 
@@ -66,7 +68,8 @@ public class Goods extends BaseEntity {
   /**
    * 首次入库时间
    */
-  @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date storageTime; // storage_time TIMESTAMP(0) WITHOUT TIME ZONE, --
 
   /**

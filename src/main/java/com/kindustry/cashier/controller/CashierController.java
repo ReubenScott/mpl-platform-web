@@ -1,6 +1,9 @@
 package com.kindustry.cashier.controller;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -45,7 +48,8 @@ public class CashierController extends BaseController {
   @ResponseBody
   @RequestMapping(value = "regester", method = { RequestMethod.POST, RequestMethod.GET })
   public boolean regester(DeviceInfo deviceinfo) {
-    cashierService.regester(deviceinfo);
+    // cashierService.regester(deviceinfo);
+    System.out.println(deviceinfo);
     return false;
   }
 
@@ -58,23 +62,27 @@ public class CashierController extends BaseController {
     System.out.println(agent);
     System.out.println(BrowserUtil.getDeviceInfo1());
     System.out.println(cashierService);
-    String token = (String) getAttribute("token");
+    // String token = (String) getAttribute("token");
     Goods goods = cashierService.findGoodsByBarcode(barcode);
     // goods = paymentService.getBean(barcode);
     // System.out.println(goods.getName());
     // System.out.println(goods.getBarcode());
-    String ip = super.getParameter("ip");
-    String host = super.getParameter("host");
-    String mac = super.getParameter("mac");
+    // String ip = super.getParameter("ip");
+    // String host = super.getParameter("host");
+    // String mac = super.getParameter("mac");
 
-    System.out.println(ip);
-    System.out.println(host);
-    System.out.println(mac);
+    System.out.println(super.request);
+    System.out.println(super.response);
+
+    Date date = new Date();
+
+    Map<String, Object> map = new HashMap<>();
+    map.put("date", date);
 
     BaseDto rio = new BaseDto();
     rio.setSuccess(true);
-    rio.setMsg("welcome," + token);
-    rio.setData(goods);
+    rio.setMsg("welcome");
+    rio.setData(map);
 
     Goods element = EhcacheHelper.get("contentCache", barcode);
     // Goods element = cashierService.getCacheBean("contentCache", barcode);
@@ -101,7 +109,7 @@ public class CashierController extends BaseController {
   @ResponseBody
   @RequestMapping(value = "prePayment", method = { RequestMethod.POST, RequestMethod.GET })
   public BaseDto prePayment(String username, String password) {
-    String token = super.getAttribute("token");
+    String token = null; // super.getAttribute("token");
 
     String clientip = getClientIpAddress();
     logger.debug(clientip);
@@ -144,14 +152,14 @@ public class CashierController extends BaseController {
     logger.debug("token: " + stoken);
 
     // 客户端提交的参数
-    String ip = super.getParameter("ip");
-    String host = super.getParameter("host");
-    String mac = super.getParameter("mac");
-    String ctoken = super.getParameter("token");
+    // String ip = super.getParameter("ip");
+    // String host = super.getParameter("host");
+    // String mac = super.getParameter("mac");
+    String ctoken = null; // super.getParameter("token");
 
-    System.out.println(ip);
-    System.out.println(host);
-    System.out.println(mac);
+    // System.out.println(ip);
+    // System.out.println(host);
+    // System.out.println(mac);
     System.out.println(ctoken);
 
     if (stoken != null && ctoken != null) {
