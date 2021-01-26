@@ -15,8 +15,6 @@ import org.jsoup.helper.HttpConnection;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import com.kindustry.invest.bond.dao.BondDao;
-import com.kindustry.invest.bond.dao.impl.BondDaoImpl;
 import com.kindustry.invest.bond.model.Bond;
 import com.kindustry.network.spider.core.Spider;
 
@@ -136,11 +134,11 @@ public class SpiderForBonds extends Spider {
   public static void main(String args[]) {
     SpiderForBonds splider = new SpiderForBonds();
     List<Bond> bonds = splider.getBonds();
-    BondDao bondDao = new BondDaoImpl();
-
-    for (Bond bond : bonds) {
-      bondDao.addBond(bond);
-    }
+    // BondDao bondDao = new BondDaoImpl();
+    //
+    // for (Bond bond : bonds) {
+    // bondDao.addBond(bond);
+    // }
 
   }
 }

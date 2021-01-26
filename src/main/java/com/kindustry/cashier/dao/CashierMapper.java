@@ -1,4 +1,4 @@
-package com.kindustry.cashier.mapper;
+package com.kindustry.cashier.dao;
 
 import java.util.List;
 
@@ -12,6 +12,8 @@ import com.kindustry.framework.orm.BaseMapper;
  * 商品数据访问接口
  */
 @MapperScan
+// @Mapper
+// @Repository
 public interface CashierMapper extends BaseMapper<Goods> {
 
   /**
@@ -29,7 +31,4 @@ public interface CashierMapper extends BaseMapper<Goods> {
    */
   public int add(Goods entity);
 
-
-  
-  
 }

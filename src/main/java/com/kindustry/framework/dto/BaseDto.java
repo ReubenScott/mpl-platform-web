@@ -2,17 +2,21 @@ package com.kindustry.framework.dto;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 /**
  * 
- * @author chenjun
- *         Describe: 封装Json返回信息
+ * @author chenjun Describe: 封装Json返回信息
  */
+@JsonPropertyOrder({ "success", "state", "msg", "data" })
 public class BaseDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
   /** 是否成功 */
-  private Boolean success;
+  @JsonProperty("out")
+  private boolean success;
 
   /** 消息码 */
   private Integer state;
@@ -23,11 +27,11 @@ public class BaseDto implements Serializable {
   /** 数据 */
   private Object data;
 
-  public Boolean getSuccess() {
+  public boolean isSuccess() {
     return success;
   }
 
-  public void setSuccess(Boolean success) {
+  public void setSuccess(boolean success) {
     this.success = success;
   }
 

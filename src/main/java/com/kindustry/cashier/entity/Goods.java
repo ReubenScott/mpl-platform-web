@@ -23,6 +23,7 @@ public class Goods extends BaseEntity {
   /**
    * 商品条码
    */
+  @JsonProperty("out")
   private String barcode; // barcode VARCHAR(20) NOT NULL, -- 商品条码
 
   /**

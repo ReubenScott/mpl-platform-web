@@ -1,4 +1,4 @@
-package com.kindustry.system.mapper;
+package com.kindustry.system.dao;
 
 import java.util.List;
 

@@ -1,18 +1,19 @@
 package com.kindustry.cashier.entity;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.kindustry.framework.orm.BaseEntity;
 
 /**
  * 订单
  */
-public class Order implements Serializable{
+public class Order extends BaseEntity {
 
   /**
    * 
    */
-  private static final long serialVersionUID = 6707052106861044048L;
+  private static final long serialVersionUID = 1L;
 
   // paycode VARCHAR(20) NOT NULL, -- 订单号
   private String paycode;

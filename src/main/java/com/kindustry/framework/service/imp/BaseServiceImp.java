@@ -3,8 +3,6 @@ package com.kindustry.framework.service.imp;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import net.sf.ehcache.Element;
 
 import org.apache.poi.ss.usermodel.Workbook;
@@ -12,22 +10,10 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.Cache.ValueWrapper;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 
-import com.kindustry.framework.dao.IBaseDao;
 import com.kindustry.framework.service.IBaseService;
 import com.kindustry.system.entity.Menu;
 
 public class BaseServiceImp implements IBaseService {
-
-  @Resource
-  protected IBaseDao baseDao;
-
-  public IBaseDao getBaseDao() {
-    return baseDao;
-  }
-
-  public void setBaseDao(IBaseDao baseDao) {
-    this.baseDao = baseDao;
-  }
 
   /**
    * 获取对象
@@ -48,6 +34,7 @@ public class BaseServiceImp implements IBaseService {
    * @param key
    * @return
    */
+  @Override
   public <T> T getCacheBean(String cacheName, String key) {
     EhCacheCacheManager cacheManager = this.getBean("cacheManager");
     Cache cache = cacheManager.getCache(cacheName);
@@ -61,12 +48,14 @@ public class BaseServiceImp implements IBaseService {
    * @param key
    * @param value
    */
+  @Override
   public void putCacheBean(String cacheName, String key, Object value) {
     EhCacheCacheManager cacheManager = this.getBean("cacheManager");
     Cache cache = cacheManager.getCache(cacheName);
     cache.put(key, value);
   }
 
+  @Override
   public boolean contains(String cacheName, Object o) {
     EhCacheCacheManager cacheManager = this.getBean("cacheManager");
     net.sf.ehcache.Ehcache cache = (net.sf.ehcache.Ehcache) cacheManager.getCache(cacheName).getNativeCache();
@@ -85,6 +74,7 @@ public class BaseServiceImp implements IBaseService {
    * @param cacheName
    * @return
    */
+  @Override
   public <T> List<T> getCacheKeys(String cacheName) {
     EhCacheCacheManager cacheManager = this.getBean("cacheManager");
     net.sf.ehcache.Ehcache cache = (net.sf.ehcache.Ehcache) cacheManager.getCache(cacheName).getNativeCache();
@@ -98,6 +88,7 @@ public class BaseServiceImp implements IBaseService {
    * @param key
    * @return
    */
+  @Override
   public void cacheEvict(String cacheName, String key) {
     EhCacheCacheManager cacheManager = this.getBean("cacheManager");
     Cache cache = cacheManager.getCache(cacheName);
@@ -111,6 +102,7 @@ public class BaseServiceImp implements IBaseService {
    * @param sql
    * @param params
    */
+  @Override
   public Workbook createExcelBySQL(String title, String sql, Object... params) {
     // return basicDao.exportExcel(null, title, sql, params);
     return null;
@@ -119,6 +111,7 @@ public class BaseServiceImp implements IBaseService {
   /**
    * 获取用户菜单
    */
+  @Override
   public List<Menu> findMenuByUser(String xml) {
     Menu menu = new Menu();
     // return basicDao.findByAnnotatedSample(menu);
@@ -129,6 +122,7 @@ public class BaseServiceImp implements IBaseService {
    * 
    * @param sid
    */
+  @Override
   public boolean deleteEntityBySID(Class entity, Serializable sid) {
     // return basicDao.deleteEntityBySID(entity, sid);
     return false;
@@ -138,6 +132,7 @@ public class BaseServiceImp implements IBaseService {
    * 
    * @param sid
    */
+  @Override
   public boolean deleteAnnotatedEntity(Object annoEntity) {
     // return basicDao.deleteAnnotatedEntity(annoEntity);
     return false;

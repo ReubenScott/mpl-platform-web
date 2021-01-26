@@ -10,12 +10,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @author kindustry
  *
  */
+@SuppressWarnings("serial")
 public abstract class BaseEntity implements Serializable, Cloneable {
-
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 1L;
 
   /**
    * 标识Id

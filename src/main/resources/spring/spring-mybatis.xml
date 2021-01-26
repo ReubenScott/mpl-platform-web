@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
   xmlns:aop="http://www.springframework.org/schema/aop"
-  xsi:schemaLocation="http://www.springframework.org/schema/beans  http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/tx   http://www.springframework.org/schema/tx/spring-tx.xsd
-       http://www.springframework.org/schema/aop  http://www.springframework.org/schema/aop/spring-aop.xsd">
+  xsi:schemaLocation="http://www.springframework.org/schema/beans META-INF/xsd/spring-beans-4.3.xsd
+       http://www.springframework.org/schema/tx  META-INF/xsd/spring-tx-4.3.xsd
+       http://www.springframework.org/schema/aop  META-INF/xsd/spring-aop-4.3.xsd">
 
   <!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 动态扫描 加载 mapper.xml -->
 
@@ -17,7 +17,7 @@
     <property name="typeAliasesPackage" value="com.kindustry"></property>
     -->
     <!-- 自动扫描mapping.xml文件 sql映射文件路径   com/*/**/mapper/*Mapper.xml -->
-    <property name="mapperLocations" value="classpath*:mapper/**/*Mapper.xml"/>
+    <property name="mapperLocations" value="classpath*:mapping/**/*Mapper.xml"/>
   </bean>
 
   <!-- 配置SqlSessionTemplate -->
@@ -29,7 +29,7 @@
   <!-- 配置mybatis mapper接口 -->
   <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
     <!-- 指定要扫描的包，在此包之下的映射器都会被搜索到。可指定多个包，包与包之间用逗号或分号分隔 -->
-    <property name="basePackage" value="com.*.**.mapper" />
+    <property name="basePackage" value="com.kindustry.**.dao" />
     <!--指定会话工厂，如果当前上下文中只定义了一个则该属性可省去 -->
     <property name="sqlSessionTemplateBeanName" value="sqlSessionTemplate" />
   </bean>

@@ -7,8 +7,8 @@ import javax.annotation.Resource;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import com.kindustry.cashier.dao.CashierMapper;
 import com.kindustry.cashier.entity.Goods;
-import com.kindustry.cashier.mapper.CashierMapper;
 import com.kindustry.cashier.service.ICashierService;
 import com.kindustry.cashier.vo.DeviceInfo;
 import com.kindustry.framework.service.imp.BaseServiceImp;
