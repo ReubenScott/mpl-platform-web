@@ -1,4 +1,4 @@
-package com.kindustry.common.enums;
+package com.kindustry.common.constant;
 
 /**
  * 说明 :

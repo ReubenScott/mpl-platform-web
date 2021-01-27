@@ -1,13 +1,13 @@
-package com.kindustry.common.enums;
+package com.kindustry.common.constant;
 
 
-public enum PermissionType {
-	MENU(0, "菜单"), OPERATION(1, "功能");
+public enum UserType {
+	MEMBER(0, "普通用户"), ADMIN(1, "管理员");
 
 	private final int key;
 	private final String desc;
 
-	PermissionType(final int key, final String desc) {
+	UserType(final int key, final String desc) {
 		this.key = key;
 		this.desc = desc;
 	}

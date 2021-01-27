@@ -22,7 +22,7 @@ import com.kindustry.common.util.BrowserUtil;
 import com.kindustry.common.util.JsonUtil;
 import com.kindustry.framework.annotation.Token;
 import com.kindustry.framework.controller.BaseController;
-import com.kindustry.framework.dto.BaseDto;
+import com.kindustry.support.dto.BaseDto;
 
 @Controller
 @RequestMapping("/cashier")

@@ -1,4 +1,4 @@
-package com.kindustry.framework.dto;
+package com.kindustry.support.dto;
 
 import java.io.Serializable;
 

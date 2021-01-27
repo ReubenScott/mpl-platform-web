@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.annotation.MapperScan;
 
 import com.kindustry.cashier.entity.Goods;
-import com.kindustry.framework.orm.BaseMapper;
+import com.kindustry.orm.BaseMapper;
 
 /**
  * 商品数据访问接口

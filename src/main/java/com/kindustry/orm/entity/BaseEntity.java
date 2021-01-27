@@ -1,4 +1,4 @@
-package com.kindustry.framework.orm;
+package com.kindustry.orm.entity;
 
 import java.io.Serializable;
 import java.util.Date;

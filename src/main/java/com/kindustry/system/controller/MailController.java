@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kindustry.common.util.JsonUtil;
 import com.kindustry.framework.controller.BaseController;
-import com.kindustry.framework.dto.BaseDto;
+import com.kindustry.support.dto.BaseDto;
 
 /**
  * <p>
@@ -31,7 +31,8 @@ public class MailController extends BaseController {
     // if (isPost()) {
     // model.addAttribute("email", email);
     // model.addAttribute("loginName", getSSOToken().getData());
-    // boolean rlt = mailHelper.sendMail(email, "SpringWind 测试邮件！", "/mail/tplSend.html", model);
+    // boolean rlt = mailHelper.sendMail(email, "SpringWind 测试邮件！",
+    // "/mail/tplSend.html", model);
     // String tipMsg = "发送邮件至【" + email + "】失败！！";
     // if(rlt){
     // tipMsg = "已成功发送邮件至【" + email + "】注意查收！！";

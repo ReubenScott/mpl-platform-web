@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kindustry.framework.controller.BaseController;
-import com.kindustry.framework.dto.BaseDto;
+import com.kindustry.support.dto.BaseDto;
 
 /**
  * <p>

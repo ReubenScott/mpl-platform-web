@@ -3,7 +3,7 @@ package com.kindustry.cashier.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.kindustry.framework.orm.BaseEntity;
+import com.kindustry.orm.entity.BaseEntity;
 
 /**
  * 订单

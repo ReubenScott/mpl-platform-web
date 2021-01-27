@@ -8,7 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kindustry.framework.orm.BaseEntity;
+import com.kindustry.orm.entity.BaseEntity;
 
 /**
  * 商品信息表
