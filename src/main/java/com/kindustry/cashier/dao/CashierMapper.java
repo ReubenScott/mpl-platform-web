@@ -13,7 +13,7 @@ import com.kindustry.cashier.entity.Goods;
 @MapperScan
 // @Mapper
 // @Repository
-public interface CashierMapper /*extends BaseMapper<Goods>*/{
+public interface CashierMapper extends BaseMapper<Goods>{
 
   /**
    * 根据商品编号获得商品对象 findGoodsByBarcode
