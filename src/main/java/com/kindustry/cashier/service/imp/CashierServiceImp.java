@@ -2,38 +2,39 @@ package com.kindustry.cashier.service.imp;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import com.kindustry.cashier.dao.CashierMapper;
+import com.kindustry.cashier.dao.bridge.CashierMapperBridge;
 import com.kindustry.cashier.entity.Goods;
 import com.kindustry.cashier.service.ICashierService;
 import com.kindustry.cashier.vo.DeviceInfo;
 import com.kindustry.framework.service.imp.BaseServiceImp;
 
-//import com.kindustry.edw.report.service.IReportService;
-//import com.kindustry.framework.service.imp.BasicServiceImp;
-
-@Service("cashierService")
+@Service
 public class CashierServiceImp extends BaseServiceImp implements ICashierService {
 
-  @Resource
-  private CashierMapper cashierMapper;
+  @Autowired
+  private CashierMapperBridge cashierMapper;
 
   @Override
   public boolean regester(DeviceInfo deviceinfo) {
     // TODO Auto-generated method stub
+    Goods good = new Goods();
+    good.setBarcode("1233232");
+    good.setTitle("tiles");
+    cashierMapper.save(good);
+
     return false;
   }
 
   /**
    * 通过条形码查询商品
    */
-  @Override
   // 启用缓存
   @Cacheable(value = "goodsCache", key = "#barcode", unless = "#result == null")
+  @Override
   public Goods findGoodsByBarcode(String barcode) {
     // ApplicationListener.getBean("sqlSessionTemplate");
     System.out.println(cashierMapper);

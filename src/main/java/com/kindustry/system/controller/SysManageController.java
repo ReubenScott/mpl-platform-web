@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -27,7 +28,7 @@ public class SysManageController /* extends BaseAction */{
 
   protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-  // @Resource
+  @Resource
   private ISysManageService sysMangerService;
 
   private Menu menu;
@@ -118,7 +119,7 @@ public class SysManageController /* extends BaseAction */{
   // 拖动报表修改类别或顺序
   public void dragMenu() {
 
-    HttpServletRequest request = null;  // ServletActionContext.getRequest();
+    HttpServletRequest request = null; // ServletActionContext.getRequest();
     String sid = request.getParameter("sid");
     String target = request.getParameter("target");
     String targetType = request.getParameter("targetType");

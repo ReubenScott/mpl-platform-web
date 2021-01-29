@@ -44,9 +44,9 @@ public class CashierController extends BaseController {
    * @return
    */
   @ResponseBody
-  @RequestMapping(value = "regester", method = { RequestMethod.POST, RequestMethod.GET })
+  @RequestMapping(value = "regester", method = {RequestMethod.POST, RequestMethod.GET})
   public BaseDto regester(DeviceInfo deviceinfo) {
-    // cashierService.regester(deviceinfo);
+    cashierService.regester(deviceinfo);
     System.out.println(deviceinfo);
 
     BaseDto rio = new BaseDto();
@@ -58,9 +58,10 @@ public class CashierController extends BaseController {
   }
 
   @ResponseBody
-  @RequestMapping(value = "findGoods", method = { RequestMethod.POST, RequestMethod.GET })
+  @RequestMapping(value = "findGoods", method = {RequestMethod.POST, RequestMethod.GET})
   // , headers="Accept=application/json;charset=UTF-8"
-  public BaseDto findGoods(@RequestParam(value = "barcode") String barcode) {
+    public
+    BaseDto findGoods(@RequestParam(value = "barcode") String barcode) {
     // 如果不加任何参数，则在请求/test2/login.do时，便默认执行该方法 findGoodsByBarcode
     String agent = request.getHeader("user-agent");
     System.out.println(agent);
@@ -99,15 +100,15 @@ public class CashierController extends BaseController {
   }
 
   /**
-   * 商品预支付 客户端提供参数： 商品明细： 会员号， 商品条码 , 数量 ，金额 服务端返回参数： Token(避免重复提交) 活动减免金额 ，
-   * 合计应付金额 （是否返回订单号讨论, 商品明细服务端不需要缓存，客户端有可能会返回主页面修改 ） 缓存 Token
+   * 商品预支付 客户端提供参数： 商品明细： 会员号， 商品条码 , 数量 ，金额 服务端返回参数： Token(避免重复提交) 活动减免金额 ， 合计应付金额 （是否返回订单号讨论,
+   * 商品明细服务端不需要缓存，客户端有可能会返回主页面修改 ） 缓存 Token
    * 
    * @param password
    * @return
    */
   @Token(save = true)
   @ResponseBody
-  @RequestMapping(value = "prePayment", method = { RequestMethod.POST, RequestMethod.GET })
+  @RequestMapping(value = "prePayment", method = {RequestMethod.POST, RequestMethod.GET})
   public BaseDto prePayment(String username, String password) {
     String token = null; // super.getAttribute("token");
 

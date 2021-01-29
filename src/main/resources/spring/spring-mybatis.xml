@@ -30,10 +30,11 @@
   <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
     <!-- 指定要扫描的包，在此包之下的映射器都会被搜索到。可指定多个包，包与包之间用逗号或分号分隔 -->
     <property name="basePackage" value="com.kindustry.**.dao" />
+    <!-- 当包下的类被这个注解@Mapper标示的时候才会被扫描 -->
+    <property name="annotationClass" value="org.apache.ibatis.annotations.Mapper" />
     <!--指定会话工厂，如果当前上下文中只定义了一个则该属性可省去 -->
     <property name="sqlSessionTemplateBeanName" value="sqlSessionTemplate" />
   </bean>
-
 
 
 </beans>

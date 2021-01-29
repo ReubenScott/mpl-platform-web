@@ -2,18 +2,17 @@ package com.kindustry.cashier.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.mybatis.spring.annotation.MapperScan;
 
 import com.kindustry.cashier.entity.Goods;
+import com.kindustry.orm.dao.BaseMapper;
 
 /**
  * 商品数据访问接口
  */
-@MapperScan
-// @Mapper
-// @Repository
-public interface CashierMapper extends BaseMapper<Goods>{
+@Mapper
+public interface CashierMapper extends BaseMapper<Goods> {
 
   /**
    * 根据商品编号获得商品对象 findGoodsByBarcode

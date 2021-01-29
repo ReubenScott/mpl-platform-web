@@ -3,6 +3,10 @@ package com.kindustry.cashier.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -13,6 +17,7 @@ import com.kindustry.orm.entity.BaseEntity;
 /**
  * 商品信息表
  */
+@Table(name = "Goods")
 public class Goods extends BaseEntity {
 
   /**
@@ -23,6 +28,8 @@ public class Goods extends BaseEntity {
   /**
    * 商品条码
    */
+  @Id
+  @Column(name = "barcode")
   @JsonProperty("out")
   private String barcode; // barcode VARCHAR(20) NOT NULL, -- 商品条码
 

@@ -1,4 +1,4 @@
-package com.kindustry.structure.model;
+package com.kindustry.framework.support;
 
 /* 
  * 文件名：ReflectHelper.java 
