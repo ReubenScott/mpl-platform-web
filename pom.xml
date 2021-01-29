@@ -132,6 +132,17 @@
     </dependency>
     <!-- DB Driver End -->
 
+    <!-- HikariCP -->
+    <dependency>
+      <groupId>com.zaxxer</groupId>
+      <artifactId>HikariCP</artifactId>
+    </dependency>
+    <!-- 导入dbcp的jar包，用来在applicationContext.xml中配置数据库 -->
+    <dependency>
+      <groupId>commons-dbcp</groupId>
+      <artifactId>commons-dbcp</artifactId>
+    </dependency>
+    
 
     <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
     <dependency>
@@ -252,11 +263,6 @@
 
     <!-- 格式化对象，方便输出日志 <dependency> <groupId>com.alibaba</groupId> <artifactId>fastjson</artifactId> </dependency> -->
 
-    <!-- 导入dbcp的jar包，用来在applicationContext.xml中配置数据库 -->
-    <dependency>
-      <groupId>commons-dbcp</groupId>
-      <artifactId>commons-dbcp</artifactId>
-    </dependency>
 
     <dependency>
       <groupId>javax.mail</groupId>

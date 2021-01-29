@@ -11,14 +11,33 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import com.kindustry.orm.BaseMapper;
 import com.kindustry.orm.entity.BaseEntity;
 import com.kindustry.structure.model.ReflectHelper;
 
 @Repository("baseDao")
-public class BaseDaoImpl<T extends BaseEntity> implements BaseMapper<T>, IBaseDao {
+public class BaseDaoImpl<T extends BaseEntity> implements IBaseDao {
 
   protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+  /**
+   * 保存
+   */
+  final String SQL_INSERT = ".insert";
+
+  /**
+   * 删除
+   */
+  final String SQL_DELETE = ".delete";
+
+  /**
+   * 更新
+   */
+  final String SQL_UPDATE = ".update";
+
+  /**
+   * 更新
+   */
+  final String SQL_SELECT_SINGLE = ".select";
 
   @Resource
   protected SqlSessionTemplate session;
@@ -38,7 +57,7 @@ public class BaseDaoImpl<T extends BaseEntity> implements BaseMapper<T>, IBaseDa
     this.session = sqlSession;
   }
 
-  @Override
+  // @Override
   public T selectSingle(Object param) {
     if (null == param) {
       logger.error("非法参数：param为空！");
@@ -53,7 +72,7 @@ public class BaseDaoImpl<T extends BaseEntity> implements BaseMapper<T>, IBaseDa
     return result;
   }
 
-  @Override
+  // @Override
   public T insert(T entity) {
     if (null == entity) {
       logger.error("参数对象为null!");
@@ -69,7 +88,7 @@ public class BaseDaoImpl<T extends BaseEntity> implements BaseMapper<T>, IBaseDa
     return entity;
   }
 
-  @Override
+  // @Override
   public boolean update(T entity) {
     if (null == entity) {
       throw new IllegalArgumentException("参数不可为null！");
@@ -238,10 +257,8 @@ public class BaseDaoImpl<T extends BaseEntity> implements BaseMapper<T>, IBaseDa
   /*
    * public PagerVO findPaginated(String sqlId, Map params) { SqlSession session
    * = MyBatisUtil.getSession(); List datas = null; int total = 0; try {
-   * 
    * // 取出分页参数，设置到params中 // params.put("offset", SystemContext.getOffset()); //
    * params.put("pagesize", SystemContext.getPagesize());
-   * 
    * datas = session.selectList(sqlId, params); total = (Integer)
    * session.selectOne(sqlId + "-count", params); } catch (Exception e) {
    * e.printStackTrace(); } finally { session.close(); } PagerVO pv = new
@@ -273,15 +290,4 @@ public class BaseDaoImpl<T extends BaseEntity> implements BaseMapper<T>, IBaseDa
     return session.selectOne(_mybitsId, object);
   }
 
-  @Override
-  public int save(T entity) {
-    // TODO Auto-generated method stub
-    return 0;
-  }
-
-  @Override
-  public boolean delete(int pk) {
-    // TODO Auto-generated method stub
-    return false;
-  }
 }

@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.annotation.MapperScan;
 
 import com.kindustry.cashier.entity.Goods;
-import com.kindustry.orm.BaseMapper;
 
 /**
  * 商品数据访问接口
@@ -14,7 +13,7 @@ import com.kindustry.orm.BaseMapper;
 @MapperScan
 // @Mapper
 // @Repository
-public interface CashierMapper extends BaseMapper<Goods> {
+public interface CashierMapper /*extends BaseMapper<Goods>*/{
 
   /**
    * 根据商品编号获得商品对象 findGoodsByBarcode
