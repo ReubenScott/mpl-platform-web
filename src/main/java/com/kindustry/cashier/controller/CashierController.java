@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.kindustry.cashier.entity.Goods;
+import com.kindustry.cashier.entity.GoodsEntity;
 import com.kindustry.cashier.service.ICashierService;
 import com.kindustry.cashier.service.IPaymentService;
 import com.kindustry.cashier.vo.DeviceInfo;
@@ -46,13 +46,13 @@ public class CashierController extends BaseController {
   @ResponseBody
   @RequestMapping(value = "regester", method = {RequestMethod.POST, RequestMethod.GET})
   public BaseDto regester(DeviceInfo deviceinfo) {
-    cashierService.regester(deviceinfo);
+
     System.out.println(deviceinfo);
 
     BaseDto rio = new BaseDto();
     // rio.setSuccess(true);
     rio.setMsg("welcome");
-    rio.setData(deviceinfo);
+    rio.setData(cashierService.regester(deviceinfo));
 
     return rio;
   }
@@ -68,7 +68,7 @@ public class CashierController extends BaseController {
     System.out.println(BrowserUtil.getDeviceInfo1());
     System.out.println(cashierService);
     // String token = (String) getAttribute("token");
-    Goods goods = cashierService.findGoodsByBarcode(barcode);
+    GoodsEntity goods = cashierService.findGoodsByBarcode(barcode);
     goods.setStorageTime(new Date());
     // goods = paymentService.getBean(barcode);
     // System.out.println(goods.getName());
@@ -85,7 +85,7 @@ public class CashierController extends BaseController {
     rio.setMsg("welcome");
     rio.setData(goods);
 
-    Goods element = EhcacheHelper.get("contentCache", barcode);
+    GoodsEntity element = EhcacheHelper.get("contentCache", barcode);
     // Goods element = cashierService.getCacheBean("contentCache", barcode);
     if (element != null) {
       System.out.println(JsonUtil.toJSONString(element));

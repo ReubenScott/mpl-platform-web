@@ -3,9 +3,6 @@ package com.kindustry.orm.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
@@ -19,8 +16,8 @@ public abstract class BaseEntity implements Serializable, Cloneable {
   /**
    * 主键标识Id
    */
-  @Id
-  @Column(name = "sid")
+  // @Id
+  // @Column(name = "sid")
   private String sid; //
 
   /**

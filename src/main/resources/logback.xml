@@ -3,7 +3,7 @@
 
 
   <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
-  <property name="LOG_HOME" value="logs" />
+  <property name="LOG_HOME" value="c:/logs" />
   <property name="appname" value="cashier" />
   <timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss" />
 
@@ -90,16 +90,16 @@
 
 
   <!-- 特定过滤含有某字符串的日志 -->
-  <appender name="file-str" class="ch.qos.logback.core.rolling.RollingFileAppender">
+  <appender name="file-dao" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
       <evaluator>
-        <expression>message.contains("str")</expression>
+        <expression>message.contains("dao")</expression>
       </evaluator>
       <onMatch>ACCEPT</onMatch>
       <onMismatch>DENY</onMismatch>
     </filter>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <FileNamePattern>${LOG_HOME}/${appname}.contains.%d{yyyy-MM-dd}.log</FileNamePattern>
+      <FileNamePattern>${LOG_HOME}/${appname}.dao.%d{yyyy-MM-dd}.log</FileNamePattern>
       <MaxHistory>30</MaxHistory>
     </rollingPolicy>
     <encoder>
@@ -114,7 +114,7 @@
     <appender-ref ref="file—debug" />
     <appender-ref ref="file—info" />
     <appender-ref ref="file—error" />
-    <appender-ref ref="file-str" />
+    <appender-ref ref="file-dao" />
   </root>
 
 </configuration>

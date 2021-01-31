@@ -31,7 +31,7 @@ CREATE TABLE cashier_info (
 -- 商品信息表  
 CREATE TABLE goods (
   barcode VARCHAR(20) NOT NULL,     -- 商品条码
-  name VARCHAR(80) NOT NULL,        -- 商品名称
+  title VARCHAR(80) NOT NULL,        -- 商品名称
   specs varchar(20),                -- 规格型号
   unit varchar(20),                 -- 单位 
   category_id varchar(20),          -- 商品类别
@@ -45,6 +45,24 @@ CREATE TABLE goods (
   remarks VARCHAR(80),              -- 备注
   PRIMARY KEY (barcode)
 );
+
+comment on table goods is '商品信息表 ';
+comment on column goods.barcode is '商品条码';
+comment on column goods.title is '商品名称';
+comment on column goods.specs is '规格型号';
+comment on column goods.unit is '单位';
+comment on column goods.barcode is '单位';
+comment on column goods.category_id is '商品类别';
+comment on column goods.cargo_no is '货号';
+comment on column goods.purchase_price is '进价';
+comment on column goods.sale_price is '零售价';
+comment on column goods.member_price is '会员价';
+comment on column goods.storage_time is '首次入库时间';
+comment on column goods.update_time is '更新时间';
+comment on column goods.branch_no is '机构号  暂时不用';
+comment on column goods.remarks is '备注';
+
+
 
 --  商品种类 树形结构   
 CREATE TABLE goods_category (

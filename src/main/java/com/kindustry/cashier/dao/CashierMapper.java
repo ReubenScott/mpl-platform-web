@@ -5,28 +5,28 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.kindustry.cashier.entity.Goods;
+import com.kindustry.cashier.entity.GoodsEntity;
 import com.kindustry.orm.dao.BaseMapper;
 
 /**
  * 商品数据访问接口
  */
 @Mapper
-public interface CashierMapper extends BaseMapper<Goods> {
+public interface CashierMapper extends BaseMapper<GoodsEntity> {
 
   /**
    * 根据商品编号获得商品对象 findGoodsByBarcode
    */
-  public Goods getGoodsByBarcode(@Param("barcode") String barcode);
+  public GoodsEntity getGoodsByBarcode(@Param("barcode") String barcode);
 
   /**
    * 获得所有
    */
-  public List<Goods> getAllGoods();
+  public List<GoodsEntity> getAllGoods();
 
   /**
    * 添加商品
    */
-  public int add(Goods entity);
+  public int add(GoodsEntity entity);
 
 }

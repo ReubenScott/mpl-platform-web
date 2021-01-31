@@ -1,8 +1,8 @@
 package com.kindustry.orm.dao;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.InsertProvider;
@@ -36,17 +36,27 @@ public interface BaseMapper<T> {
    * @return
    */
   @UpdateProvider(type = SqlProvider.class, method = "update")
-  int update(T entity, HashSet<String> excludeColumns);
+  int update(T entity, Set<String> excludeColumns);
 
   /**
-   * 删除记录
+   * 按主鍵删除记录
    * 
    * @param entity
    * @return
    * @author kindustry
    */
-  @DeleteProvider(type = SqlProvider.class, method = "delete")
-  int delete(Map<String, Object> para);
+  @DeleteProvider(type = SqlProvider.class, method = "deleteByPk")
+  int deleteByPk(T entity);
+
+  /**
+   * 根據模板删除记录
+   * 
+   * @param entity
+   * @return
+   * @author kindustry
+   */
+  @DeleteProvider(type = SqlProvider.class, method = "deleteByExample")
+  int deleteByExample(T entity, String... includeColumns);
 
   /**
    * 
