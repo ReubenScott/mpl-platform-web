@@ -1,6 +1,5 @@
 package com.kindustry.cashier.service.imp;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,19 +23,22 @@ public class CashierServiceImp extends BaseServiceImp implements ICashierService
     // TODO Auto-generated method stub
     GoodsEntity good = new GoodsEntity();
     good.setBarcode("6927241400304");
-    good.setTitle("华萍针线盒");
+    good.setTitle("贵人车马");
 
     GoodsEntity good1 = new GoodsEntity();
-    good1.setBarcode("6916834061886");
-    good1.setTitle("华萍针线盒");
+    good1.setTitle("梳子");
+    good1.setCargoNo("122");
 
     GoodsEntity[] goods = new GoodsEntity[] {good, good1};
 
     // boolean flag = cashierMapper.save(goods);
 
-    int count = cashierMapper.deleteByExample(Arrays.asList(goods));
+    // int count = cashierMapper.deleteByExample(Arrays.asList(goods), new String[] {"cargoNo", "title"});
+    // System.out.println(count);
 
-    System.out.println(count);
+    int count2 = cashierMapper.deleteByPk(goods);
+
+    System.out.println(count2);
 
     return false;
   }

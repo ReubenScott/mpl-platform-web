@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.UpdateProvider;
 
@@ -56,7 +57,7 @@ public interface BaseMapper<T> {
    * @author kindustry
    */
   @DeleteProvider(type = SqlProvider.class, method = "deleteByExample")
-  int deleteByExample(T entity, String... includeColumns);
+  int deleteByExample(@Param("example") T entity, @Param("include") String... includeColumns);
 
   /**
    * 

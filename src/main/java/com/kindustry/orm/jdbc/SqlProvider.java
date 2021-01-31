@@ -8,7 +8,10 @@ package com.kindustry.orm.jdbc;
  * @email tanglongjia@126.com
  */
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -16,7 +19,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.apache.ibatis.jdbc.SQL;
-import org.apache.poi.ss.formula.functions.T;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -113,19 +115,30 @@ public class SqlProvider {
    * @param map
    * @return
    * @author kindustry
+   * @throws IllegalAccessException
+   * @throws IllegalArgumentException
    */
-  @SuppressWarnings("hiding")
-  public <T> String deleteByPk(T entity) {
+  public <T> String deleteByPk(T entity) throws IllegalArgumentException, IllegalAccessException {
     int count = 0;
     SQL sql = new SQL();
     sql.DELETE_FROM(getTableName(entity));
 
     // 获取类的字节码
     Class<? extends Object> clazz = entity.getClass();
+    // Superclass
+    Class<? extends Object> Superclass = clazz.getSuperclass();
 
+    List<Field> fieldList = new ArrayList<Field>();;
+    if (!Superclass.equals(Object.class)) {
+      // 获取所有 Superclass 声明的字段
+      Field[] superFields = Superclass.getDeclaredFields();
+      fieldList.addAll(Arrays.asList(superFields));
+    }
     // 获取所有声明的字段
     Field[] fields = clazz.getDeclaredFields();
-    for (Field field : fields) {
+    fieldList.addAll(Arrays.asList(fields));
+
+    for (Field field : fieldList) {
       String fieldName = field.getName();
       if ("serialVersionUID".equals(fieldName)) {
         continue;
@@ -142,40 +155,19 @@ public class SqlProvider {
 
         for (Column column : columns) {
           String columnName = column.name();
-          sql.WHERE(columnName + " = " + "#{" + fieldName + "}");
+          // 获取列的值
+          field.setAccessible(true);
+          Object value = field.get(entity);
+          // 根據值 設置SQL支持 is null
+          if (value == null) {
+            sql.WHERE(columnName + " is null ");
+          } else {
+            sql.WHERE(columnName + " = " + "#{" + fieldName + "}");
+          }
           count++;
         }
       }
 
-    }
-
-    // Superclass
-    clazz = clazz.getSuperclass();
-    if (!clazz.equals(Object.class)) {
-      Field[] superFields = clazz.getDeclaredFields();
-      for (Field field : superFields) {
-        String fieldName = field.getName();
-        if ("serialVersionUID".equals(fieldName)) {
-          continue;
-        }
-
-        // 註解
-        Column[] columns = field.getAnnotationsByType(Column.class);
-        Id[] ids = field.getAnnotationsByType(Id.class);
-        if (ids.length > 0) {
-          if (columns.length == 0) {
-            logger.error("Column : {}.{} have not configed  [@Column]", clazz.getName(), fieldName);
-            throw new IllegalArgumentException("Column : " + clazz.getName() + "." + fieldName + " have not configed [@Column]");
-          }
-
-          for (Column column : columns) {
-            String columnName = column.name();
-            sql.WHERE(columnName + " = " + "#{" + fieldName + "}");
-            count++;
-          }
-        }
-
-      }
     }
 
     // 沒注解 主鍵 @Id
@@ -194,20 +186,25 @@ public class SqlProvider {
    * @param includeColumns
    * @return
    * @author kindustry
+   * @throws IllegalAccessException
+   * @throws IllegalArgumentException
    */
-  public String deleteByExample(T entity, String... includeColumns) {
+  public String deleteByExample(Map<String, Object> includeColumnMap) throws IllegalArgumentException, IllegalAccessException {
     int count = 0;
     SQL sql = new SQL();
-    sql.DELETE_FROM(getTableName(entity));
 
+    Object example = includeColumnMap.get("example");
     // 获取类的字节码
-    Class<? extends Object> clazz = entity.getClass();
+    Class<? extends Object> clazz = example.getClass();
+    sql.DELETE_FROM(getTableName(example));
+
+    List<String> includeColumns = Arrays.asList((String[])includeColumnMap.get("include"));
 
     // 获取所有声明的字段
     Field[] fields = clazz.getDeclaredFields();
     for (Field field : fields) {
       String fieldName = field.getName();
-      if ("serialVersionUID".equals(fieldName) || !Arrays.asList(includeColumns).contains(fieldName)) {
+      if ("serialVersionUID".equals(fieldName) || (includeColumns.size() > 0 && !includeColumns.contains(fieldName))) {
         continue;
       }
 
@@ -219,19 +216,29 @@ public class SqlProvider {
       }
       for (Column column : columns) {
         String columnName = column.name();
-        sql.WHERE(columnName + " = " + "#{" + fieldName + "}");
+        // 获取列的值
+        field.setAccessible(true);
+        Object value = field.get(example);
+        // 根據值 設置SQL支持 is null
+        if (value == null) {
+          sql.WHERE(columnName + " is null ");
+        } else {
+          sql.WHERE(columnName + " = " + "#{" + fieldName + "}");
+          includeColumnMap.put(fieldName, value);
+        }
         count++;
       }
 
     }
 
+    /*
     // Superclass
     clazz = clazz.getSuperclass();
     if (!clazz.equals(Object.class)) {
       Field[] superFields = clazz.getDeclaredFields();
       for (Field field : superFields) {
         String fieldName = field.getName();
-        if ("serialVersionUID".equals(fieldName) || !Arrays.asList(includeColumns).contains(fieldName)) {
+        if ("serialVersionUID".equals(fieldName) || !includeColumns.contains(fieldName)) {
           continue;
         }
 
@@ -251,11 +258,12 @@ public class SqlProvider {
       }
 
     }
+    */
 
     // 沒注解 @Column
     if (count == 0) {
-      logger.error("Entity : {}  have no field configed [@Column]", clazz.getName());
-      throw new IllegalArgumentException("Entity : " + clazz.getName() + " have no field configed [@Column]");
+      logger.error("Entity : {}  have not configed correct field with [@Column]", clazz.getName());
+      throw new IllegalArgumentException("Entity : " + clazz.getName() + " have not configed correct field with [@Column]");
     }
 
     return sql.toString();
@@ -313,6 +321,7 @@ public class SqlProvider {
       }
     }
 
+    /*
     Class<?> superClazz = clazz.getSuperclass();
     if (!superClazz.equals(Object.class)) {
       Field[] superFields = superClazz.getDeclaredFields();
@@ -329,6 +338,7 @@ public class SqlProvider {
         }
       }
     }
+    */
 
     return sql.toString();
   }
