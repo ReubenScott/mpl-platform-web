@@ -3,7 +3,6 @@ package com.kindustry.cashier.entity;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.apache.ibatis.type.Alias;
@@ -17,9 +16,9 @@ import com.kindustry.orm.entity.BaseEntity;
 /**
  * 商品信息表
  */
-@Table(name = "goods")
-@Alias("goodsEntity")
-public class GoodsEntity extends BaseEntity {
+@Table(name = "commodity")
+@Alias("commodityEntity")
+public class CommodityEntity extends BaseEntity {
   /**
    * 
    */
@@ -28,7 +27,6 @@ public class GoodsEntity extends BaseEntity {
   /**
    * 单位
    */
-  @Id
   @Column(name = "barcode")
   private String barcode;
 
@@ -47,8 +45,8 @@ public class GoodsEntity extends BaseEntity {
   /**
    * 规格型号
    */
-  @Column(name = "specs")
-  private String specs;
+  @Column(name = "standard")
+  private String standard;
 
   /**
    * 单位
@@ -164,8 +162,8 @@ public class GoodsEntity extends BaseEntity {
    * 
    * @return specs 规格型号
    */
-  public String getSpecs() {
-    return specs;
+  public String getStandard() {
+    return standard;
   }
 
   /**
@@ -174,8 +172,8 @@ public class GoodsEntity extends BaseEntity {
    * @param specs
    *          规格型号
    */
-  public void setSpecs(String specs) {
-    this.specs = specs;
+  public void setStandard(String standard) {
+    this.standard = standard;
   }
 
   /**

@@ -14,10 +14,15 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kindustry.orm.entity.BaseEntity;
+import com.kindustry.orm.jdbc.SnowflakeIdWorker;
+
 @Repository
 public class BaseMapperBridge<T, M extends BaseMapper<T>> {
 
   protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+  private static SnowflakeIdWorker idWorker = new SnowflakeIdWorker(0, 0);
 
   /**
    * 保存
@@ -61,6 +66,14 @@ public class BaseMapperBridge<T, M extends BaseMapper<T>> {
       throw new IllegalArgumentException("参数不可为null！");
     }
     for (T entity : entities) {
+      BaseEntity item = null;
+      if (entity instanceof BaseEntity) {
+        item = (BaseEntity)entity;
+        if (item.getUid() == null) {
+          item.setUid(idWorker.nextId());
+        }
+        entity = (T)item;
+      }
       flag = flag & mapper.save(entity);
     }
     return flag;

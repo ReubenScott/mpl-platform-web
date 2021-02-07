@@ -3,6 +3,9 @@ package com.kindustry.orm.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
@@ -16,9 +19,9 @@ public abstract class BaseEntity implements Serializable, Cloneable {
   /**
    * 主键标识Id
    */
-  // @Id
-  // @Column(name = "sid")
-  private String sid; //
+  @Id
+  @Column(name = "uid")
+  private Long uid;
 
   /**
    * 用户名
@@ -43,8 +46,8 @@ public abstract class BaseEntity implements Serializable, Cloneable {
    * 
    * @return the sid
    */
-  public String getSid() {
-    return sid;
+  public Long getUid() {
+    return uid;
   }
 
   /**
@@ -53,8 +56,8 @@ public abstract class BaseEntity implements Serializable, Cloneable {
    * @param sid
    *          the sid to set
    */
-  public void setSid(String sid) {
-    this.sid = sid;
+  public void setUid(Long uid) {
+    this.uid = uid;
   }
 
   public String getCreateUser() {

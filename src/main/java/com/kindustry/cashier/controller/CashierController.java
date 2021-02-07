@@ -13,11 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.kindustry.cashier.entity.GoodsEntity;
+import com.kindustry.cashier.entity.CommodityEntity;
 import com.kindustry.cashier.service.ICashierService;
 import com.kindustry.cashier.service.IPaymentService;
 import com.kindustry.cashier.vo.DeviceInfo;
-import com.kindustry.common.cache.EhcacheHelper;
 import com.kindustry.common.util.BrowserUtil;
 import com.kindustry.common.util.JsonUtil;
 import com.kindustry.framework.annotation.Token;
@@ -47,28 +46,32 @@ public class CashierController extends BaseController {
   @RequestMapping(value = "regester", method = {RequestMethod.POST, RequestMethod.GET})
   public BaseDto regester(DeviceInfo deviceinfo) {
 
-    System.out.println(deviceinfo);
-
     BaseDto rio = new BaseDto();
-    // rio.setSuccess(true);
-    rio.setMsg("welcome");
-    rio.setData(cashierService.regester(deviceinfo));
+    System.out.println(deviceinfo);
+    try {
+      // rio.setSuccess(true);
+      rio.setMsg("welcome");
+      rio.setData(cashierService.regester());
+
+    } catch (Exception e) {
+      // TODO: handle exception
+      e.printStackTrace();
+    }
 
     return rio;
   }
 
+  // , headers="Accept=application/json;charset=UTF-8"
   @ResponseBody
   @RequestMapping(value = "findGoods", method = {RequestMethod.POST, RequestMethod.GET})
-  // , headers="Accept=application/json;charset=UTF-8"
-    public
-    BaseDto findGoods(@RequestParam(value = "barcode") String barcode) {
+  public BaseDto findGoods(@RequestParam(value = "barcode") String barcode) {
     // 如果不加任何参数，则在请求/test2/login.do时，便默认执行该方法 findGoodsByBarcode
     String agent = request.getHeader("user-agent");
     System.out.println(agent);
     System.out.println(BrowserUtil.getDeviceInfo1());
     System.out.println(cashierService);
     // String token = (String) getAttribute("token");
-    GoodsEntity goods = cashierService.findGoodsByBarcode(barcode);
+    CommodityEntity goods = cashierService.findGoodsByBarcode(barcode);
     goods.setStorageTime(new Date());
     // goods = paymentService.getBean(barcode);
     // System.out.println(goods.getName());
@@ -85,7 +88,7 @@ public class CashierController extends BaseController {
     rio.setMsg("welcome");
     rio.setData(goods);
 
-    GoodsEntity element = EhcacheHelper.get("contentCache", barcode);
+    CommodityEntity element = null; // EhcacheHelper.get("contentCache", barcode);
     // Goods element = cashierService.getCacheBean("contentCache", barcode);
     if (element != null) {
       System.out.println(JsonUtil.toJSONString(element));

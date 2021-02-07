@@ -4,7 +4,6 @@ import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 
-
 /**
  * <p>
  * ehcache 缓存工具类
@@ -16,37 +15,36 @@ import net.sf.ehcache.Element;
  */
 public class EhcacheHelper {
 
-	public static CacheManager manager = CacheManager.create();
+  public static CacheManager manager = CacheManager.create();
 
-	public static <T> T get(String cacheName, Object key) {
-		Cache cache = manager.getCache(cacheName);
-		if (cache != null) {
-			Element element = cache.get(key);
-	    return element == null ? null : (T)element.getObjectValue();
-		}
-		return null;
-	}
+  public static <T> T get(String cacheName, Object key) {
+    Cache cache = manager.getCache(cacheName);
+    if (cache != null) {
+      Element element = cache.get(key);
+      return element == null ? null : (T)element.getObjectValue();
+    }
+    return null;
+  }
 
+  public static void put(String cacheName, Object key, Object value) {
+    Cache cache = manager.getCache(cacheName);
+    if (cache != null) {
+      cache.put(new Element(key, value));
+    }
+  }
 
-	public static void put(String cacheName, Object key, Object value) {
-		Cache cache = manager.getCache(cacheName);
-		if (cache != null) {
-			cache.put(new Element(key, value));
-		}
-	}
+  public static boolean remove(String cacheName, Object key) {
+    Cache cache = manager.getCache(cacheName);
+    if (cache != null) {
+      return cache.remove(key);
+    }
+    return false;
+  }
 
-	public static boolean remove(String cacheName, Object key) {
-		Cache cache = manager.getCache(cacheName);
-		if (cache != null) {
-			return cache.remove(key);
-		}
-		return false;
-	}
-
-	public static void main(String[] args) {
-		String key = "key";
-		EhcacheHelper.put("mytest", key, "hello");
-		System.out.println(EhcacheHelper.get("mytest", key));
-	}
+  public static void main(String[] args) {
+    String key = "key";
+    EhcacheHelper.put("mytest", key, "hello");
+    // System.out.println(EhcacheHelper.get("mytest", key));
+  }
 
 }

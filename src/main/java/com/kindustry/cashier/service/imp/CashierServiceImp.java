@@ -7,9 +7,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.kindustry.cashier.dao.bridge.CashierMapperBridge;
-import com.kindustry.cashier.entity.GoodsEntity;
+import com.kindustry.cashier.entity.CommodityEntity;
 import com.kindustry.cashier.service.ICashierService;
-import com.kindustry.cashier.vo.DeviceInfo;
 import com.kindustry.framework.service.imp.BaseServiceImp;
 
 @Service
@@ -18,27 +17,26 @@ public class CashierServiceImp extends BaseServiceImp implements ICashierService
   @Autowired
   private CashierMapperBridge cashierMapper;
 
-  @Override
-  public boolean regester(DeviceInfo deviceinfo) {
+  public boolean regester() {
     // TODO Auto-generated method stub
-    GoodsEntity good = new GoodsEntity();
+    CommodityEntity good = new CommodityEntity();
     good.setBarcode("6927241400304");
     good.setTitle("贵人车马");
 
-    GoodsEntity good1 = new GoodsEntity();
+    CommodityEntity good1 = new CommodityEntity();
     good1.setTitle("梳子");
-    good1.setCargoNo("122");
+    good1.setCargoNo("1221");
 
-    GoodsEntity[] goods = new GoodsEntity[] {good, good1};
+    CommodityEntity[] goods = new CommodityEntity[] {good, good1};
 
-    // boolean flag = cashierMapper.save(goods);
+    boolean flag = cashierMapper.save(goods);
 
     // int count = cashierMapper.deleteByExample(Arrays.asList(goods), new String[] {"cargoNo", "title"});
     // System.out.println(count);
 
-    int count2 = cashierMapper.deleteByPk(goods);
+    // int count2 = cashierMapper.deleteByPk(goods);
 
-    System.out.println(count2);
+    // System.out.println(count2);
 
     return false;
   }
@@ -49,19 +47,19 @@ public class CashierServiceImp extends BaseServiceImp implements ICashierService
   // 启用缓存
   @Cacheable(value = "goodsCache", key = "#barcode", unless = "#result == null")
   @Override
-  public GoodsEntity findGoodsByBarcode(String barcode) {
+  public CommodityEntity findGoodsByBarcode(String barcode) {
     // ApplicationListener.getBean("sqlSessionTemplate");
     System.out.println(cashierMapper);
     System.out.println("barcode : " + barcode);
 
-    GoodsEntity good = cashierMapper.getGoodsByBarcode(barcode);
+    CommodityEntity good = cashierMapper.getGoodsByBarcode(barcode);
     // logger.debug("ReportServiceImp" , basicDao==null);
     return good; // this.basicDao.findByXmlSqlMapper(null,sqlName, value);
   }
 
   // 预支付接口 客户端提供参数： 商品明细： 会员号， 商品条码 , 数量 ，金额
   @Override
-  public void prePayment(List<GoodsEntity> goods) {
+  public void prePayment(List<CommodityEntity> goods) {
     // ApplicationListener.getBean("sqlSessionTemplate");
     System.out.println(cashierMapper);
 

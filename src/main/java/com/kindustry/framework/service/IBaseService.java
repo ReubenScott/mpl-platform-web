@@ -5,12 +5,10 @@ import java.util.List;
 
 import org.apache.poi.ss.usermodel.Workbook;
 
-import com.kindustry.system.entity.Menu;
-
 public interface IBaseService {
 
   // 查询用户菜单
-  public List<Menu> findMenuByUser(String uid);
+  // public List<Menu> findMenuByUser(String uid);
 
   // 返回所有的 缓存的 key
   public <T> List<T> getCacheKeys(String cacheName);

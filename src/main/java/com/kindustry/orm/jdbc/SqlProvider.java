@@ -68,42 +68,48 @@ public class SqlProvider {
     SQL sql = new SQL();
     sql.INSERT_INTO(tableName);
 
+    // 获取类的字节码
     Class<? extends Object> clazz = entity.getClass();
+    // Superclass
+    Class<? extends Object> Superclass = clazz.getSuperclass();
+
+    List<Field> fieldList = new ArrayList<Field>();;
+    if (!Superclass.equals(Object.class)) {
+      // 获取所有 Superclass 声明的字段
+      Field[] superFields = Superclass.getDeclaredFields();
+      fieldList.addAll(Arrays.asList(superFields));
+    }
+    // 获取所有声明的字段
     Field[] fields = clazz.getDeclaredFields();
-    for (Field field : fields) {
+    fieldList.addAll(Arrays.asList(fields));
+
+    for (Field field : fieldList) {
       String fieldName = field.getName();
       if ("serialVersionUID".equals(fieldName)) {
         continue;
       }
-      String getMethod = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1, fieldName.length());
 
-      try {
-        Object value = clazz.getMethod(getMethod).invoke(entity);
-        if (null != value && !(value instanceof Integer && (Integer)value == -999)) {
-          sql.INTO_COLUMNS(fieldName);
+      // 註解
+      Column[] columns = field.getAnnotationsByType(Column.class);
+      Id[] ids = field.getAnnotationsByType(Id.class);
+
+      if (ids.length > 0 && columns.length == 0) {
+        logger.error("Column : {}.{} have not configed  [@Column]", clazz.getName(), fieldName);
+        throw new IllegalArgumentException("Column : " + clazz.getName() + "." + fieldName + " have not configed [@Column]");
+      }
+
+      for (Column column : columns) {
+        String columnName = column.name();
+        // 获取列的值
+        field.setAccessible(true);
+        Object value = field.get(entity);
+        // 根據值 設置SQL支持 is null
+        if (value != null) {
+          sql.INTO_COLUMNS(columnName);
           sql.INTO_VALUES("#{" + fieldName + "}");
         }
-      } catch (Exception ex) {
-        throw new Exception(ex);
       }
-    }
 
-    Class<?> superClazz = clazz.getSuperclass();
-    if (!superClazz.equals(Object.class)) {
-      Field[] superFields = superClazz.getDeclaredFields();
-      for (Field field : superFields) {
-        String fieldName = field.getName();
-        String getMethod = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1, fieldName.length());
-
-        try {
-          if (null != clazz.getMethod(getMethod).invoke(entity)) {
-            sql.INTO_COLUMNS(fieldName);
-            sql.INTO_VALUES("#{" + fieldName + "}");
-          }
-        } catch (Exception ex) {
-          throw new Exception(ex);
-        }
-      }
     }
 
     return sql.toString();

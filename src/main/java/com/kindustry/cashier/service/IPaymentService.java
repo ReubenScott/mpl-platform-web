@@ -1,9 +1,9 @@
 package com.kindustry.cashier.service;
 
-import com.kindustry.cashier.entity.GoodsEntity;
+import com.kindustry.cashier.entity.CommodityEntity;
 
 public interface IPaymentService {
 
-  public GoodsEntity getBean(String name);
+  public CommodityEntity getBean(String name);
 
 }

@@ -5,11 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.kindustry.cashier.dao.CashierMapper;
-import com.kindustry.cashier.entity.GoodsEntity;
+import com.kindustry.cashier.entity.CommodityEntity;
 import com.kindustry.orm.dao.BaseMapperBridge;
 
 @Service
-public class CashierMapperBridge extends BaseMapperBridge<GoodsEntity, CashierMapper> {
+public class CashierMapperBridge extends BaseMapperBridge<CommodityEntity, CashierMapper> {
 
   protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -19,7 +19,7 @@ public class CashierMapperBridge extends BaseMapperBridge<GoodsEntity, CashierMa
    * @return
    * @author kindustry
    */
-  public GoodsEntity getGoodsByBarcode(String barcode) {
+  public CommodityEntity getGoodsByBarcode(String barcode) {
     return super.mapper.getGoodsByBarcode(barcode);
   }
 

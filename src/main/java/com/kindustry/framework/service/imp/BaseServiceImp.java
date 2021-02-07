@@ -11,7 +11,6 @@ import org.springframework.cache.Cache.ValueWrapper;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 
 import com.kindustry.framework.service.IBaseService;
-import com.kindustry.system.entity.Menu;
 
 public class BaseServiceImp implements IBaseService {
 
@@ -39,7 +38,7 @@ public class BaseServiceImp implements IBaseService {
     EhCacheCacheManager cacheManager = this.getBean("cacheManager");
     Cache cache = cacheManager.getCache(cacheName);
     ValueWrapper element = cache.get(key);
-    return element == null ? null : (T) element.get();
+    return element == null ? null : (T)element.get();
   }
 
   /**
@@ -58,7 +57,7 @@ public class BaseServiceImp implements IBaseService {
   @Override
   public boolean contains(String cacheName, Object o) {
     EhCacheCacheManager cacheManager = this.getBean("cacheManager");
-    net.sf.ehcache.Ehcache cache = (net.sf.ehcache.Ehcache) cacheManager.getCache(cacheName).getNativeCache();
+    net.sf.ehcache.Ehcache cache = (net.sf.ehcache.Ehcache)cacheManager.getCache(cacheName).getNativeCache();
     for (Object key : cache.getKeys()) {
       Element element = cache.get(key);
       if (element != null && element.getObjectValue().equals(o)) {
@@ -77,7 +76,7 @@ public class BaseServiceImp implements IBaseService {
   @Override
   public <T> List<T> getCacheKeys(String cacheName) {
     EhCacheCacheManager cacheManager = this.getBean("cacheManager");
-    net.sf.ehcache.Ehcache cache = (net.sf.ehcache.Ehcache) cacheManager.getCache(cacheName).getNativeCache();
+    net.sf.ehcache.Ehcache cache = (net.sf.ehcache.Ehcache)cacheManager.getCache(cacheName).getNativeCache();
     return cache.getKeys();
   }
 
@@ -105,16 +104,6 @@ public class BaseServiceImp implements IBaseService {
   @Override
   public Workbook createExcelBySQL(String title, String sql, Object... params) {
     // return basicDao.exportExcel(null, title, sql, params);
-    return null;
-  }
-
-  /**
-   * 获取用户菜单
-   */
-  @Override
-  public List<Menu> findMenuByUser(String xml) {
-    Menu menu = new Menu();
-    // return basicDao.findByAnnotatedSample(menu);
     return null;
   }
 
