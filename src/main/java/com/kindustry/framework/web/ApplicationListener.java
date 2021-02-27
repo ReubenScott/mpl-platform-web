@@ -14,14 +14,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.kindustry.framework.scheduler.SchedulerManager;
+// import com.soak.framework.scheduler.SchedulerManager;
 
-//import com.soak.framework.scheduler.SchedulerManager;
+// import com.kindustry.etl.job.EtlJobImpl;
+// import com.kindustry.framework.scheduler.SchedulerManager;
 
-//import com.kindustry.etl.job.EtlJobImpl;
-//import com.kindustry.framework.scheduler.SchedulerManager;
-
-public class ApplicationListener extends ContextLoaderListener  {
+public class ApplicationListener extends ContextLoaderListener {
 
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -42,23 +40,23 @@ public class ApplicationListener extends ContextLoaderListener  {
     applicationContext = WebApplicationContextUtils.getWebApplicationContext(context);
 
     ServletContext servletContext = event.getServletContext();
-//    SecurityManager securityManager = this.getSecurityManager(servletContext);
-//    Map<String, String> urlAuthorities = securityManager.loadUrlAuthorities();
-//    servletContext.setAttribute("urlAuthorities", urlAuthorities);
+    // SecurityManager securityManager = this.getSecurityManager(servletContext);
+    // Map<String, String> urlAuthorities = securityManager.loadUrlAuthorities();
+    // servletContext.setAttribute("urlAuthorities", urlAuthorities);
 
     // 上下文初始化执行
     logger.debug("================>[ServletContextListener]自动加载启动开始.");
     // 读取Spring容器中的Bean[此时Bean已加载,可以使用]
     logger.debug("================>[ServletContextListener]自动加载启动结束.");
 
-    SchedulerManager scheduler = SchedulerManager.getInstance();
-    scheduler.putSchedule(new Thread() {
-      public void run() {
-        // EtlJobImpl etljob = new EtlJobImpl();
-        // etljob.work();
-        // logger.debug(" etljob work  ");
-      }
-    });
+    // SchedulerManager scheduler = SchedulerManager.getInstance();
+    // scheduler.putSchedule(new Thread() {
+    // public void run() {
+    // // EtlJobImpl etljob = new EtlJobImpl();
+    // // etljob.work();
+    // // logger.debug(" etljob work  ");
+    // }
+    // });
 
   }
 
@@ -69,7 +67,7 @@ public class ApplicationListener extends ContextLoaderListener  {
    * @return
    */
   protected SecurityManager getSecurityManager(ServletContext servletContext) {
-    return (SecurityManager) WebApplicationContextUtils.getWebApplicationContext(servletContext).getBean("securityManager");
+    return (SecurityManager)WebApplicationContextUtils.getWebApplicationContext(servletContext).getBean("securityManager");
   }
 
   // 定时任务
@@ -112,15 +110,16 @@ public class ApplicationListener extends ContextLoaderListener  {
   public void contextDestroyed(ServletContextEvent contextEvent) {
     logger.debug("ApplicationListener  :  contextDestroyed   ....................");
     super.contextDestroyed(contextEvent);
-//    contextEvent.getServletContext().removeAttribute("urlAuthorities");
-    
+    // contextEvent.getServletContext().removeAttribute("urlAuthorities");
+
     if (timer != null) {
       timer.cancel();
     }
   }
 
   /**
-   * 返回  Spring Context 
+   * 返回 Spring Context
+   * 
    * @return
    */
   public static ApplicationContext getApplicationContext() {
@@ -128,7 +127,7 @@ public class ApplicationListener extends ContextLoaderListener  {
   }
 
   public static <T> T getBean(String beanName) {
-    return (T) applicationContext.getBean(beanName);
+    return (T)applicationContext.getBean(beanName);
   }
 
 }

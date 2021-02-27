@@ -4,7 +4,6 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>spl-platform-web</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
 
   <name>spl-platform-web</name>
@@ -81,7 +80,12 @@
 
 
   <dependencies>
- <!-- 配置项目依赖 <dependency> <groupId>com.kindustry</groupId> <artifactId>core</artifactId> </dependency> -->
+    <!-- 配置项目依赖 -->
+    <dependency>
+      <groupId>com.kindustry</groupId>
+      <artifactId>core</artifactId>
+    </dependency>
+    
 
     <!-- 本地Jar包 Start 
     <dependency>
@@ -136,11 +140,6 @@
     <dependency>
       <groupId>com.zaxxer</groupId>
       <artifactId>HikariCP</artifactId>
-    </dependency>
-    <!-- dbcp 数据库连接池 -->
-    <dependency>
-      <groupId>commons-dbcp</groupId>
-      <artifactId>commons-dbcp</artifactId>
     </dependency>
     
 

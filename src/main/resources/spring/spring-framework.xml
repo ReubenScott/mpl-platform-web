@@ -13,8 +13,8 @@
   <!-- 配置要扫描的包 -->
   <context:component-scan base-package="com.kindustry.*.**" />
 
-  <!-- 引入配置文件 -->
-  <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+  <!-- 引入配置文件   -->
+  <bean id="propertyConfigurer" class="com.kindustry.config.security.EncryptPropertyConfigurer">
     <property name="location" value="classpath:config/jdbc.properties" />
   </bean>
 
