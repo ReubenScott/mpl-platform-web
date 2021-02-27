@@ -1,4 +1,4 @@
-package com.kindustry.config.security;
+package com.kindustry.orm.security;
 
 import java.util.Properties;
 
