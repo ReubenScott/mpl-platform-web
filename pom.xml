@@ -12,9 +12,9 @@
 
   <parent>
     <groupId>com.kindustry</groupId>
-    <artifactId>platform-pom</artifactId>
+    <artifactId>mpl-platform-pom</artifactId>
     <version>1.0</version>
-    <relativePath>../platform-pom</relativePath>
+    <relativePath>../mpl-platform-pom</relativePath>
   </parent>
 
 
