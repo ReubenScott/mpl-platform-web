@@ -263,6 +263,13 @@
     <!-- 格式化对象，方便输出日志 <dependency> <groupId>com.alibaba</groupId> <artifactId>fastjson</artifactId> </dependency> -->
 
 
+
+    <!-- jasypt加解密密码 -->
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt</artifactId>
+    </dependency>
+    
     <dependency>
       <groupId>javax.mail</groupId>
       <artifactId>mail</artifactId>

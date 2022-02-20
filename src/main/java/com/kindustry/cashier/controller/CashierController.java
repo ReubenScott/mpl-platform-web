@@ -18,14 +18,14 @@ import com.kindustry.cashier.service.ICashierService;
 import com.kindustry.cashier.service.IPaymentService;
 import com.kindustry.cashier.vo.DeviceInfo;
 import com.kindustry.common.util.BrowserUtil;
-import com.kindustry.common.util.JsonUtil;
+import com.kindustry.common.util.JsonUtility;
 import com.kindustry.framework.annotation.Token;
 import com.kindustry.framework.controller.BaseController;
 import com.kindustry.support.dto.BaseDto;
 
 @Controller
 @RequestMapping("/cashier")
-// 指定唯一一个*.do请求关联到该Controller @RequestParam(value = "username") String username
+// 指定唯一一个*.htm请求关联到该Controller @RequestParam(value = "username") String username
 public class CashierController extends BaseController {
 
   protected final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -69,6 +69,7 @@ public class CashierController extends BaseController {
     String agent = request.getHeader("user-agent");
     System.out.println(agent);
     System.out.println(BrowserUtil.getDeviceInfo1());
+    System.out.println(agent);
     System.out.println(cashierService);
     // String token = (String) getAttribute("token");
     CommodityEntity goods = cashierService.findGoodsByBarcode(barcode);
@@ -91,10 +92,10 @@ public class CashierController extends BaseController {
     CommodityEntity element = null; // EhcacheHelper.get("contentCache", barcode);
     // Goods element = cashierService.getCacheBean("contentCache", barcode);
     if (element != null) {
-      System.out.println(JsonUtil.toJSONString(element));
+      System.out.println(JsonUtility.toJson(element));
     }
 
-    System.out.println(JsonUtil.toJSONString(rio));
+    System.out.println(JsonUtility.toJson(rio));
     // String content = JsonUtil.toJSONString(goods);
     // goods = JsonUtil.parse(content, Goods.class);
     // System.out.println(goods);
@@ -103,8 +104,7 @@ public class CashierController extends BaseController {
   }
 
   /**
-   * 商品预支付 客户端提供参数： 商品明细： 会员号， 商品条码 , 数量 ，金额 服务端返回参数： Token(避免重复提交) 活动减免金额 ， 合计应付金额 （是否返回订单号讨论,
-   * 商品明细服务端不需要缓存，客户端有可能会返回主页面修改 ） 缓存 Token
+   * 商品预支付 客户端提供参数： 商品明细： 会员号， 商品条码 , 数量 ，金额 服务端返回参数： Token(避免重复提交) 活动减免金额 ， 合计应付金额 （是否返回订单号讨论, 商品明细服务端不需要缓存，客户端有可能会返回主页面修改 ） 缓存 Token
    * 
    * @param password
    * @return

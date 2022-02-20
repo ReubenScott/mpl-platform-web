@@ -3,7 +3,7 @@
 
 
   <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
-  <property name="LOG_HOME" value="c:/logs" />
+  <property name="LOG_HOME" value="logs" />
   <property name="appname" value="cashier" />
   <timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss" />
 
@@ -108,6 +108,9 @@
   </appender>
 
 
+  <!-- HikariPool日志输出级别 -->
+  <logger name="com.zaxxer.hikari.pool.HikariPool" level="WARN"/>
+  
   <!-- 日志输出级别 -->
   <root level="DEBUG">
     <appender-ref ref="console" />
